@@ -303,7 +303,6 @@ body{font-family:'Inter',sans-serif;background:#0e0e14;color:#eaeef2;line-height
             <label class="avatar-upload-btn"><i class="fas fa-camera"></i> Сменить аватарку<input type="file" id="avatarInput" accept="image/*" onchange="changeAvatar(event)"></label>
         </div>
         <div class="form-group"><label>Никнейм</label><input type="text" id="profileUsername" placeholder="Ваш ник"></div>
-        <div class="form-group"><label>Ваш ID</label><input type="text" id="profileUserID" readonly style="background:#1a1f29;color:#b48aff;font-weight:700;font-family:'Courier New',monospace;letter-spacing:.1em;cursor:not-allowed"></div>
         <div class="form-group"><label>Новый пароль (оставь пустым, если не менять)</label><input type="password" id="profileNewPassword" placeholder="Новый пароль"></div>
         <button class="modal-save-btn" onclick="saveProfile()"><i class="fas fa-save"></i> Сохранить</button>
         <button class="modal-logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Выйти из аккаунта</button>
@@ -474,12 +473,9 @@ function handleRegister(){
     const users=getUsers();
     if(users[u.toLowerCase()])return showToast('Ник уже занят','error');
     const colors=['av-1','av-2','av-3','av-4','av-5','av-6'];
-    const allIDs=Object.values(users).map(x=>x.id).filter(Boolean);
-    let newID;
-    do{newID=String(Math.floor(Math.random()*900)+100)}while(allIDs.includes(newID));
-    users[u.toLowerCase()]={username:u,password:p,avatar:null,color:colors[Math.floor(Math.random()*colors.length)],rank:'player',id:newID,created:Date.now()};
+    users[u.toLowerCase()]={username:u,password:p,avatar:null,color:colors[Math.floor(Math.random()*colors.length)],rank:'player',created:Date.now()};
     saveUsers(users);
-    showToast('Регистрация успешна! Ваш ID: '+newID,'success');
+    showToast('Регистрация успешна!','success');
     loginUser(users[u.toLowerCase()],rem);
 }
 
@@ -492,14 +488,12 @@ function handleLogin(){
     const user=users[u.toLowerCase()];
     if(!user)return showToast('Пользователь не найден','error');
     if(user.password!==p)return showToast('Неверный пароль','error');
-    if(!user.id)generateAndSaveID(user);
     showToast('С возвращением, '+user.username+'!','success');
     loginUser(user,rem);
 }
 
 function loginUser(user,remember){
     currentUser=user;
-    if(!currentUser.id)generateAndSaveID(currentUser);
     saveSession(user,remember);
     showMainSite();
 }
@@ -547,7 +541,6 @@ function switchView(view){
 function openProfile(){
     if(!currentUser)return;
     document.getElementById('profileUsername').value=currentUser.username;
-    document.getElementById('profileUserID').value='#'+getUserID();
     document.getElementById('profileNewPassword').value='';
     const av=document.getElementById('profileAvatarBig');
     if(currentUser.avatar)av.innerHTML='<img src="'+currentUser.avatar+'">';
@@ -647,16 +640,14 @@ function saveMsgOverrides(o){localStorage.setItem(LS_MSG_OVERRIDES,JSON.stringif
 function renderMessages(msgs){
     const c=document.getElementById('chatMessages');if(!c)return;
     const overrides=getMsgOverrides();
-    // Фильтруем удалённые
-    msgs=msgs.filter((m,i)=>!overrides[m.time+'_'+m.user]);
+    msgs=msgs.filter((m)=>!overrides[m.time+'_'+m.user]);
     if(!msgs.length){c.innerHTML='<div style="text-align:center;color:#5a6478;font-size:.9rem;padding:2rem">Пока нет сообщений. Будь первым!</div>';return}
     c.innerHTML=msgs.map(m=>{
         const avatar=m.avatar?'<img src="'+m.avatar+'">':(m.user||'?').charAt(0).toUpperCase();
         const avatarClass=m.avatar?'':(m.color||'av-1');
         const isAdminMsg=m.user===getAdminNickname();
         const adminBadge=isAdminMsg?'<span class="admin-badge">🛡️</span>':'';
-        const userID=m.userId?'<span class="user-id">#'+m.userId+'</span>':'';
-        return '<div class="chat-message"><div class="msg-avatar '+avatarClass+'">'+avatar+'</div><div class="msg-body"><div class="msg-head"><span class="msg-name">'+escapeHtml(m.user||'')+'</span>'+adminBadge+userID+'<span class="msg-time">'+formatTime(m.time)+'</span></div><div class="msg-text">'+escapeHtml(m.text||'')+'</div></div></div>';
+        return '<div class="chat-message"><div class="msg-avatar '+avatarClass+'">'+avatar+'</div><div class="msg-body"><div class="msg-head"><span class="msg-name">'+escapeHtml(m.user||'')+'</span>'+adminBadge+'<span class="msg-time">'+formatTime(m.time)+'</span></div><div class="msg-text">'+escapeHtml(m.text||'')+'</div></div></div>';
     }).join('');
     c.scrollTop=c.scrollHeight;
 }
@@ -672,15 +663,15 @@ async function sendChatMessage(){
     const text=input.value.trim();
     if(!text)return;
 
-    // Проверка на команду
+    // Проверка на команду (только для админа)
     if(text.startsWith('/')&&isAdmin()){
         if(await handleChatCommand(text)){input.value='';return}
     }
 
-    // Проверка бана
-    if(isBanned(getUserID())){
+    // Проверка бана по нику
+    if(isBanned(currentUser.username)){
         const bans=getBans();
-        const until=bans[getUserID()]?.until;
+        const until=bans[currentUser.username]?.until;
         const mins=Math.ceil((until-Date.now())/60000);
         return showToast('Вы забанены в чате ещё на '+mins+' мин.','error');
     }
@@ -691,7 +682,7 @@ async function sendChatMessage(){
     }
 
     input.value='';
-    const data={user:currentUser.username,rank:currentUser.rank||'player',avatar:currentUser.avatar||'',color:currentUser.color||'av-1',text:text,userId:getUserID()};
+    const data={user:currentUser.username,rank:currentUser.rank||'player',avatar:currentUser.avatar||'',color:currentUser.color||'av-1',text:text};
     try{
         await fetch(GOOGLE_SCRIPT_URL+'?action=sendMessage&data='+encodeURIComponent(JSON.stringify(data)),{mode:'no-cors'});
         setTimeout(loadChatMessages,800);
@@ -728,8 +719,7 @@ async function loadOnline(){
         list.innerHTML=users.map(u=>{
             const av=u.avatar?'<img src="'+u.avatar+'">':(u.user||'?').charAt(0).toUpperCase();
             const avClass=u.avatar?'':(u.color||'av-1');
-            const id=u.userId?'<span class="user-id">#'+u.userId+'</span>':'';
-            return '<div class="online-user"><div class="ou-avatar '+avClass+'">'+av+'</div><span class="ou-name">'+escapeHtml(u.user||'')+'</span>'+id+'</div>';
+            return '<div class="online-user"><div class="ou-avatar '+avClass+'">'+av+'</div><span class="ou-name">'+escapeHtml(u.user||'')+'</span></div>';
         }).join('');
     }catch(e){}
 }
@@ -741,7 +731,7 @@ function startHeartbeat(){
 }
 async function sendHeartbeat(){
     if(!currentUser)return;
-    const data={user:currentUser.username,rank:currentUser.rank||'player',avatar:currentUser.avatar||'',color:currentUser.color||'av-1',userId:getUserID()};
+    const data={user:currentUser.username,rank:currentUser.rank||'player',avatar:currentUser.avatar||'',color:currentUser.color||'av-1'};
     try{await fetch(GOOGLE_SCRIPT_URL+'?action=heartbeat&data='+encodeURIComponent(JSON.stringify(data)),{mode:'no-cors'})}catch(e){}
 }
 
@@ -788,7 +778,7 @@ async function submitReport(e){
             if(!instr.length||!lec.length||!from||!to){showToast('Заполни все поля','error');btn.disabled=false;btn.innerHTML='<i class="fas fa-paper-plane"></i> Отправить';return}
             Array.from(instr).forEach(f=>files.push({file:f,name:'instr_'+f.name}));
             Array.from(lec).forEach(f=>files.push({file:f,name:'lecture_'+f.name}));
-            embed={title:'🚀 Рапорт · Повыситься',color:0x10b981,description:'**От ID:** #'+getUserID()+'\n**Отправитель:** <@'+DEVELOPER_ID+'>\n**Дата:** '+new Date().toLocaleString('ru-RU'),fields:[{name:'👤 Имя',value:name,inline:false},{name:'🎮 Никнейм',value:nick,inline:false},{name:'🎂 Возраст',value:age,inline:false},{name:'📤 С какого ранга',value:from,inline:false},{name:'📥 По какой ранг',value:to,inline:false},{name:'💬 Discord',value:discord,inline:false}],footer:{text:'TrapTime · Рапорт'},timestamp:new Date().toISOString()};
+            embed={title:'🚀 Рапорт · Повыситься',color:0x10b981,description:'**Отправитель:** <@'+DEVELOPER_ID+'>\n**Дата:** '+new Date().toLocaleString('ru-RU'),fields:[{name:'👤 Имя',value:name,inline:false},{name:'🎮 Никнейм',value:nick,inline:false},{name:'🎂 Возраст',value:age,inline:false},{name:'📤 С какого ранга',value:from,inline:false},{name:'📥 По какой ранг',value:to,inline:false},{name:'💬 Discord',value:discord,inline:false}],footer:{text:'TrapTime · Рапорт'},timestamp:new Date().toISOString()};
         }else if(reportType==='post'){
             const instr=document.getElementById('rInstr').files;
             const lec=document.getElementById('rLecture').files;
@@ -796,12 +786,12 @@ async function submitReport(e){
             if(!instr.length||!lec.length||!post){showToast('Заполни все поля','error');btn.disabled=false;btn.innerHTML='<i class="fas fa-paper-plane"></i> Отправить';return}
             Array.from(instr).forEach(f=>files.push({file:f,name:'instr_'+f.name}));
             Array.from(lec).forEach(f=>files.push({file:f,name:'lecture_'+f.name}));
-            embed={title:'🌟 Рапорт · Стать на пост',color:0xf5b400,description:'**От ID:** #'+getUserID()+'\n**Отправитель:** <@'+DEVELOPER_ID+'>\n**Дата:** '+new Date().toLocaleString('ru-RU'),fields:[{name:'👤 Имя',value:name,inline:false},{name:'🎮 Никнейм',value:nick,inline:false},{name:'🎂 Возраст',value:age,inline:false},{name:'🎯 На какой пост',value:post,inline:false},{name:'💬 Discord',value:discord,inline:false}],footer:{text:'TrapTime · Рапорт'},timestamp:new Date().toISOString()};
+            embed={title:'🌟 Рапорт · Стать на пост',color:0xf5b400,description:'**Отправитель:** <@'+DEVELOPER_ID+'>\n**Дата:** '+new Date().toLocaleString('ru-RU'),fields:[{name:'👤 Имя',value:name,inline:false},{name:'🎮 Никнейм',value:nick,inline:false},{name:'🎂 Возраст',value:age,inline:false},{name:'🎯 На какой пост',value:post,inline:false},{name:'💬 Discord',value:discord,inline:false}],footer:{text:'TrapTime · Рапорт'},timestamp:new Date().toISOString()};
         }else{
             const time=document.getElementById('rLeaveTime').value.trim();
             const reason=document.getElementById('rLeaveReason').value.trim();
             if(!time||!reason){showToast('Заполни все поля','error');btn.disabled=false;btn.innerHTML='<i class="fas fa-paper-plane"></i> Отправить';return}
-            embed={title:'🚪 Рапорт · Уволиться',color:0xf87171,description:'**От ID:** #'+getUserID()+'\n**Отправитель:** <@'+DEVELOPER_ID+'>\n**Дата:** '+new Date().toLocaleString('ru-RU'),fields:[{name:'💬 Discord',value:discord,inline:false},{name:'👤 Имя',value:name,inline:false},{name:'⏳ Сколько пробыл',value:time,inline:false},{name:'📝 Причина',value:reason,inline:false}],footer:{text:'TrapTime · Рапорт'},timestamp:new Date().toISOString()};
+            embed={title:'🚪 Рапорт · Уволиться',color:0xf87171,description:'**Отправитель:** <@'+DEVELOPER_ID+'>\n**Дата:** '+new Date().toLocaleString('ru-RU'),fields:[{name:'💬 Discord',value:discord,inline:false},{name:'👤 Имя',value:name,inline:false},{name:'⏳ Сколько пробыл',value:time,inline:false},{name:'📝 Причина',value:reason,inline:false}],footer:{text:'TrapTime · Рапорт'},timestamp:new Date().toISOString()};
         }
         const fd=new FormData();
         fd.append('payload_json',JSON.stringify({username:'TrapTime · Рапорты',content:'<@'+DEVELOPER_ID+'> — новый рапорт!',embeds:[embed]}));
@@ -834,7 +824,7 @@ async function submitLecture(e){
     const time=document.getElementById('lTime').value;
     const day=document.getElementById('lDay').value;
     if(!discord||!rank||!time||!day){showToast('Заполни все поля','error');btn.disabled=false;btn.innerHTML='<i class="fas fa-paper-plane"></i> Отправить';return}
-    const embed={title:'📚 Запрос на лекцию',color:0xa855f7,description:'**От ID:** #'+getUserID()+'\n**Дата:** '+new Date().toLocaleString('ru-RU'),fields:[{name:'💬 Discord',value:discord,inline:false},{name:'🎯 Ранг / на кого',value:rank,inline:false},{name:'🕐 Во сколько',value:time,inline:false},{name:'📅 Когда',value:day,inline:false}],footer:{text:'TrapTime · Лекции'},timestamp:new Date().toISOString()};
+    const embed={title:'📚 Запрос на лекцию',color:0xa855f7,description:'**Дата:** '+new Date().toLocaleString('ru-RU'),fields:[{name:'💬 Discord',value:discord,inline:false},{name:'🎯 Ранг / на кого',value:rank,inline:false},{name:'🕐 Во сколько',value:time,inline:false},{name:'📅 Когда',value:day,inline:false}],footer:{text:'TrapTime · Лекции'},timestamp:new Date().toISOString()};
     try{
         const r=await fetch(LECTURE_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:'TrapTime · Лекции',embeds:[embed]})});
         if(r.ok){showToast('Запрос на лекцию отправлен!','success');document.getElementById('lectureForm').reset();document.querySelectorAll('.day-btn').forEach(b=>b.classList.remove('active'));closeLecture()}
@@ -900,29 +890,35 @@ async function handleChatCommand(text){
     const cmd=parts[0].toLowerCase();
     const args=parts.slice(1);
     const users=getUsers();
-    const findUserByID=(id)=>{
-        for(const k in users){if(users[k].id===id)return{key:k,user:users[k]}}
+    const findUserByNick=(nick)=>{
+        for(const k in users){if(users[k].username.toLowerCase()===nick.toLowerCase())return{key:k,user:users[k]}}
         return null;
     };
 
     if(cmd==='/banchat'){
-        if(!args[0]||!args[1])return showToast('Использование: /banchat id время','error');
-        const found=findUserByID(args[0]);
-        if(!found)return showToast('ID не найден','error');
+        if(!args[0]||!args[1])return showToast('Использование: /banchat Ник время','error');
+        const found=findUserByNick(args[0]);
+        if(!found)return showToast('Игрок не найден','error');
         const ms=parseTime(args[1]);
         if(!ms)return showToast('Формат: 1h, 30m, 1d, 30s','error');
         const bans=getBans();
-        bans[args[0]]={until:Date.now()+ms,user:found.user.username};
+        bans[found.user.username]={
+            until:Date.now()+ms,
+            nick:found.user.username
+        };
         saveBans(bans);
         showToast(found.user.username+' забанен в чате на '+args[1],'success');
         return true;
     }
     if(cmd==='/unbanchat'){
-        if(!args[0])return showToast('Использование: /unbanchat id','error');
+        if(!args[0])return showToast('Использование: /unbanchat Ник','error');
+        const found=findUserByNick(args[0]);
+        if(!found)return showToast('Игрок не найден','error');
         const bans=getBans();
-        if(!bans[args[0]])return showToast('Этот ID не забанен','error');
-        delete bans[args[0]];saveBans(bans);
-        showToast('ID #'+args[0]+' разбанен','success');
+        if(!bans[found.user.username])return showToast('Этот игрок не забанен','error');
+        delete bans[found.user.username];
+        saveBans(bans);
+        showToast(found.user.username+' разбанен','success');
         return true;
     }
     if(cmd==='/blockchat'){
@@ -938,13 +934,15 @@ async function handleChatCommand(text){
         return true;
     }
     if(cmd==='/removemessage'){
-        if(!args[0]||!args[1])return showToast('Использование: /removemessage id N','error');
+        if(!args[0]||!args[1])return showToast('Использование: /removemessage Ник N','error');
+        const found=findUserByNick(args[0]);
+        if(!found)return showToast('Игрок не найден','error');
         const n=parseInt(args[1]);
         try{
             const r=await fetch(GOOGLE_SCRIPT_URL+'?action=getMessages');
             const msgs=await r.json();
-            const userMsgs=msgs.filter(m=>m.userId===args[0]);
-            if(userMsgs.length<n)return showToast('Сообщений меньше чем '+n,'error');
+            const userMsgs=msgs.filter(m=>m.user.toLowerCase()===args[0].toLowerCase());
+            if(userMsgs.length<n)return showToast('У игрока меньше '+n+' сообщений','error');
             const target=userMsgs[userMsgs.length-n];
             const overrides=getMsgOverrides();
             overrides[target.time+'_'+target.user]=true;
@@ -955,12 +953,12 @@ async function handleChatCommand(text){
         return true;
     }
     if(cmd==='/delava'){
-        if(!args[0])return showToast('Использование: /delava id','error');
-        const found=findUserByID(args[0]);
-        if(!found)return showToast('ID не найден','error');
+        if(!args[0])return showToast('Использование: /delava Ник','error');
+        const found=findUserByNick(args[0]);
+        if(!found)return showToast('Игрок не найден','error');
         users[found.key].avatar=null;
         saveUsers(users);
-        showToast('Аватарка #'+args[0]+' удалена','success');
+        showToast('Аватарка '+found.user.username+' удалена','success');
         return true;
     }
     if(cmd==='/resetpass'){

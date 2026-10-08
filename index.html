@@ -99,480 +99,43 @@ body{font-family:'Inter',sans-serif;background:#0e0e14;color:#eaeef2;line-height
 .forum-content{min-width:0}
 .forum-view{display:none}
 .forum-view.active{display:block}
-</style>
-</head>
-<body>
-<!-- ================= AUTH SCREEN ================= -->
-<div id="authScreen">
-    <div class="auth-particles" id="authParticles"></div>
-    <div class="auth-box">
-        <div class="auth-logo">
-            <div class="logo-icon">T</div>
-            <div class="logo-text">TrapTime</div>
-        </div>
-        <div class="auth-subtitle">Войдите или создайте аккаунт</div>
-
-        <div class="auth-tabs">
-            <button type="button" class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Войти</button>
-            <button type="button" class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">Регистрация</button>
-        </div>
-
-        <div class="auth-form" id="loginForm">
-            <div class="form-group">
-                <label>Никнейм</label>
-                <input type="text" id="loginUsername" placeholder="Введите ник">
-            </div>
-            <div class="form-group">
-                <label>Пароль</label>
-                <input type="password" id="loginPassword" placeholder="Введите пароль">
-            </div>
-            <label class="remember-row">
-                <input type="checkbox" id="rememberMe">
-                <span class="remember-checkbox"></span>
-                Запомнить на 7 дней
-            </label>
-            <button type="button" class="auth-submit" onclick="handleLogin()">Войти</button>
-            <div class="auth-footer">
-                Нет аккаунта? <a onclick="switchAuthTab('register')">Зарегистрироваться</a>
-            </div>
-        </div>
-
-        <div class="auth-form hidden" id="registerForm">
-            <div class="form-group">
-                <label>Никнейм</label>
-                <input type="text" id="registerUsername" placeholder="Придумайте ник">
-            </div>
-            <div class="form-group">
-                <label>Пароль</label>
-                <input type="password" id="registerPassword" placeholder="Придумайте пароль">
-            </div>
-            <div class="form-group">
-                <label>Повторите пароль</label>
-                <input type="password" id="registerPassword2" placeholder="Повторите пароль">
-            </div>
-            <label class="remember-row">
-                <input type="checkbox" id="rememberMeReg">
-                <span class="remember-checkbox"></span>
-                Запомнить на 7 дней
-            </label>
-            <button type="button" class="auth-submit" onclick="handleRegister()">Создать аккаунт</button>
-            <div class="auth-footer">
-                Уже есть аккаунт? <a onclick="switchAuthTab('login')">Войти</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- ================= NAVBAR ================= -->
-<nav class="navbar" id="navbar">
-    <div class="nav-logo" onclick="switchView('home')">
-        <i class="fas fa-shield-hal"></i> TrapTime
-    </div>
-    <div class="nav-tabs">
-        <button class="nav-tab active" data-view="home" onclick="switchView('home')">
-            <i class="fas fa-home"></i> Главная
-        </button>
-        <button class="nav-tab" data-view="forum" onclick="switchView('forum')">
-            <i class="fas fa-comments"></i> Форум
-        </button>
-        <button class="nav-tab" data-view="chat" onclick="switchView('chat')">
-            <i class="fas fa-comment-dots"></i> Чат
-        </button>
-    </div>
-    <div class="nav-user">
-        <button class="nav-profile-btn" onclick="openProfile()">
-            <div class="nav-avatar av-1" id="navAvatar">?</div>
-            <span id="navUsername">Гость</span>
-        </button>
-    </div>
-</nav>
-
-<!-- ================= PAGE CONTAINER ================= -->
-<div class="page-container">
-    <div class="page-inner">
-
-        <!-- ============ VIEW: HOME ============ -->
-        <div class="view active" id="view-home">
-            <header class="header">
-                <h1>TrapTime</h1>
-                <div class="sub"><i class="fas fa-arrow-up" style="margin-right:8px;color:#b48aff"></i>Система повышений</div>
-            </header>
-
-            <div class="section-title media"><i class="fas fa-video"></i> MEDIA</div>
-            <div class="roles-grid">
-                <div class="role-card media-role">
-                    <div class="role-icon"><i class="fas fa-camera"></i></div>
-                    <h3>Media</h3>
-                    <span class="badge">Начальный уровень</span>
-                    <ul class="requirements">
-                        <li><i class="fas fa-circle-check"></i> <span>Снять 2–3 Shorts о сервере</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>Выложить в TikTok / YouTube Shorts (мин. 50 просмотров)</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>Указать IP сервера в описании</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>Без водяных знаков</span></li>
-                    </ul>
-                    <button class="card-promote-btn" data-role="Media" onclick="goToReport('Media')"><i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ</button>
-                </div>
-                <div class="role-card media-role">
-                    <div class="role-icon"><i class="fas fa-star"></i></div>
-                    <h3>Senior Media</h3>
-                    <span class="badge">Продвинутый</span>
-                    <ul class="requirements">
-                        <li><i class="fas fa-circle-check"></i> <span>5+ Shorts на канале</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>1 Shorts с 500+ просмотров</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>Активно отвечать в комментариях</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>Помогать новым медиа</span></li>
-                    </ul>
-                    <button class="card-promote-btn" data-role="Senior Media" onclick="goToReport('Senior Media')"><i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ</button>
-                </div>
-                <div class="role-card media-role">
-                    <div class="role-icon"><i class="fas fa-crown"></i></div>
-                    <h3>Admin Media</h3>
-                    <span class="badge">Руководство</span>
-                    <ul class="requirements">
-                        <li><i class="fas fa-circle-check"></i> <span>25+ качественных Shorts</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>Управлять командой медиа</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>Организовывать конкурсы</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>Связь с кураторами</span></li>
-                    </ul>
-                    <button class="card-promote-btn" data-role="Admin Media" onclick="goToReport('Admin Media')"><i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ</button>
-                </div>
-            </div>
-
-            <div class="section-title moderation"><i class="fas fa-shield-hal"></i> MODERATION</div>
-            <div class="roles-grid">
-                <div class="role-card mod-role">
-                    <div class="role-icon"><i class="fas fa-hands-helping"></i></div>
-                    <h3>Helper</h3>
-                    <span class="badge">Испытательный</span>
-                    <ul class="requirements">
-                        <li><i class="fas fa-circle-check"></i> <span>Знать /mute, /kick</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>Обработать 5+ жалоб</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>Быть вежливым в чате</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>Онлайн: 2+ часа в день</span></li>
-                    </ul>
-                    <button class="card-promote-btn" data-role="Helper" onclick="goToReport('Helper')"><i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ</button>
-                </div>
-                <div class="role-card mod-role">
-                    <div class="role-icon"><i class="fas fa-user-tie"></i></div>
-                    <h3>Senior Helper</h3>
-                    <span class="badge">Опытный</span>
-                    <ul class="requirements">
-                        <li><i class="fas fa-circle-check"></i> <span>10+ закрытых тикетов</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>Правильно применять /ban</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>Сообщать о багах</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>Наставлять новых хелперов</span></li>
-                    </ul>
-                    <button class="card-promote-btn" data-role="Senior Helper" onclick="goToReport('Senior Helper')"><i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ</button>
-                </div>
-                <div class="role-card mod-role">
-                    <div class="role-icon"><i class="fas fa-gavel"></i></div>
-                    <h3>Moderator</h3>
-                    <span class="badge">Основной состав</span>
-                    <ul class="requirements">
-                        <li><i class="fas fa-circle-check"></i> <span>Доступ к /ban</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>20+ наказаний в неделю</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>Проверять логи</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>Следить за читерами</span></li>
-                    </ul>
-                    <button class="card-promote-btn" data-role="Moderator" onclick="goToReport('Moderator')"><i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ</button>
-                </div>
-                <div class="role-card mod-role">
-                    <div class="role-icon"><i class="fas fa-shield"></i></div>
-                    <h3>Senior Moderator</h3>
-                    <span class="badge">Доверенный</span>
-                    <ul class="requirements">
-                        <li><i class="fas fa-circle-check"></i> <span>5+ апелляций</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>Обучать модераторов</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>Выявлять твинки</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>Помогать кураторам</span></li>
-                    </ul>
-                    <button class="card-promote-btn" data-role="Senior Moderator" onclick="goToReport('Senior Moderator')"><i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ</button>
-                </div>
-                <div class="role-card mod-role">
-                    <div class="role-icon"><i class="fas fa-user-shield"></i></div>
-                    <h3>Head Moderator</h3>
-                    <span class="badge">Руководство</span>
-                    <ul class="requirements">
-                        <li><i class="fas fa-circle-check"></i> <span>Курировать модерацию</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>Одобрять баны</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>Создавать регламенты</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>Встречи с кураторами</span></li>
-                    </ul>
-                    <button class="card-promote-btn" data-role="Head Moderator" onclick="goToReport('Head Moderator')"><i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ</button>
-                </div>
-                <div class="role-card mod-role">
-                    <div class="role-icon"><i class="fas fa-photo-film"></i></div>
-                    <h3>Media Curator</h3>
-                    <span class="badge">Гибрид</span>
-                    <ul class="requirements">
-                        <li><i class="fas fa-circle-check"></i> <span>Курировать медиа</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>Проверять заявки</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>Управлять составом медиа</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>Работа с Admin Media</span></li>
-                    </ul>
-                    <button class="card-promote-btn" data-role="Media Curator" onclick="goToReport('Media Curator')"><i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ</button>
-                </div>
-                <div class="role-card mod-role">
-                    <div class="role-icon"><i class="fas fa-user-cog"></i></div>
-                    <h3>Curator</h3>
-                    <span class="badge">Высший</span>
-                    <ul class="requirements">
-                        <li><i class="fas fa-circle-check"></i> <span>Полное управление сервером</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>Назначать кураторов</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>Финальное решение по банам</span></li>
-                        <li><i class="fas fa-circle-check"></i> <span>Политика повышений</span></li>
-                    </ul>
-                    <button class="card-promote-btn" data-role="Curator" onclick="goToReport('Curator')"><i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- ============ VIEW: FORUM ============ -->
-        <div class="view" id="view-forum">
-            <header class="forum-header">
-                <h1><i class="fas fa-comments" style="font-size:2rem;margin-right:10px"></i>Форум</h1>
-                <div class="sub">Информация о проекте TrapTime</div>
-            </header>
-
-            <div class="forum-layout">
-                <aside class="forum-sidebar">
-                    <div class="forum-sidebar-title">Разделы</div>
-                    <button class="forum-tab active" data-fview="schedule" onclick="switchForumView('schedule')"><i class="fas fa-calendar-alt"></i><span>Расписание</span></button>
-                    <button class="forum-tab" data-fview="rules" onclick="switchForumView('rules')"><i class="fas fa-scroll"></i><span>Правила</span></button>
-                    <button class="forum-tab" data-fview="about" onclick="switchForumView('about')"><i class="fas fa-info-circle"></i><span>О сервере</span></button>
-                    <button class="forum-tab" data-fview="staff" onclick="switchForumView('staff')"><i class="fas fa-users-gear"></i><span>Состав</span></button>
-                    <button class="forum-tab" data-fview="lecture" onclick="switchForumView('lecture')"><i class="fas fa-graduation-cap"></i><span>Запрос на лекцию</span></button>
-                    <button class="forum-tab" data-fview="report" onclick="switchForumView('report')"><i class="fas fa-file-signature"></i><span>Рапорт</span></button>
-                </aside>
-
-                <main class="forum-content" id="forumContent">
-                    <!-- Содержимое форума будет вставлено через JS -->
-                </main>
-            </div>
-        </div>
-
-        <!-- ============ VIEW: CHAT ============ -->
-        <div class="view" id="view-chat">
-            <header class="forum-header">
-                <h1><i class="fas fa-comment-dots" style="font-size:2rem;margin-right:10px"></i>Чат</h1>
-                <div class="sub">Общение в реальном времени</div>
-            </header>
-
-            <div class="chat-layout">
-                <div class="chat-main">
-                    <div class="chat-header">
-                        <div class="title"><i class="fas fa-comment-dots"></i> Общий чат</div>
-                        <div class="online-badge"><span id="chatOnlineCount">0</span> онлайн</div>
-                    </div>
-                    <div class="chat-messages" id="chatMessages">
-                        <div style="text-align:center;color:#5a6478;font-size:.9rem;padding:2rem">Загрузка сообщений...</div>
-                    </div>
-                    <div class="chat-input-area">
-                        <div class="emoji-picker" id="emojiPicker"></div>
-                        <button class="chat-emoji-btn" onclick="toggleEmojiPicker()"><i class="fas fa-smile"></i></button>
-                        <input type="text" class="chat-input" id="chatInput" placeholder="Написать сообщение..." maxlength="500" onkeydown="if(event.key==='Enter')sendChatMessage()">
-                        <button class="chat-send-btn" onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
-                    </div>
-                </div>
-
-                <aside class="chat-sidebar">
-                    <div class="chat-sidebar-title"><i class="fas fa-users"></i> Онлайн</div>
-                    <div class="chat-online-list" id="onlineList">
-                        <div style="text-align:center;color:#5a6478;font-size:.85rem;padding:1rem">Загрузка...</div>
-                    </div>
-                </aside>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<!-- ================= MODAL: PROFILE ================= -->
-<div class="modal-overlay" id="profileModal">
-    <div class="modal-box">
-        <button class="modal-close" onclick="closeProfile()">✕</button>
-        <h2><i class="fas fa-user-circle"></i> Профиль</h2>
-
-        <div class="profile-avatar-preview">
-            <div class="profile-avatar-big" id="profileAvatarBig">?</div>
-            <label class="avatar-upload-btn">
-                <i class="fas fa-camera"></i> Сменить аватарку
-                <input type="file" id="avatarInput" accept="image/*" onchange="changeAvatar(event)">
-            </label>
-        </div>
-
-        <div class="form-group">
-            <label>Никнейм</label>
-            <input type="text" id="profileUsername" placeholder="Ваш ник">
-        </div>
-
-        <div class="form-group">
-            <label>Ранг</label>
-            <select id="profileRank">
-                <option value="player">Игрок</option>
-                <option value="media">Media</option>
-                <option value="helper">Helper</option>
-                <option value="mod">Moderator</option>
-                <option value="curator">Curator</option>
-                <option value="owner">Owner</option>
-                <option value="dev">Developer</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label>Новый пароль (оставь пустым, если не менять)</label>
-            <input type="password" id="profileNewPassword" placeholder="Новый пароль">
-        </div>
-
-        <button class="modal-save-btn" onclick="saveProfile()"><i class="fas fa-save"></i> Сохранить</button>
-        <button class="modal-logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Выйти из аккаунта</button>
-    </div>
-</div>
-
-<!-- ================= MODAL: REPORT ================= -->
-<div class="modal-overlay" id="reportModal">
-    <div class="modal-box modal-box-large">
-        <button class="modal-close" onclick="closeReport()">✕</button>
-        <h2><i class="fas fa-file-signature"></i> Рапорт</h2>
-
-        <div class="report-types-row">
-            <button type="button" class="report-type-btn active" data-rtype="promote" onclick="setReportType('promote')">
-                <i class="fas fa-arrow-up"></i> Повыситься
-            </button>
-            <button type="button" class="report-type-btn" data-rtype="post" onclick="setReportType('post')">
-                <i class="fas fa-user-plus"></i> Стать на пост
-            </button>
-            <button type="button" class="report-type-btn" data-rtype="leave" onclick="setReportType('leave')">
-                <i class="fas fa-right-from-bracket"></i> Уволиться
-            </button>
-        </div>
-
-        <form id="reportForm" onsubmit="submitReport(event)">
-            <div class="report-field" id="rFieldInstr">
-                <label><i class="fas fa-image"></i> Фото инструкции по обязанностям</label>
-                <input type="file" id="rInstr" accept="image/*" multiple>
-            </div>
-            <div class="report-field" id="rFieldLecture">
-                <label><i class="fas fa-image"></i> Фото лекции по правилам</label>
-                <input type="file" id="rLecture" accept="image/*" multiple>
-            </div>
-
-            <div class="report-row">
-                <div class="report-field">
-                    <label><i class="fas fa-user"></i> Имя</label>
-                    <input type="text" id="rName" placeholder="Иван" required>
-                </div>
-                <div class="report-field">
-                    <label><i class="fas fa-gamepad"></i> Никнейм</label>
-                    <input type="text" id="rNick" placeholder="Steve123" required>
-                </div>
-            </div>
-
-            <div class="report-row">
-                <div class="report-field">
-                    <label><i class="fas fa-birthday-cake"></i> Возраст</label>
-                    <input type="number" id="rAge" min="10" max="99" placeholder="16" required>
-                </div>
-                <div class="report-field">
-                    <label><i class="fab fa-discord"></i> Discord</label>
-                    <input type="text" id="rDiscord" placeholder="@username" required>
-                </div>
-            </div>
-
-            <div class="report-row" id="rRankRow">
-                <div class="report-field">
-                    <label><i class="fas fa-arrow-up"></i> С какого ранга</label>
-                    <select id="rFrom" required>
-                        <option value="">Выбери</option>
-                        <option>Media</option><option>Senior Media</option><option>Admin Media</option>
-                        <option>Helper</option><option>Senior Helper</option><option>Moderator</option>
-                        <option>Senior Moderator</option><option>Head Moderator</option>
-                        <option>Media Curator</option><option>Curator</option>
-                    </select>
-                </div>
-                <div class="report-field">
-                    <label><i class="fas fa-arrow-right"></i> По какой ранг</label>
-                    <select id="rTo" required>
-                        <option value="">Выбери</option>
-                        <option>Media</option><option>Senior Media</option><option>Admin Media</option>
-                        <option>Helper</option><option>Senior Helper</option><option>Moderator</option>
-                        <option>Senior Moderator</option><option>Head Moderator</option>
-                        <option>Media Curator</option><option>Curator</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="report-field hidden" id="rFieldPost">
-                <label><i class="fas fa-user-plus"></i> На какой пост</label>
-                <select id="rPost">
-                    <option value="">Выбери</option>
-                    <option>Media</option><option>Senior Media</option><option>Admin Media</option>
-                    <option>Helper</option><option>Senior Helper</option><option>Moderator</option>
-                    <option>Senior Moderator</option><option>Head Moderator</option>
-                    <option>Media Curator</option><option>Curator</option>
-                </select>
-            </div>
-
-            <div class="report-field hidden" id="rFieldLeaveTime">
-                <label><i class="fas fa-clock"></i> Сколько пробыл на посту (от 7 дней)</label>
-                <input type="text" id="rLeaveTime" placeholder="Например: 14 дней">
-            </div>
-
-            <div class="report-field hidden" id="rFieldLeaveReason">
-                <label><i class="fas fa-comment-dots"></i> Причина увольнения</label>
-                <textarea id="rLeaveReason" placeholder="Опиши причину..."></textarea>
-            </div>
-
-            <button type="submit" class="modal-save-btn" id="reportSubmitBtn"><i class="fas fa-paper-plane"></i> Отправить рапорт</button>
-        </form>
-    </div>
-</div>
-
-<!-- ================= MODAL: LECTURE ================= -->
-<div class="modal-overlay" id="lectureModal">
-    <div class="modal-box">
-        <button class="modal-close" onclick="closeLecture()">✕</button>
-        <h2><i class="fas fa-graduation-cap"></i> Запрос на лекцию</h2>
-
-        <form id="lectureForm" onsubmit="submitLecture(event)">
-            <div class="form-group">
-                <label>Ваш Discord</label>
-                <input type="text" id="lDiscord" placeholder="@username" required>
-            </div>
-            <div class="form-group">
-                <label>Ваш ранг / на кого хотите поступить</label>
-                <select id="lRank" required>
-                    <option value="">Выбери</option>
-                    <option>Media</option><option>Senior Media</option><option>Admin Media</option>
-                    <option>Helper</option><option>Senior Helper</option><option>Moderator</option>
-                    <option>Senior Moderator</option><option>Head Moderator</option>
-                    <option>Media Curator</option><option>Curator</option>
-                </select>
-            </div>
-            <div class="report-row">
-                <div class="form-group">
-                    <label>Во сколько (время)</label>
-                    <input type="time" id="lTime" required>
-                </div>
-                <div class="form-group">
-                    <label>Когда (день)</label>
-                    <select id="lDay" required>
-                        <option value="">Выбери</option>
-                        <option>Понедельник</option><option>Вторник</option><option>Среда</option>
-                        <option>Четверг</option><option>Пятница</option><option>Суббота</option>
-                        <option>Воскресенье</option>
-                    </select>
-                </div>
-            </div>
-            <button type="submit" class="modal-save-btn" id="lectureSubmitBtn"><i class="fas fa-paper-plane"></i> Отправить запрос</button>
-        </form>
-    </div>
-</div>
-
-<!-- ================= TOAST ================= -->
-<div class="toast-container" id="toastContainer"></div>
-
-<style>
+.chat-layout{display:grid;grid-template-columns:1fr 280px;gap:1.5rem;align-items:start}
+.chat-main{background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;overflow:hidden;display:flex;flex-direction:column;height:70vh;min-height:500px;position:relative}
+.chat-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid #232a36;background:linear-gradient(135deg,rgba(139,92,246,.1),rgba(110,159,255,.05))}
+.chat-header .title{display:flex;align-items:center;gap:.7rem;font-size:1.1rem;font-weight:700;color:#eaeef2}
+.chat-header .title i{color:#b48aff}
+.chat-header .online-badge{display:flex;align-items:center;gap:.4rem;padding:.3rem .8rem;background:rgba(52,211,153,.15);color:#34d399;border-radius:40px;font-size:.78rem;font-weight:700}
+.chat-header .online-badge::before{content:"";width:8px;height:8px;background:#34d399;border-radius:50%;box-shadow:0 0 8px #34d399;animation:onlinePulse 1.5s ease-in-out infinite}
+@keyframes onlinePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
+.chat-messages{flex:1;overflow-y:auto;padding:1rem 1.2rem;display:flex;flex-direction:column;gap:.9rem;scroll-behavior:smooth;background:#161a22}
+.chat-messages::-webkit-scrollbar{width:6px}
+.chat-messages::-webkit-scrollbar-track{background:transparent}
+.chat-messages::-webkit-scrollbar-thumb{background:#2a3140;border-radius:4px}
+.chat-message{display:flex;gap:.7rem;animation:msgIn .3s ease}
+@keyframes msgIn{0%{opacity:0;transform:translateY(10px)}100%{opacity:1;transform:translateY(0)}}
+.chat-message .msg-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;color:#fff;flex-shrink:0;overflow:hidden;background:linear-gradient(135deg,#8b5cf6,#6e9fff)}
+.chat-message .msg-avatar img{width:100%;height:100%;object-fit:cover}
+.chat-message .msg-body{flex:1;min-width:0}
+.chat-message .msg-head{display:flex;align-items:center;gap:.5rem;margin-bottom:.2rem;flex-wrap:wrap}
+.chat-message .msg-name{font-weight:700;font-size:.9rem;color:#eaeef2}
+.chat-message .msg-time{font-size:.72rem;color:#5a6478;margin-left:auto}
+.chat-message .msg-text{font-size:.92rem;color:#cbd5e1;line-height:1.5;word-wrap:break-word;overflow-wrap:break-word}
+.chat-input-area{padding:1rem 1.2rem;border-top:1px solid #232a36;background:#0e1219;display:flex;gap:.6rem;align-items:center;position:relative}
+.chat-input{flex:1;padding:.85rem 1.1rem;background:#161a22;border:1px solid #272e3a;border-radius:40px;color:#eaeef2;font-size:.92rem;font-family:'Inter',sans-serif;transition:border-color .2s}
+.chat-input:focus{outline:none;border-color:#8b5cf6;box-shadow:0 0 0 3px rgba(139,92,246,.15)}
+.chat-input::placeholder{color:#5a6478}
+.chat-emoji-btn{width:42px;height:42px;border-radius:50%;background:#161a22;border:1px solid #272e3a;color:#9aa4b5;cursor:pointer;font-size:1.1rem;transition:all .2s;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.chat-emoji-btn:hover{border-color:#8b5cf6;color:#b48aff;transform:scale(1.05)}
+.chat-send-btn{padding:.85rem 1.4rem;border-radius:40px;background:linear-gradient(135deg,#8b5cf6,#6e9fff);color:#fff;border:none;font-weight:700;font-size:.9rem;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:.5rem;box-shadow:0 6px 18px rgba(139,92,246,.4)}
+.chat-send-btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(139,92,246,.55)}
+.chat-sidebar{background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:1rem;position:sticky;top:100px}
+.chat-sidebar-title{display:flex;align-items:center;gap:.5rem;font-size:.9rem;font-weight:700;padding-bottom:.7rem;border-bottom:1px solid #232a36;margin-bottom:.7rem;color:#eaeef2}
+.chat-sidebar-title i{color:#b48aff}
+.chat-online-list{display:flex;flex-direction:column;gap:.4rem;max-height:400px;overflow-y:auto}
+.online-user{display:flex;align-items:center;gap:.6rem;padding:.5rem .7rem;background:#1a1f29;border-radius:10px;font-size:.82rem}
+.online-user .ou-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.75rem;color:#fff;flex-shrink:0;overflow:hidden;background:linear-gradient(135deg,#8b5cf6,#6e9fff)}
+.online-user .ou-avatar img{width:100%;height:100%;object-fit:cover}
+.online-user .ou-name{flex:1;font-weight:600;color:#eaeef2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);z-index:3000;justify-content:center;align-items:center;padding:20px;overflow-y:auto}
 .modal-overlay.active{display:flex}
 .modal-box{background:#161a22;border:1px solid #272e3a;border-radius:20px;padding:30px;width:100%;max-width:480px;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.8);animation:modalIn .3s ease}
@@ -580,7 +143,7 @@ body{font-family:'Inter',sans-serif;background:#0e0e14;color:#eaeef2;line-height
 @keyframes modalIn{0%{transform:scale(.95) translateY(20px);opacity:0}100%{transform:scale(1) translateY(0);opacity:1}}
 .modal-close{position:absolute;top:15px;right:15px;background:#1e1e1e;border:none;color:#8a94a8;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s}
 .modal-close:hover{background:#e74c3c;color:#fff}
-.modal-box h2{font-size:1.4rem;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:10px;padding-bottom:15px;border-bottom:1px solid #272e3a}
+.modal-box h2{font-size:1.4rem;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:10px;padding-bottom:15px;border-bottom:1px solid #272e3a;color:#eaeef2}
 .modal-box h2 i{color:#b48aff}
 .profile-avatar-preview{display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:20px}
 .profile-avatar-big{width:90px;height:90px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:36px;color:#fff;border:3px solid rgba(255,255,255,.15);overflow:hidden;background:linear-gradient(135deg,#8b5cf6,#6e9fff)}
@@ -607,127 +170,271 @@ body{font-family:'Inter',sans-serif;background:#0e0e14;color:#eaeef2;line-height
 .report-field input:focus,.report-field select:focus,.report-field textarea:focus{outline:none;border-color:#8b5cf6;box-shadow:0 0 0 3px rgba(139,92,246,.15)}
 .report-field textarea{resize:vertical;min-height:70px}
 .report-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.chat-sidebar{background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:1rem;position:sticky;top:100px}
-.chat-sidebar-title{display:flex;align-items:center;gap:.5rem;font-size:.9rem;font-weight:700;padding-bottom:.7rem;border-bottom:1px solid #232a36;margin-bottom:.7rem;color:#eaeef2}
-.chat-sidebar-title i{color:#b48aff}
-.chat-online-list{display:flex;flex-direction:column;gap:.4rem;max-height:400px;overflow-y:auto}
-.online-user{display:flex;align-items:center;gap:.6rem;padding:.5rem .7rem;background:#1a1f29;border-radius:10px;font-size:.82rem}
-.online-user .ou-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.75rem;color:#fff;flex-shrink:0;overflow:hidden}
-.online-user .ou-avatar img{width:100%;height:100%;object-fit:cover}
-.online-user .ou-name{flex:1;font-weight:600;color:#eaeef2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.online-user .ou-rank{font-size:.62rem;padding:.1rem .4rem;border-radius:10px;font-weight:700;text-transform:uppercase}
 .toast-container{position:fixed;top:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px}
 .toast{background:#161a22;border:1px solid #272e3a;border-left:4px solid #b48aff;border-radius:12px;padding:14px 18px;min-width:260px;box-shadow:0 10px 30px rgba(0,0,0,.6);animation:toastIn .3s ease;font-size:.85rem;color:#eaeef2}
 .toast.success{border-left-color:#10b981}
 .toast.error{border-left-color:#f87171}
 @keyframes toastIn{from{transform:translateX(400px);opacity:0}to{transform:translateX(0);opacity:1}}
+.av-1{background:linear-gradient(135deg,#8b5cf6,#6e9fff)}
+.av-2{background:linear-gradient(135deg,#ff7eb3,#ff4d94)}
+.av-3{background:linear-gradient(135deg,#34d399,#10b981)}
+.av-4{background:linear-gradient(135deg,#f5b400,#ff8c00)}
+.av-5{background:linear-gradient(135deg,#6e9fff,#4a7cff)}
+.av-6{background:linear-gradient(135deg,#a855f7,#8b5cf6)}
+.slot-media{display:inline-block;padding:.25rem .7rem;border-radius:20px;background:linear-gradient(135deg,#ff8dc7,#ff7eb3);color:#2a0f1e;font-weight:700;font-size:.78rem}
+.slot-mod{display:inline-block;padding:.25rem .7rem;border-radius:20px;background:linear-gradient(135deg,#8fb8ff,#6e9fff);color:#0f1a2a;font-weight:700;font-size:.78rem}
 @media(max-width:900px){.forum-layout,.chat-layout{grid-template-columns:1fr}.chat-sidebar{position:static}}
 @media(max-width:700px){.navbar{padding:.7rem 1rem;flex-wrap:wrap}.nav-tabs{order:3;width:100%;justify-content:center;margin-top:.5rem}.nav-tab{padding:.5rem 1rem;font-size:.82rem}.report-row{grid-template-columns:1fr}.report-types-row{grid-template-columns:1fr}}
 </style>
-<script>
-/* ============================================================
-   TrapTime · Полный JavaScript
-   ============================================================ */
+</head>
+<body>
 
+<div id="authScreen">
+    <div class="auth-particles" id="authParticles"></div>
+    <div class="auth-box">
+        <div class="auth-logo"><div class="logo-icon">T</div><div class="logo-text">TrapTime</div></div>
+        <div class="auth-subtitle">Войдите или создайте аккаунт</div>
+        <div class="auth-tabs">
+            <button type="button" class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Войти</button>
+            <button type="button" class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">Регистрация</button>
+        </div>
+        <div class="auth-form" id="loginForm">
+            <div class="form-group"><label>Никнейм</label><input type="text" id="loginUsername" placeholder="Введите ник"></div>
+            <div class="form-group"><label>Пароль</label><input type="password" id="loginPassword" placeholder="Введите пароль"></div>
+            <label class="remember-row"><input type="checkbox" id="rememberMe"><span class="remember-checkbox"></span>Запомнить на 7 дней</label>
+            <button type="button" class="auth-submit" onclick="handleLogin()">Войти</button>
+            <div class="auth-footer">Нет аккаунта? <a onclick="switchAuthTab('register')">Зарегистрироваться</a></div>
+        </div>
+        <div class="auth-form hidden" id="registerForm">
+            <div class="form-group"><label>Никнейм</label><input type="text" id="registerUsername" placeholder="Придумайте ник"></div>
+            <div class="form-group"><label>Пароль</label><input type="password" id="registerPassword" placeholder="Придумайте пароль"></div>
+            <div class="form-group"><label>Повторите пароль</label><input type="password" id="registerPassword2" placeholder="Повторите пароль"></div>
+            <label class="remember-row"><input type="checkbox" id="rememberMeReg"><span class="remember-checkbox"></span>Запомнить на 7 дней</label>
+            <button type="button" class="auth-submit" onclick="handleRegister()">Создать аккаунт</button>
+            <div class="auth-footer">Уже есть аккаунт? <a onclick="switchAuthTab('login')">Войти</a></div>
+        </div>
+    </div>
+</div>
+
+<nav class="navbar" id="navbar">
+    <div class="nav-logo" onclick="switchView('home')"><i class="fas fa-shield-hal"></i> TrapTime</div>
+    <div class="nav-tabs">
+        <button class="nav-tab active" data-view="home" onclick="switchView('home')"><i class="fas fa-home"></i> Главная</button>
+        <button class="nav-tab" data-view="forum" onclick="switchView('forum')"><i class="fas fa-comments"></i> Форум</button>
+        <button class="nav-tab" data-view="chat" onclick="switchView('chat')"><i class="fas fa-comment-dots"></i> Чат</button>
+    </div>
+    <div class="nav-user">
+        <button class="nav-profile-btn" onclick="openProfile()">
+            <div class="nav-avatar av-1" id="navAvatar">?</div>
+            <span id="navUsername">Гость</span>
+        </button>
+    </div>
+</nav>
+
+<div class="page-container">
+    <div class="page-inner">
+        <div class="view active" id="view-home">
+            <header class="header"><h1>TrapTime</h1><div class="sub"><i class="fas fa-arrow-up" style="margin-right:8px;color:#b48aff"></i>Система повышений</div></header>
+            <div class="section-title media"><i class="fas fa-video"></i> MEDIA</div>
+            <div class="roles-grid">
+                <div class="role-card media-role"><div class="role-icon"><i class="fas fa-camera"></i></div><h3>Media</h3><span class="badge">Начальный уровень</span><ul class="requirements"><li><i class="fas fa-circle-check"></i><span>Снять 2–3 Shorts о сервере</span></li><li><i class="fas fa-circle-check"></i><span>Выложить в TikTok / YouTube Shorts (мин. 50 просмотров)</span></li><li><i class="fas fa-circle-check"></i><span>Указать IP сервера в описании</span></li><li><i class="fas fa-circle-check"></i><span>Без водяных знаков</span></li></ul><button class="card-promote-btn" data-role="Media" onclick="goToReport('Media')"><i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ</button></div>
+                <div class="role-card media-role"><div class="role-icon"><i class="fas fa-star"></i></div><h3>Senior Media</h3><span class="badge">Продвинутый</span><ul class="requirements"><li><i class="fas fa-circle-check"></i><span>5+ Shorts на канале</span></li><li><i class="fas fa-circle-check"></i><span>1 Shorts с 500+ просмотров</span></li><li><i class="fas fa-circle-check"></i><span>Активно отвечать в комментариях</span></li><li><i class="fas fa-circle-check"></i><span>Помогать новым медиа</span></li></ul><button class="card-promote-btn" data-role="Senior Media" onclick="goToReport('Senior Media')"><i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ</button></div>
+                <div class="role-card media-role"><div class="role-icon"><i class="fas fa-crown"></i></div><h3>Admin Media</h3><span class="badge">Руководство</span><ul class="requirements"><li><i class="fas fa-circle-check"></i><span>25+ качественных Shorts</span></li><li><i class="fas fa-circle-check"></i><span>Управлять командой медиа</span></li><li><i class="fas fa-circle-check"></i><span>Организовывать конкурсы</span></li><li><i class="fas fa-circle-check"></i><span>Связь с кураторами</span></li></ul><button class="card-promote-btn" data-role="Admin Media" onclick="goToReport('Admin Media')"><i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ</button></div>
+            </div>
+            <div class="section-title moderation"><i class="fas fa-shield-hal"></i> MODERATION</div>
+            <div class="roles-grid">
+                <div class="role-card mod-role"><div class="role-icon"><i class="fas fa-hands-helping"></i></div><h3>Helper</h3><span class="badge">Испытательный</span><ul class="requirements"><li><i class="fas fa-circle-check"></i><span>Знать /mute, /kick</span></li><li><i class="fas fa-circle-check"></i><span>Обработать 5+ жалоб</span></li><li><i class="fas fa-circle-check"></i><span>Быть вежливым в чате</span></li><li><i class="fas fa-circle-check"></i><span>Онлайн: 2+ часа в день</span></li></ul><button class="card-promote-btn" data-role="Helper" onclick="goToReport('Helper')"><i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ</button></div>
+                <div class="role-card mod-role"><div class="role-icon"><i class="fas fa-user-tie"></i></div><h3>Senior Helper</h3><span class="badge">Опытный</span><ul class="requirements"><li><i class="fas fa-circle-check"></i><span>10+ закрытых тикетов</span></li><li><i class="fas fa-circle-check"></i><span>Правильно применять /ban</span></li><li><i class="fas fa-circle-check"></i><span>Сообщать о багах</span></li><li><i class="fas fa-circle-check"></i><span>Наставлять новых хелперов</span></li></ul><button class="card-promote-btn" data-role="Senior Helper" onclick="goToReport('Senior Helper')"><i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ</button></div>
+                <div class="role-card mod-role"><div class="role-icon"><i class="fas fa-gavel"></i></div><h3>Moderator</h3><span class="badge">Основной состав</span><ul class="requirements"><li><i class="fas fa-circle-check"></i><span>Доступ к /ban</span></li><li><i class="fas fa-circle-check"></i><span>20+ наказаний в неделю</span></li><li><i class="fas fa-circle-check"></i><span>Проверять логи</span></li><li><i class="fas fa-circle-check"></i><span>Следить за читерами</span></li></ul><button class="card-promote-btn" data-role="Moderator" onclick="goToReport('Moderator')"><i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ</button></div>
+                <div class="role-card mod-role"><div class="role-icon"><i class="fas fa-shield"></i></div><h3>Senior Moderator</h3><span class="badge">Доверенный</span><ul class="requirements"><li><i class="fas fa-circle-check"></i><span>5+ апелляций</span></li><li><i class="fas fa-circle-check"></i><span>Обучать модераторов</span></li><li><i class="fas fa-circle-check"></i><span>Выявлять твинки</span></li><li><i class="fas fa-circle-check"></i><span>Помогать кураторам</span></li></ul><button class="card-promote-btn" data-role="Senior Moderator" onclick="goToReport('Senior Moderator')"><i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ</button></div>
+                <div class="role-card mod-role"><div class="role-icon"><i class="fas fa-user-shield"></i></div><h3>Head Moderator</h3><span class="badge">Руководство</span><ul class="requirements"><li><i class="fas fa-circle-check"></i><span>Курировать модерацию</span></li><li><i class="fas fa-circle-check"></i><span>Одобрять баны</span></li><li><i class="fas fa-circle-check"></i><span>Создавать регламенты</span></li><li><i class="fas fa-circle-check"></i><span>Встречи с кураторами</span></li></ul><button class="card-promote-btn" data-role="Head Moderator" onclick="goToReport('Head Moderator')"><i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ</button></div>
+                <div class="role-card mod-role"><div class="role-icon"><i class="fas fa-photo-film"></i></div><h3>Media Curator</h3><span class="badge">Гибрид</span><ul class="requirements"><li><i class="fas fa-circle-check"></i><span>Курировать медиа</span></li><li><i class="fas fa-circle-check"></i><span>Проверять заявки</span></li><li><i class="fas fa-circle-check"></i><span>Управлять составом медиа</span></li><li><i class="fas fa-circle-check"></i><span>Работа с Admin Media</span></li></ul><button class="card-promote-btn" data-role="Media Curator" onclick="goToReport('Media Curator')"><i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ</button></div>
+                <div class="role-card mod-role"><div class="role-icon"><i class="fas fa-user-cog"></i></div><h3>Curator</h3><span class="badge">Высший</span><ul class="requirements"><li><i class="fas fa-circle-check"></i><span>Полное управление сервером</span></li><li><i class="fas fa-circle-check"></i><span>Назначать кураторов</span></li><li><i class="fas fa-circle-check"></i><span>Финальное решение по банам</span></li><li><i class="fas fa-circle-check"></i><span>Политика повышений</span></li></ul><button class="card-promote-btn" data-role="Curator" onclick="goToReport('Curator')"><i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ</button></div>
+            </div>
+        </div>
+        <div class="view" id="view-forum">
+            <header class="forum-header"><h1><i class="fas fa-comments" style="font-size:2rem;margin-right:10px"></i>Форум</h1><div class="sub">Информация о проекте TrapTime</div></header>
+            <div class="forum-layout">
+                <aside class="forum-sidebar">
+                    <div class="forum-sidebar-title">Разделы</div>
+                    <button class="forum-tab active" data-fview="schedule" onclick="switchForumView('schedule')"><i class="fas fa-calendar-alt"></i><span>Расписание</span></button>
+                    <button class="forum-tab" data-fview="rules" onclick="switchForumView('rules')"><i class="fas fa-scroll"></i><span>Правила</span></button>
+                    <button class="forum-tab" data-fview="about" onclick="switchForumView('about')"><i class="fas fa-info-circle"></i><span>О сервере</span></button>
+                    <button class="forum-tab" data-fview="staff" onclick="switchForumView('staff')"><i class="fas fa-users-gear"></i><span>Состав</span></button>
+                    <button class="forum-tab" data-fview="lecture" onclick="switchForumView('lecture')"><i class="fas fa-graduation-cap"></i><span>Запрос на лекцию</span></button>
+                    <button class="forum-tab" data-fview="report" onclick="switchForumView('report')"><i class="fas fa-file-signature"></i><span>Рапорт</span></button>
+                </aside>
+                <main class="forum-content" id="forumContent"></main>
+            </div>
+        </div>
+        <div class="view" id="view-chat">
+            <header class="forum-header"><h1><i class="fas fa-comment-dots" style="font-size:2rem;margin-right:10px"></i>Чат</h1><div class="sub">Общение в реальном времени</div></header>
+            <div class="chat-layout">
+                <div class="chat-main">
+                    <div class="chat-header"><div class="title"><i class="fas fa-comment-dots"></i> Общий чат</div><div class="online-badge"><span id="chatOnlineCount">0</span> онлайн</div></div>
+                    <div class="chat-messages" id="chatMessages"><div style="text-align:center;color:#5a6478;font-size:.9rem;padding:2rem">Загрузка сообщений...</div></div>
+                    <div class="chat-input-area">
+                        <div class="emoji-picker" id="emojiPicker"></div>
+                        <button class="chat-emoji-btn" onclick="toggleEmojiPicker()"><i class="fas fa-smile"></i></button>
+                        <input type="text" class="chat-input" id="chatInput" placeholder="Написать сообщение..." maxlength="500" onkeydown="if(event.key==='Enter')sendChatMessage()">
+                        <button class="chat-send-btn" onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+                <aside class="chat-sidebar">
+                    <div class="chat-sidebar-title"><i class="fas fa-users"></i> Онлайн</div>
+                    <div class="chat-online-list" id="onlineList"><div style="text-align:center;color:#5a6478;font-size:.85rem;padding:1rem">Загрузка...</div></div>
+                </aside>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================= MODAL: PROFILE ================= -->
+<div class="modal-overlay" id="profileModal">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeProfile()">✕</button>
+        <h2><i class="fas fa-user-circle"></i> Профиль</h2>
+        <div class="profile-avatar-preview">
+            <div class="profile-avatar-big" id="profileAvatarBig">?</div>
+            <label class="avatar-upload-btn"><i class="fas fa-camera"></i> Сменить аватарку<input type="file" id="avatarInput" accept="image/*" onchange="changeAvatar(event)"></label>
+        </div>
+        <div class="form-group"><label>Никнейм</label><input type="text" id="profileUsername" placeholder="Ваш ник"></div>
+        <div class="form-group"><label>Новый пароль (оставь пустым, если не менять)</label><input type="password" id="profileNewPassword" placeholder="Новый пароль"></div>
+        <button class="modal-save-btn" onclick="saveProfile()"><i class="fas fa-save"></i> Сохранить</button>
+        <button class="modal-logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Выйти из аккаунта</button>
+    </div>
+</div>
+
+<!-- ================= MODAL: REPORT ================= -->
+<div class="modal-overlay" id="reportModal">
+    <div class="modal-box modal-box-large">
+        <button class="modal-close" onclick="closeReport()">✕</button>
+        <h2><i class="fas fa-file-signature"></i> Рапорт</h2>
+        <div class="report-types-row">
+            <button type="button" class="report-type-btn active" data-rtype="promote" onclick="setReportType('promote')"><i class="fas fa-arrow-up"></i> Повыситься</button>
+            <button type="button" class="report-type-btn" data-rtype="post" onclick="setReportType('post')"><i class="fas fa-user-plus"></i> Стать на пост</button>
+            <button type="button" class="report-type-btn" data-rtype="leave" onclick="setReportType('leave')"><i class="fas fa-right-from-bracket"></i> Уволиться</button>
+        </div>
+        <form id="reportForm" onsubmit="submitReport(event)">
+            <div class="report-field" id="rFieldInstr"><label><i class="fas fa-image"></i> Фото инструкции по обязанностям</label><input type="file" id="rInstr" accept="image/*" multiple></div>
+            <div class="report-field" id="rFieldLecture"><label><i class="fas fa-image"></i> Фото лекции по правилам</label><input type="file" id="rLecture" accept="image/*" multiple></div>
+            <div class="report-row">
+                <div class="report-field"><label><i class="fas fa-user"></i> Имя</label><input type="text" id="rName" placeholder="Иван" required></div>
+                <div class="report-field"><label><i class="fas fa-gamepad"></i> Никнейм</label><input type="text" id="rNick" placeholder="Steve123" required></div>
+            </div>
+            <div class="report-row">
+                <div class="report-field"><label><i class="fas fa-birthday-cake"></i> Возраст</label><input type="number" id="rAge" min="10" max="99" placeholder="16" required></div>
+                <div class="report-field"><label><i class="fab fa-discord"></i> Discord</label><input type="text" id="rDiscord" placeholder="@username" required></div>
+            </div>
+            <div class="report-row" id="rRankRow">
+                <div class="report-field"><label><i class="fas fa-arrow-up"></i> С какого ранга</label><select id="rFrom" required><option value="">Выбери</option><option>Media</option><option>Senior Media</option><option>Admin Media</option><option>Helper</option><option>Senior Helper</option><option>Moderator</option><option>Senior Moderator</option><option>Head Moderator</option><option>Media Curator</option><option>Curator</option></select></div>
+                <div class="report-field"><label><i class="fas fa-arrow-right"></i> По какой ранг</label><select id="rTo" required><option value="">Выбери</option><option>Media</option><option>Senior Media</option><option>Admin Media</option><option>Helper</option><option>Senior Helper</option><option>Moderator</option><option>Senior Moderator</option><option>Head Moderator</option><option>Media Curator</option><option>Curator</option></select></div>
+            </div>
+            <div class="report-field hidden" id="rFieldPost"><label><i class="fas fa-user-plus"></i> На какой пост</label><select id="rPost"><option value="">Выбери</option><option>Media</option><option>Senior Media</option><option>Admin Media</option><option>Helper</option><option>Senior Helper</option><option>Moderator</option><option>Senior Moderator</option><option>Head Moderator</option><option>Media Curator</option><option>Curator</option></select></div>
+            <div class="report-field hidden" id="rFieldLeaveTime"><label><i class="fas fa-clock"></i> Сколько пробыл на посту</label><input type="text" id="rLeaveTime" placeholder="Например: 14 дней"></div>
+            <div class="report-field hidden" id="rFieldLeaveReason"><label><i class="fas fa-comment-dots"></i> Причина увольнения</label><textarea id="rLeaveReason" placeholder="Опиши причину..."></textarea></div>
+            <button type="submit" class="modal-save-btn" id="reportSubmitBtn"><i class="fas fa-paper-plane"></i> Отправить рапорт</button>
+        </form>
+    </div>
+</div>
+
+<!-- ================= MODAL: LECTURE ================= -->
+<div class="modal-overlay" id="lectureModal">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeLecture()">✕</button>
+        <h2><i class="fas fa-graduation-cap"></i> Запрос на лекцию</h2>
+        <form id="lectureForm" onsubmit="submitLecture(event)">
+            <div class="form-group"><label>Ваш Discord</label><input type="text" id="lDiscord" placeholder="@username" required></div>
+            <div class="form-group"><label>Ваш ранг / на кого хотите поступить</label><select id="lRank" required><option value="">Выбери</option><option>Media</option><option>Senior Media</option><option>Admin Media</option><option>Helper</option><option>Senior Helper</option><option>Moderator</option><option>Senior Moderator</option><option>Head Moderator</option><option>Media Curator</option><option>Curator</option></select></div>
+            <div class="report-row">
+                <div class="form-group"><label>Во сколько</label><input type="time" id="lTime" required></div>
+                <div class="form-group"><label>Когда</label><select id="lDay" required><option value="">Выбери</option><option>Понедельник</option><option>Вторник</option><option>Среда</option><option>Четверг</option><option>Пятница</option><option>Суббота</option><option>Воскресенье</option></select></div>
+            </div>
+            <button type="submit" class="modal-save-btn" id="lectureSubmitBtn"><i class="fas fa-paper-plane"></i> Отправить запрос</button>
+        </form>
+    </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx9x974QRvJ8ibSnW_MEjNOT_h31nOEtPGqSVkz9O_xTb2za7i-h6DzpIpQp0xRg37i/exec';
 const REPORT_WEBHOOK = 'https://discord.com/api/webhooks/1556993048309923941/G62oMDQK8BWNlwF9obxqqzzqSkOGdKb2ngq93Xg6YExKPzPqkTrL0iwm89s_ynnht3E1';
 const LECTURE_WEBHOOK = 'https://discord.com/api/webhooks/1557358230961786951/c_nezeXcrmoK3fKgZxDIdSn0o6W4nnXyQtMR7oESdao16hWAnv1uSeC8N6j8GSNNZkC7';
 const DEVELOPER_ID = '1554060822416855120';
-
 const LS_USERS = 'traptime_users';
 const LS_SESSION = 'traptime_session';
 
-function getUsers() {
-    try { return JSON.parse(localStorage.getItem(LS_USERS)) || {}; }
-    catch(e) { return {}; }
-}
-function saveUsers(users) { localStorage.setItem(LS_USERS, JSON.stringify(users)); }
-function getSession() {
-    try {
-        const s = JSON.parse(localStorage.getItem(LS_SESSION));
-        if (!s) return null;
-        if (s.expire && Date.now() > s.expire) { localStorage.removeItem(LS_SESSION); return null; }
-        return s;
-    } catch(e) { return null; }
-}
-function saveSession(user, remember) {
-    const expire = remember ? Date.now() + 7*24*60*60*1000 : 0;
-    localStorage.setItem(LS_SESSION, JSON.stringify({ username: user.username, expire }));
-}
+function getUsers(){try{return JSON.parse(localStorage.getItem(LS_USERS))||{}}catch(e){return{}}}
+function saveUsers(u){localStorage.setItem(LS_USERS,JSON.stringify(u))}
+function getSession(){try{const s=JSON.parse(localStorage.getItem(LS_SESSION));if(!s)return null;if(s.expire&&Date.now()>s.expire){localStorage.removeItem(LS_SESSION);return null}return s}catch(e){return null}}
+function saveSession(user,remember){const expire=remember?Date.now()+7*24*60*60*1000:0;localStorage.setItem(LS_SESSION,JSON.stringify({username:user.username,expire}))}
 
-let currentUser = null;
+let currentUser=null;
 
-function showToast(msg, type) {
-    type = type || 'info';
-    const c = document.getElementById('toastContainer');
-    if (!c) return;
-    const t = document.createElement('div');
-    t.className = 'toast ' + type;
-    t.textContent = msg;
+function showToast(msg,type){
+    type=type||'info';
+    const c=document.getElementById('toastContainer');if(!c)return;
+    const t=document.createElement('div');
+    t.className='toast '+type;
+    t.textContent=msg;
     c.appendChild(t);
-    setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity .3s'; }, 3000);
-    setTimeout(() => t.remove(), 3400);
+    setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity .3s'},3000);
+    setTimeout(()=>t.remove(),3400);
 }
 
-function switchAuthTab(tab) {
-    document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
-    document.getElementById('tabRegister').classList.toggle('active', tab === 'register');
-    document.getElementById('loginForm').classList.toggle('hidden', tab !== 'login');
-    document.getElementById('registerForm').classList.toggle('hidden', tab !== 'register');
+function switchAuthTab(tab){
+    document.getElementById('tabLogin').classList.toggle('active',tab==='login');
+    document.getElementById('tabRegister').classList.toggle('active',tab==='register');
+    document.getElementById('loginForm').classList.toggle('hidden',tab!=='login');
+    document.getElementById('registerForm').classList.toggle('hidden',tab!=='register');
 }
 
-function handleRegister() {
-    const u = document.getElementById('registerUsername').value.trim();
-    const p = document.getElementById('registerPassword').value;
-    const p2 = document.getElementById('registerPassword2').value;
-    const rem = document.getElementById('rememberMeReg').checked;
-
-    if (u.length < 3) return showToast('Ник минимум 3 символа', 'error');
-    if (p.length < 4) return showToast('Пароль минимум 4 символа', 'error');
-    if (p !== p2) return showToast('Пароли не совпадают', 'error');
-
-    const users = getUsers();
-    if (users[u.toLowerCase()]) return showToast('Ник уже занят', 'error');
-
-    const colors = ['av-1','av-2','av-3','av-4','av-5','av-6'];
-    users[u.toLowerCase()] = {
-        username: u, password: p, avatar: null,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        rank: 'player', created: Date.now()
-    };
+function handleRegister(){
+    const u=document.getElementById('registerUsername').value.trim();
+    const p=document.getElementById('registerPassword').value;
+    const p2=document.getElementById('registerPassword2').value;
+    const rem=document.getElementById('rememberMeReg').checked;
+    if(u.length<3)return showToast('Ник минимум 3 символа','error');
+    if(p.length<4)return showToast('Пароль минимум 4 символа','error');
+    if(p!==p2)return showToast('Пароли не совпадают','error');
+    const users=getUsers();
+    if(users[u.toLowerCase()])return showToast('Ник уже занят','error');
+    const colors=['av-1','av-2','av-3','av-4','av-5','av-6'];
+    users[u.toLowerCase()]={username:u,password:p,avatar:null,color:colors[Math.floor(Math.random()*colors.length)],rank:'player',created:Date.now()};
     saveUsers(users);
-    showToast('Регистрация успешна!', 'success');
-    loginUser(users[u.toLowerCase()], rem);
+    showToast('Регистрация успешна!','success');
+    loginUser(users[u.toLowerCase()],rem);
 }
 
-function handleLogin() {
-    const u = document.getElementById('loginUsername').value.trim();
-    const p = document.getElementById('loginPassword').value;
-    const rem = document.getElementById('rememberMe').checked;
-    if (!u || !p) return showToast('Заполни все поля', 'error');
-    const users = getUsers();
-    const user = users[u.toLowerCase()];
-    if (!user) return showToast('Пользователь не найден', 'error');
-    if (user.password !== p) return showToast('Неверный пароль', 'error');
-    showToast('С возвращением, ' + user.username + '!', 'success');
-    loginUser(user, rem);
+function handleLogin(){
+    const u=document.getElementById('loginUsername').value.trim();
+    const p=document.getElementById('loginPassword').value;
+    const rem=document.getElementById('rememberMe').checked;
+    if(!u||!p)return showToast('Заполни все поля','error');
+    const users=getUsers();
+    const user=users[u.toLowerCase()];
+    if(!user)return showToast('Пользователь не найден','error');
+    if(user.password!==p)return showToast('Неверный пароль','error');
+    showToast('С возвращением, '+user.username+'!','success');
+    loginUser(user,rem);
 }
 
-function loginUser(user, remember) {
-    currentUser = user;
-    saveSession(user, remember);
+function loginUser(user,remember){
+    currentUser=user;
+    saveSession(user,remember);
     showMainSite();
 }
 
-function logout() {
+function logout(){
     localStorage.removeItem(LS_SESSION);
-    currentUser = null;
+    currentUser=null;
     closeProfile();
     document.getElementById('authScreen').classList.remove('hidden');
     document.getElementById('navbar').classList.remove('visible');
 }
 
-function showMainSite() {
+function showMainSite(){
     document.getElementById('authScreen').classList.add('hidden');
     document.getElementById('navbar').classList.add('visible');
     updateNavbar();
@@ -736,342 +443,321 @@ function showMainSite() {
     loadOnline();
 }
 
-function updateNavbar() {
-    if (!currentUser) return;
-    const av = document.getElementById('navAvatar');
-    document.getElementById('navUsername').textContent = currentUser.username;
-    if (currentUser.avatar) {
-        av.innerHTML = '<img src="' + currentUser.avatar + '">';
-        av.className = 'nav-avatar';
-    } else {
-        av.textContent = currentUser.username.charAt(0).toUpperCase();
-        av.className = 'nav-avatar ' + (currentUser.color || 'av-1');
+function updateNavbar(){
+    if(!currentUser)return;
+    const av=document.getElementById('navAvatar');
+    document.getElementById('navUsername').textContent=currentUser.username;
+    if(currentUser.avatar){
+        av.innerHTML='<img src="'+currentUser.avatar+'">';
+        av.className='nav-avatar';
+    }else{
+        av.textContent=currentUser.username.charAt(0).toUpperCase();
+        av.className='nav-avatar '+(currentUser.color||'av-1');
     }
 }
 
-function switchView(view) {
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    document.querySelectorAll('.nav-tab').forEach(t => t.classList.toggle('active', t.dataset.view === view));
-    const el = document.getElementById('view-' + view);
-    if (el) el.classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    if (view === 'chat') { loadChatMessages(); loadOnline(); }
+function switchView(view){
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t=>t.classList.toggle('active',t.dataset.view===view));
+    const el=document.getElementById('view-'+view);
+    if(el)el.classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+    if(view==='chat'){loadChatMessages();loadOnline()}
 }
 
-const FORUM_CONTENT = {
-    schedule: '<div class="schedule-card"><h3 style="margin-bottom:1rem"><i class="fas fa-clock" style="color:#b48aff"></i> Расписание рассмотрения</h3><table style="width:100%;border-collapse:collapse;min-width:600px"><thead><tr style="background:#1f2531"><th style="padding:.7rem;border:1px solid #2a3140;text-align:left">День</th><th style="padding:.7rem;border:1px solid #2a3140">10:00</th><th style="padding:.7rem;border:1px solid #2a3140">13:00</th><th style="padding:.7rem;border:1px solid #2a3140">15:30</th><th style="padding:.7rem;border:1px solid #2a3140">16:30</th><th style="padding:.7rem;border:1px solid #2a3140">20:00</th></tr></thead><tbody><tr><td style="padding:.7rem;border:1px solid #232a36;font-weight:600">Понедельник</td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td></tr><tr><td style="padding:.7rem;border:1px solid #232a36;font-weight:600">Вт–Вс</td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-mod">MOD</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-mod">MOD</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td></tr></tbody></table></div>',
-    rules: '<div class="rules-card" style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1rem"><i class="fas fa-scroll" style="color:#b48aff"></i> Правила сервера</h2><p style="color:#b1bbcf">Полные правила доступны в Discord-канале #правила.</p></div>',
-    about: '<div class="about-card" style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1rem"><i class="fas fa-info-circle" style="color:#b48aff"></i> О сервере TrapTime</h2><p style="color:#b1bbcf;margin-bottom:.7rem">🎮 ГРИФ СЕРВЕР с приватом территорий.</p><p style="color:#b1bbcf">Строй, грабь, защищай своё и захватывай чужое.</p></div>',
-    staff: '<div class="staff-card" style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1.5rem"><i class="fas fa-users-gear" style="color:#b48aff"></i> Состав команды</h2><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #f5b400;border-radius:14px;padding:1.2rem;margin-bottom:1rem"><div style="font-weight:700;color:#f5b400;margin-bottom:.7rem">👑 Руководство</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600">👑 B1shechka</span><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600">👑 Boba2020</span><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600">👑 rip_RNdracon</span></div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #a855f7;border-radius:14px;padding:1.2rem;margin-bottom:1rem"><div style="font-weight:700;color:#c084fc;margin-bottom:.7rem">🎓 Учебное руководство</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600">🎓 B1shechka</span><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600">🎓 Maks_Delovoy</span></div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #6e9fff;border-radius:14px;padding:1.2rem;margin-bottom:1rem"><div style="font-weight:700;color:#6e9fff;margin-bottom:.7rem">⭐ Старший хелпер</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600">⭐ Maks_Delovoy</span></div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #34d399;border-radius:14px;padding:1.2rem;margin-bottom:1rem"><div style="font-weight:700;color:#34d399;margin-bottom:.7rem">🛡️ Хелперы</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600">🛡️ WospinPlay</span></div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #ff7eb3;border-radius:14px;padding:1.2rem"><div style="font-weight:700;color:#ff8dc7;margin-bottom:.7rem">🎬 Медиа</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600">🎬 Vaxmi555</span></div></div></div>',
-    lecture: '<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1rem"><i class="fas fa-graduation-cap" style="color:#a855f7"></i> Запрос на лекцию</h2><p style="color:#b1bbcf;margin-bottom:1.5rem">Заполни форму, чтобы запросить лекцию по правилам или инструктаж по обязанностям.</p><button class="modal-save-btn" onclick="openLecture()" style="max-width:250px"><i class="fas fa-paper-plane"></i> Открыть форму</button></div>',
-    report: '<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1rem"><i class="fas fa-file-signature" style="color:#b48aff"></i> Рапорт</h2><p style="color:#b1bbcf;margin-bottom:1.5rem">Подай рапорт на повышение, становление на пост или увольнение.</p><button class="modal-save-btn" onclick="openReport()" style="max-width:250px"><i class="fas fa-paper-plane"></i> Открыть форму рапорта</button></div>'
+const FORUM_CONTENT={
+    schedule:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:1.5rem"><h3 style="margin-bottom:1rem"><i class="fas fa-clock" style="color:#b48aff"></i> Расписание рассмотрения</h3><div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;min-width:600px"><thead><tr style="background:#1f2531"><th style="padding:.7rem;border:1px solid #2a3140;text-align:left;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">День</th><th style="padding:.7rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">10:00</th><th style="padding:.7rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">13:00</th><th style="padding:.7rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">15:30</th><th style="padding:.7rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">16:30</th><th style="padding:.7rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">20:00</th></tr></thead><tbody><tr><td style="padding:.7rem;border:1px solid #232a36;font-weight:600;background:#191e29">Понедельник</td><td style="padding:.7rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td></tr><tr><td style="padding:.7rem;border:1px solid #232a36;font-weight:600;background:#191e29">Вт–Вс</td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-mod">MOD</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-mod">MOD</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td></tr></tbody></table></div></div>',
+    rules:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1rem;color:#eaeef2"><i class="fas fa-scroll" style="color:#b48aff"></i> Правила сервера</h2><p style="color:#b1bbcf;line-height:1.7">Полные правила доступны в Discord-канале #правила. Незнание правил не освобождает от ответственности.</p></div>',
+    about:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1rem;color:#eaeef2"><i class="fas fa-info-circle" style="color:#b48aff"></i> О сервере TrapTime</h2><p style="color:#b1bbcf;margin-bottom:.7rem;line-height:1.7">🎮 ГРИФ СЕРВЕР с приватом территорий.</p><p style="color:#b1bbcf;line-height:1.7">Строй, грабь, защищай своё и захватывай чужое. Приват защищает постройки от гриферства, но лаг-машины строго запрещены.</p></div>',
+    staff:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1.5rem;color:#eaeef2"><i class="fas fa-users-gear" style="color:#b48aff"></i> Состав команды</h2><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #f5b400;border-radius:14px;padding:1.2rem;margin-bottom:1rem"><div style="font-weight:700;color:#f5b400;margin-bottom:.7rem">👑 Руководство</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">👑 B1shechka</span><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">👑 Boba2020</span><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">👑 rip_RNdracon</span></div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #a855f7;border-radius:14px;padding:1.2rem;margin-bottom:1rem"><div style="font-weight:700;color:#c084fc;margin-bottom:.7rem">🎓 Учебное руководство</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">🎓 B1shechka</span><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">🎓 Maks_Delovoy</span></div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #6e9fff;border-radius:14px;padding:1.2rem;margin-bottom:1rem"><div style="font-weight:700;color:#6e9fff;margin-bottom:.7rem">⭐ Старший хелпер</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">⭐ Maks_Delovoy</span></div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #34d399;border-radius:14px;padding:1.2rem;margin-bottom:1rem"><div style="font-weight:700;color:#34d399;margin-bottom:.7rem">🛡️ Хелперы</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">🛡️ WospinPlay</span></div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #ff7eb3;border-radius:14px;padding:1.2rem"><div style="font-weight:700;color:#ff8dc7;margin-bottom:.7rem">🎬 Медиа</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">🎬 Vaxmi555</span></div></div></div>',
+    lecture:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1rem;color:#eaeef2"><i class="fas fa-graduation-cap" style="color:#a855f7"></i> Запрос на лекцию</h2><p style="color:#b1bbcf;margin-bottom:1.5rem;line-height:1.7">Заполни форму, чтобы запросить лекцию по правилам или инструктаж по обязанностям. Учебное руководство свяжется с тобой.</p><button class="modal-save-btn" onclick="openLecture()" style="max-width:250px"><i class="fas fa-paper-plane"></i> Открыть форму</button></div>',
+    report:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1rem;color:#eaeef2"><i class="fas fa-file-signature" style="color:#b48aff"></i> Рапорт</h2><p style="color:#b1bbcf;margin-bottom:1.5rem;line-height:1.7">Подай рапорт на повышение, становление на пост или увольнение. Рапорт отправится в Discord.</p><button class="modal-save-btn" onclick="openReport()" style="max-width:250px"><i class="fas fa-paper-plane"></i> Открыть форму рапорта</button></div>'
 };
 
-function switchForumView(view) {
-    document.querySelectorAll('.forum-tab').forEach(t => t.classList.toggle('active', t.dataset.fview === view));
-    document.getElementById('forumContent').innerHTML = FORUM_CONTENT[view] || '';
+function switchForumView(view){
+    document.querySelectorAll('.forum-tab').forEach(t=>t.classList.toggle('active',t.dataset.fview===view));
+    document.getElementById('forumContent').innerHTML=FORUM_CONTENT[view]||'';
 }
 
-function openProfile() {
-    if (!currentUser) return;
-    document.getElementById('profileUsername').value = currentUser.username;
-    document.getElementById('profileRank').value = currentUser.rank || 'player';
-    document.getElementById('profileNewPassword').value = '';
-    const av = document.getElementById('profileAvatarBig');
-    if (currentUser.avatar) av.innerHTML = '<img src="' + currentUser.avatar + '">';
-    else av.textContent = currentUser.username.charAt(0).toUpperCase();
+function openProfile(){
+    if(!currentUser)return;
+    document.getElementById('profileUsername').value=currentUser.username;
+    document.getElementById('profileNewPassword').value='';
+    const av=document.getElementById('profileAvatarBig');
+    if(currentUser.avatar)av.innerHTML='<img src="'+currentUser.avatar+'">';
+    else av.textContent=currentUser.username.charAt(0).toUpperCase();
     document.getElementById('profileModal').classList.add('active');
 }
-function closeProfile() { document.getElementById('profileModal').classList.remove('active'); }
+function closeProfile(){document.getElementById('profileModal').classList.remove('active')}
 
-function changeAvatar(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    if (file.size > 500 * 1024) return showToast('Аватарка макс 500KB', 'error');
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-        currentUser.avatar = ev.target.result;
-        const users = getUsers();
-        if (users[currentUser.username.toLowerCase()]) {
-            users[currentUser.username.toLowerCase()].avatar = ev.target.result;
+function changeAvatar(e){
+    const file=e.target.files[0];
+    if(!file)return;
+    if(file.size>500*1024)return showToast('Аватарка макс 500KB','error');
+    const reader=new FileReader();
+    reader.onload=(ev)=>{
+        currentUser.avatar=ev.target.result;
+        const users=getUsers();
+        if(users[currentUser.username.toLowerCase()]){
+            users[currentUser.username.toLowerCase()].avatar=ev.target.result;
             saveUsers(users);
         }
-        document.getElementById('profileAvatarBig').innerHTML = '<img src="' + ev.target.result + '">';
+        document.getElementById('profileAvatarBig').innerHTML='<img src="'+ev.target.result+'">';
         updateNavbar();
-        showToast('Аватарка обновлена', 'success');
+        showToast('Аватарка обновлена','success');
     };
     reader.readAsDataURL(file);
 }
 
-function saveProfile() {
-    const newName = document.getElementById('profileUsername').value.trim();
-    const newPass = document.getElementById('profileNewPassword').value;
-    const newRank = document.getElementById('profileRank').value;
-    if (newName.length < 3) return showToast('Ник минимум 3 символа', 'error');
-    const users = getUsers();
-    const oldKey = currentUser.username.toLowerCase();
-    const newKey = newName.toLowerCase();
-    if (newKey !== oldKey && users[newKey]) return showToast('Ник занят', 'error');
-    const updated = Object.assign({}, currentUser, { username: newName, rank: newRank });
-    if (newPass) {
-        if (newPass.length < 4) return showToast('Пароль минимум 4 символа', 'error');
-        updated.password = newPass;
+function saveProfile(){
+    const newName=document.getElementById('profileUsername').value.trim();
+    const newPass=document.getElementById('profileNewPassword').value;
+    if(newName.length<3)return showToast('Ник минимум 3 символа','error');
+    const users=getUsers();
+    const oldKey=currentUser.username.toLowerCase();
+    const newKey=newName.toLowerCase();
+    if(newKey!==oldKey&&users[newKey])return showToast('Ник занят','error');
+    const updated=Object.assign({},currentUser,{username:newName});
+    if(newPass){
+        if(newPass.length<4)return showToast('Пароль минимум 4 символа','error');
+        updated.password=newPass;
     }
     delete users[oldKey];
-    users[newKey] = updated;
+    users[newKey]=updated;
     saveUsers(users);
-    currentUser = updated;
-    saveSession(updated, false);
+    currentUser=updated;
+    saveSession(updated,false);
     updateNavbar();
-    showToast('Профиль сохранён', 'success');
+    showToast('Профиль сохранён','success');
     closeProfile();
 }
 
-let chatInterval = null;
-let lastMsgCount = 0;
+let chatInterval=null;
+let lastMsgCount=0;
 
-async function loadChatMessages() {
-    if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes('ВСТАВЬ')) return;
-    try {
-        const r = await fetch(GOOGLE_SCRIPT_URL + '?action=getMessages');
-        const msgs = await r.json();
-        if (msgs.length !== lastMsgCount) { renderMessages(msgs); lastMsgCount = msgs.length; }
-    } catch(e) { console.error(e); }
+async function loadChatMessages(){
+    if(!GOOGLE_SCRIPT_URL)return;
+    try{
+        const r=await fetch(GOOGLE_SCRIPT_URL+'?action=getMessages');
+        const msgs=await r.json();
+        if(msgs.length!==lastMsgCount){renderMessages(msgs);lastMsgCount=msgs.length}
+    }catch(e){console.error(e)}
 }
 
-function renderMessages(msgs) {
-    const c = document.getElementById('chatMessages');
-    if (!c) return;
-    if (!msgs.length) {
-        c.innerHTML = '<div style="text-align:center;color:#5a6478;font-size:.9rem;padding:2rem">Пока нет сообщений. Будь первым!</div>';
-        return;
-    }
-    c.innerHTML = msgs.map(m => {
-        const rankClass = 'rank-' + (m.rank || 'player');
-        const avatar = m.avatar ? '<img src="' + m.avatar + '">' : m.user.charAt(0).toUpperCase();
-        const avatarClass = m.avatar ? '' : (m.color || 'av-1');
-        return '<div class="chat-message"><div class="msg-avatar ' + avatarClass + '">' + avatar + '</div><div class="msg-body"><div class="msg-head"><span class="msg-name">' + escapeHtml(m.user) + '</span><span class="msg-rank ' + rankClass + '">' + (m.rank || 'player') + '</span><span class="msg-time">' + formatTime(m.time) + '</span></div><div class="msg-text">' + escapeHtml(m.text) + '</div></div></div>';
+function renderMessages(msgs){
+    const c=document.getElementById('chatMessages');if(!c)return;
+    if(!msgs.length){c.innerHTML='<div style="text-align:center;color:#5a6478;font-size:.9rem;padding:2rem">Пока нет сообщений. Будь первым!</div>';return}
+    c.innerHTML=msgs.map(m=>{
+        const avatar=m.avatar?'<img src="'+m.avatar+'">':m.user.charAt(0).toUpperCase();
+        const avatarClass=m.avatar?'':(m.color||'av-1');
+        return '<div class="chat-message"><div class="msg-avatar '+avatarClass+'">'+avatar+'</div><div class="msg-body"><div class="msg-head"><span class="msg-name">'+escapeHtml(m.user)+'</span><span class="msg-time">'+formatTime(m.time)+'</span></div><div class="msg-text">'+escapeHtml(m.text)+'</div></div></div>';
     }).join('');
-    c.scrollTop = c.scrollHeight;
+    c.scrollTop=c.scrollHeight;
 }
 
-function escapeHtml(s) { const d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
-function formatTime(iso) {
-    try { const d = new Date(iso); return String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0'); }
-    catch(e) { return ''; }
-}
+function escapeHtml(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML}
+function formatTime(iso){try{const d=new Date(iso);return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}catch(e){return''}}
 
-async function sendChatMessage() {
-    if (!currentUser) return showToast('Войди в аккаунт', 'error');
-    const input = document.getElementById('chatInput');
-    const text = input.value.trim();
-    if (!text) return;
-    input.value = '';
-    const data = {
-        user: currentUser.username, rank: currentUser.rank || 'player',
-        avatar: currentUser.avatar || '', color: currentUser.color || 'av-1', text: text
-    };
-    try {
-        await fetch(GOOGLE_SCRIPT_URL + '?action=sendMessage&data=' + encodeURIComponent(JSON.stringify(data)));
+async function sendChatMessage(){
+    if(!currentUser)return showToast('Войди в аккаунт','error');
+    const input=document.getElementById('chatInput');
+    const text=input.value.trim();
+    if(!text)return;
+    input.value='';
+    const data={user:currentUser.username,rank:currentUser.rank||'player',avatar:currentUser.avatar||'',color:currentUser.color||'av-1',text:text};
+    try{
+        await fetch(GOOGLE_SCRIPT_URL+'?action=sendMessage&data='+encodeURIComponent(JSON.stringify(data)));
         loadChatMessages();
-    } catch(e) { showToast('Ошибка отправки', 'error'); }
+    }catch(e){showToast('Ошибка отправки','error')}
 }
 
-const EMOJIS = ['😀','😂','🥰','😎','🤔','😴','🤯','🥳','😭','😡','👍','👎','❤️','🔥','✨','💯','🎉','🎮','🏆','⚡','💎','👑','🌸','🎬','🛡️','⚔️','📜','📢','💬','🤝'];
-function toggleEmojiPicker() {
-    const p = document.getElementById('emojiPicker');
-    if (!p) return;
-    if (p.style.display === 'grid') { p.style.display = 'none'; return; }
-    p.style.display = 'grid';
-    p.style.position = 'absolute';
-    p.style.bottom = '70px';
-    p.style.left = '20px';
-    p.style.background = '#161a22';
-    p.style.border = '1px solid #272e3a';
-    p.style.borderRadius = '16px';
-    p.style.padding = '10px';
-    p.style.gridTemplateColumns = 'repeat(6, 1fr)';
-    p.style.gap = '4px';
-    p.style.boxShadow = '0 10px 30px rgba(0,0,0,.6)';
-    p.style.zIndex = '10';
-    if (!p.dataset.filled) {
-        p.innerHTML = EMOJIS.map(e => '<button type="button" onclick="insertEmoji(\'' + e + '\')" style="background:transparent;border:none;font-size:1.3rem;cursor:pointer;padding:4px;border-radius:8px">' + e + '</button>').join('');
-        p.dataset.filled = '1';
+const EMOJIS=['😀','😂','🥰','😎','🤔','😴','🤯','🥳','😭','😡','👍','👎','❤️','🔥','✨','💯','🎉','🎮','🏆','⚡','💎','👑','🌸','🎬','🛡️','⚔️','📜','📢','💬','🤝','🙏','😅','🤣','😍','🤩','😇','🥺','😤','🤝','✌️','👋','🫡'];
+
+function toggleEmojiPicker(){
+    const p=document.getElementById('emojiPicker');if(!p)return;
+    if(p.style.display==='grid'){p.style.display='none';return}
+    p.style.display='grid';
+    p.style.position='absolute';
+    p.style.bottom='70px';
+    p.style.left='20px';
+    p.style.background='#161a22';
+    p.style.border='1px solid #272e3a';
+    p.style.borderRadius='16px';
+    p.style.padding='10px';
+    p.style.gridTemplateColumns='repeat(8, 1fr)';
+    p.style.gap='2px';
+    p.style.boxShadow='0 10px 30px rgba(0,0,0,.6)';
+    p.style.zIndex='10';
+    p.style.maxWidth='320px';
+    if(!p.dataset.filled){
+        p.innerHTML=EMOJIS.map(e=>'<button type="button" onclick="insertEmoji(\''+e+'\')" style="background:transparent;border:none;font-size:1.2rem;cursor:pointer;padding:4px;border-radius:8px;transition:background .2s" onmouseover="this.style.background=\'#1f2531\'" onmouseout="this.style.background=\'transparent\'">'+e+'</button>').join('');
+        p.dataset.filled='1';
     }
 }
-function insertEmoji(e) {
-    const i = document.getElementById('chatInput');
-    i.value += e;
+
+function insertEmoji(e){
+    const i=document.getElementById('chatInput');
+    i.value+=e;
     i.focus();
 }
 
-async function loadOnline() {
-    if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes('ВСТАВЬ')) return;
-    try {
-        const r = await fetch(GOOGLE_SCRIPT_URL + '?action=getOnline');
-        const users = await r.json();
-        const list = document.getElementById('onlineList');
-        const cnt = document.getElementById('chatOnlineCount');
-        if (cnt) cnt.textContent = users.length;
-        if (!list) return;
-        if (!users.length) {
-            list.innerHTML = '<div style="text-align:center;color:#5a6478;font-size:.85rem;padding:1rem">Никого нет</div>';
-            return;
-        }
-        list.innerHTML = users.map(u => {
-            const rankClass = 'rank-' + (u.rank || 'player');
-            const av = u.avatar ? '<img src="' + u.avatar + '">' : u.user.charAt(0).toUpperCase();
-            const avClass = u.avatar ? '' : (u.color || 'av-1');
-            return '<div class="online-user"><div class="ou-avatar ' + avClass + '">' + av + '</div><span class="ou-name">' + escapeHtml(u.user) + '</span><span class="ou-rank ' + rankClass + '">' + (u.rank || 'player') + '</span></div>';
+async function loadOnline(){
+    if(!GOOGLE_SCRIPT_URL)return;
+    try{
+        const r=await fetch(GOOGLE_SCRIPT_URL+'?action=getOnline');
+        const users=await r.json();
+        const list=document.getElementById('onlineList');
+        const cnt=document.getElementById('chatOnlineCount');
+        if(cnt)cnt.textContent=users.length;
+        if(!list)return;
+        if(!users.length){list.innerHTML='<div style="text-align:center;color:#5a6478;font-size:.85rem;padding:1rem">Никого нет</div>';return}
+        list.innerHTML=users.map(u=>{
+            const av=u.avatar?'<img src="'+u.avatar+'">':u.user.charAt(0).toUpperCase();
+            const avClass=u.avatar?'':(u.color||'av-1');
+            return '<div class="online-user"><div class="ou-avatar '+avClass+'">'+av+'</div><span class="ou-name">'+escapeHtml(u.user)+'</span></div>';
         }).join('');
-    } catch(e) {}
+    }catch(e){}
 }
 
-function startHeartbeat() {
-    if (chatInterval) clearInterval(chatInterval);
+function startHeartbeat(){
+    if(chatInterval)clearInterval(chatInterval);
     sendHeartbeat();
-    chatInterval = setInterval(() => { sendHeartbeat(); loadChatMessages(); loadOnline(); }, 5000);
+    chatInterval=setInterval(()=>{sendHeartbeat();loadChatMessages();loadOnline()},5000);
 }
 
-async function sendHeartbeat() {
-    if (!currentUser || !GOOGLE_SCRIPT_URL) return;
-    const data = { user: currentUser.username, rank: currentUser.rank || 'player', avatar: currentUser.avatar || '', color: currentUser.color || 'av-1' };
-    try { await fetch(GOOGLE_SCRIPT_URL + '?action=heartbeat&data=' + encodeURIComponent(JSON.stringify(data))); } catch(e) {}
+async function sendHeartbeat(){
+    if(!currentUser||!GOOGLE_SCRIPT_URL)return;
+    const data={user:currentUser.username,rank:currentUser.rank||'player',avatar:currentUser.avatar||'',color:currentUser.color||'av-1'};
+    try{await fetch(GOOGLE_SCRIPT_URL+'?action=heartbeat&data='+encodeURIComponent(JSON.stringify(data)))}catch(e){}
 }
 
-let reportType = 'promote';
+let reportType='promote';
 
-function openReport() {
-    if (!currentUser) return showToast('Войди в аккаунт', 'error');
+function openReport(){
+    if(!currentUser)return showToast('Войди в аккаунт','error');
     document.getElementById('reportModal').classList.add('active');
-    document.getElementById('rNick').value = currentUser.username;
-    document.getElementById('rDiscord').value = '@' + currentUser.username;
+    document.getElementById('rNick').value=currentUser.username;
+    document.getElementById('rDiscord').value='@'+currentUser.username;
 }
-function closeReport() { document.getElementById('reportModal').classList.remove('active'); }
-function goToReport(role) {
+function closeReport(){document.getElementById('reportModal').classList.remove('active')}
+
+function goToReport(role){
     openReport();
     setReportType('promote');
-    setTimeout(() => { const el = document.getElementById('rTo'); if (el) el.value = role; }, 100);
+    setTimeout(()=>{const el=document.getElementById('rTo');if(el)el.value=role},100);
 }
 
-function setReportType(t) {
-    reportType = t;
-    document.querySelectorAll('.report-type-btn').forEach(b => b.classList.toggle('active', b.dataset.rtype === t));
-    document.getElementById('rFieldInstr').classList.toggle('hidden', t === 'leave');
-    document.getElementById('rFieldLecture').classList.toggle('hidden', t === 'leave');
-    document.getElementById('rRankRow').classList.toggle('hidden', t !== 'promote');
-    document.getElementById('rFieldPost').classList.toggle('hidden', t !== 'post');
-    document.getElementById('rFieldLeaveTime').classList.toggle('hidden', t !== 'leave');
-    document.getElementById('rFieldLeaveReason').classList.toggle('hidden', t !== 'leave');
+function setReportType(t){
+    reportType=t;
+    document.querySelectorAll('.report-type-btn').forEach(b=>b.classList.toggle('active',b.dataset.rtype===t));
+    document.getElementById('rFieldInstr').classList.toggle('hidden',t==='leave');
+    document.getElementById('rFieldLecture').classList.toggle('hidden',t==='leave');
+    document.getElementById('rRankRow').classList.toggle('hidden',t!=='promote');
+    document.getElementById('rFieldPost').classList.toggle('hidden',t!=='post');
+    document.getElementById('rFieldLeaveTime').classList.toggle('hidden',t!=='leave');
+    document.getElementById('rFieldLeaveReason').classList.toggle('hidden',t!=='leave');
 }
 
-async function submitReport(e) {
+async function submitReport(e){
     e.preventDefault();
-    const btn = document.getElementById('reportSubmitBtn');
-    btn.disabled = true;
-    btn.innerHTML = '⏳ Отправка...';
-    try {
-        const name = document.getElementById('rName').value.trim();
-        const nick = document.getElementById('rNick').value.trim();
-        const age = document.getElementById('rAge').value.trim();
-        const discord = document.getElementById('rDiscord').value.trim();
-        let embed, files = [];
-
-        if (reportType === 'promote') {
-            const instr = document.getElementById('rInstr').files;
-            const lec = document.getElementById('rLecture').files;
-            const from = document.getElementById('rFrom').value;
-            const to = document.getElementById('rTo').value;
-            if (!instr.length || !lec.length || !from || !to) { showToast('Заполни все поля', 'error'); btn.disabled = false; btn.innerHTML = '<i class="fas fa-paper-plane"></i> Отправить рапорт'; return; }
-            Array.from(instr).forEach(f => files.push({file: f, name: 'instr_' + f.name}));
-            Array.from(lec).forEach(f => files.push({file: f, name: 'lecture_' + f.name}));
-            embed = { title:'🚀 Рапорт · Повыситься', color:0x10b981, description:'**Отправитель:** <@' + DEVELOPER_ID + '>\n**Дата:** ' + new Date().toLocaleString('ru-RU'), fields:[{name:'👤 Имя',value:name,inline:false},{name:'🎮 Никнейм',value:nick,inline:false},{name:'🎂 Возраст',value:age,inline:false},{name:'📤 С какого ранга',value:from,inline:false},{name:'📥 По какой ранг',value:to,inline:false},{name:'💬 Discord',value:discord,inline:false}], footer:{text:'TrapTime · Рапорт'}, timestamp:new Date().toISOString() };
-        } else if (reportType === 'post') {
-            const instr = document.getElementById('rInstr').files;
-            const lec = document.getElementById('rLecture').files;
-            const post = document.getElementById('rPost').value;
-            if (!instr.length || !lec.length || !post) { showToast('Заполни все поля', 'error'); btn.disabled = false; btn.innerHTML = '<i class="fas fa-paper-plane"></i> Отправить рапорт'; return; }
-            Array.from(instr).forEach(f => files.push({file: f, name: 'instr_' + f.name}));
-            Array.from(lec).forEach(f => files.push({file: f, name: 'lecture_' + f.name}));
-            embed = { title:'🌟 Рапорт · Стать на пост', color:0xf5b400, description:'**Отправитель:** <@' + DEVELOPER_ID + '>\n**Дата:** ' + new Date().toLocaleString('ru-RU'), fields:[{name:'👤 Имя',value:name,inline:false},{name:'🎮 Никнейм',value:nick,inline:false},{name:'🎂 Возраст',value:age,inline:false},{name:'🎯 На какой пост',value:post,inline:false},{name:'💬 Discord',value:discord,inline:false}], footer:{text:'TrapTime · Рапорт'}, timestamp:new Date().toISOString() };
-        } else {
-            const time = document.getElementById('rLeaveTime').value.trim();
-            const reason = document.getElementById('rLeaveReason').value.trim();
-            if (!time || !reason) { showToast('Заполни все поля', 'error'); btn.disabled = false; btn.innerHTML = '<i class="fas fa-paper-plane"></i> Отправить рапорт'; return; }
-            embed = { title:'🚪 Рапорт · Уволиться', color:0xf87171, description:'**Отправитель:** <@' + DEVELOPER_ID + '>\n**Дата:** ' + new Date().toLocaleString('ru-RU'), fields:[{name:'💬 Discord',value:discord,inline:false},{name:'👤 Имя',value:name,inline:false},{name:'⏳ Сколько пробыл',value:time,inline:false},{name:'📝 Причина',value:reason,inline:false}], footer:{text:'TrapTime · Рапорт'}, timestamp:new Date().toISOString() };
+    const btn=document.getElementById('reportSubmitBtn');
+    btn.disabled=true;
+    btn.innerHTML='⏳ Отправка...';
+    try{
+        const name=document.getElementById('rName').value.trim();
+        const nick=document.getElementById('rNick').value.trim();
+        const age=document.getElementById('rAge').value.trim();
+        const discord=document.getElementById('rDiscord').value.trim();
+        let embed,files=[];
+        if(reportType==='promote'){
+            const instr=document.getElementById('rInstr').files;
+            const lec=document.getElementById('rLecture').files;
+            const from=document.getElementById('rFrom').value;
+            const to=document.getElementById('rTo').value;
+            if(!instr.length||!lec.length||!from||!to){showToast('Заполни все поля','error');btn.disabled=false;btn.innerHTML='<i class="fas fa-paper-plane"></i> Отправить рапорт';return}
+            Array.from(instr).forEach(f=>files.push({file:f,name:'instr_'+f.name}));
+            Array.from(lec).forEach(f=>files.push({file:f,name:'lecture_'+f.name}));
+            embed={title:'🚀 Рапорт · Повыситься',color:0x10b981,description:'**Отправитель:** <@'+DEVELOPER_ID+'>\n**Дата:** '+new Date().toLocaleString('ru-RU'),fields:[{name:'👤 Имя',value:name,inline:false},{name:'🎮 Никнейм',value:nick,inline:false},{name:'🎂 Возраст',value:age,inline:false},{name:'📤 С какого ранга',value:from,inline:false},{name:'📥 По какой ранг',value:to,inline:false},{name:'💬 Discord',value:discord,inline:false}],footer:{text:'TrapTime · Рапорт'},timestamp:new Date().toISOString()};
+        }else if(reportType==='post'){
+            const instr=document.getElementById('rInstr').files;
+            const lec=document.getElementById('rLecture').files;
+            const post=document.getElementById('rPost').value;
+            if(!instr.length||!lec.length||!post){showToast('Заполни все поля','error');btn.disabled=false;btn.innerHTML='<i class="fas fa-paper-plane"></i> Отправить рапорт';return}
+            Array.from(instr).forEach(f=>files.push({file:f,name:'instr_'+f.name}));
+            Array.from(lec).forEach(f=>files.push({file:f,name:'lecture_'+f.name}));
+            embed={title:'🌟 Рапорт · Стать на пост',color:0xf5b400,description:'**Отправитель:** <@'+DEVELOPER_ID+'>\n**Дата:** '+new Date().toLocaleString('ru-RU'),fields:[{name:'👤 Имя',value:name,inline:false},{name:'🎮 Никнейм',value:nick,inline:false},{name:'🎂 Возраст',value:age,inline:false},{name:'🎯 На какой пост',value:post,inline:false},{name:'💬 Discord',value:discord,inline:false}],footer:{text:'TrapTime · Рапорт'},timestamp:new Date().toISOString()};
+        }else{
+            const time=document.getElementById('rLeaveTime').value.trim();
+            const reason=document.getElementById('rLeaveReason').value.trim();
+            if(!time||!reason){showToast('Заполни все поля','error');btn.disabled=false;btn.innerHTML='<i class="fas fa-paper-plane"></i> Отправить рапорт';return}
+            embed={title:'🚪 Рапорт · Уволиться',color:0xf87171,description:'**Отправитель:** <@'+DEVELOPER_ID+'>\n**Дата:** '+new Date().toLocaleString('ru-RU'),fields:[{name:'💬 Discord',value:discord,inline:false},{name:'👤 Имя',value:name,inline:false},{name:'⏳ Сколько пробыл',value:time,inline:false},{name:'📝 Причина',value:reason,inline:false}],footer:{text:'TrapTime · Рапорт'},timestamp:new Date().toISOString()};
         }
-
-        const fd = new FormData();
-        fd.append('payload_json', JSON.stringify({ username:'TrapTime · Рапорты', content:'<@' + DEVELOPER_ID + '> — новый рапорт!', embeds:[embed] }));
-        files.forEach((f, i) => fd.append('files[' + i + ']', f.file, f.name));
-        const r = await fetch(REPORT_WEBHOOK, {method:'POST', body:fd});
-        if (r.ok) { showToast('Рапорт отправлен!', 'success'); document.getElementById('reportForm').reset(); setReportType(reportType); }
-        else showToast('Ошибка отправки', 'error');
-    } catch(e) { console.error(e); showToast('Ошибка соединения', 'error'); }
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Отправить рапорт';
+        const fd=new FormData();
+        fd.append('payload_json',JSON.stringify({username:'TrapTime · Рапорты',content:'<@'+DEVELOPER_ID+'> — новый рапорт!',embeds:[embed]}));
+        files.forEach((f,i)=>fd.append('files['+i+']',f.file,f.name));
+        const r=await fetch(REPORT_WEBHOOK,{method:'POST',body:fd});
+        if(r.ok){showToast('Рапорт отправлен!','success');document.getElementById('reportForm').reset();setReportType(reportType)}
+        else showToast('Ошибка отправки','error');
+    }catch(e){console.error(e);showToast('Ошибка соединения','error')}
+    btn.disabled=false;
+    btn.innerHTML='<i class="fas fa-paper-plane"></i> Отправить рапорт';
 }
 
-function openLecture() {
-    if (!currentUser) return showToast('Войди в аккаунт', 'error');
+function openLecture(){
+    if(!currentUser)return showToast('Войди в аккаунт','error');
     document.getElementById('lectureModal').classList.add('active');
-    document.getElementById('lDiscord').value = '@' + currentUser.username;
+    document.getElementById('lDiscord').value='@'+currentUser.username;
 }
-function closeLecture() { document.getElementById('lectureModal').classList.remove('active'); }
+function closeLecture(){document.getElementById('lectureModal').classList.remove('active')}
 
-async function submitLecture(e) {
+async function submitLecture(e){
     e.preventDefault();
-    const btn = document.getElementById('lectureSubmitBtn');
-    btn.disabled = true;
-    btn.innerHTML = '⏳ Отправка...';
-    const discord = document.getElementById('lDiscord').value.trim();
-    const rank = document.getElementById('lRank').value;
-    const time = document.getElementById('lTime').value;
-    const day = document.getElementById('lDay').value;
-    const embed = {
-        title:'📚 Запрос на лекцию', color:0xa855f7,
-        description:'**Дата:** ' + new Date().toLocaleString('ru-RU'),
-        fields:[{name:'💬 Discord',value:discord,inline:false},{name:'🎯 Ранг / на кого',value:rank,inline:false},{name:'🕐 Во сколько',value:time,inline:false},{name:'📅 Когда',value:day,inline:false}],
-        footer:{text:'TrapTime · Лекции'}, timestamp:new Date().toISOString()
-    };
-    try {
-        const r = await fetch(LECTURE_WEBHOOK, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({username:'TrapTime · Лекции', embeds:[embed]})});
-        if (r.ok) { showToast('Запрос на лекцию отправлен!', 'success'); document.getElementById('lectureForm').reset(); closeLecture(); }
-        else showToast('Ошибка отправки', 'error');
-    } catch(e) { showToast('Ошибка соединения', 'error'); }
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Отправить запрос';
+    const btn=document.getElementById('lectureSubmitBtn');
+    btn.disabled=true;
+    btn.innerHTML='⏳ Отправка...';
+    const discord=document.getElementById('lDiscord').value.trim();
+    const rank=document.getElementById('lRank').value;
+    const time=document.getElementById('lTime').value;
+    const day=document.getElementById('lDay').value;
+    const embed={title:'📚 Запрос на лекцию',color:0xa855f7,description:'**Дата:** '+new Date().toLocaleString('ru-RU'),fields:[{name:'💬 Discord',value:discord,inline:false},{name:'🎯 Ранг / на кого',value:rank,inline:false},{name:'🕐 Во сколько',value:time,inline:false},{name:'📅 Когда',value:day,inline:false}],footer:{text:'TrapTime · Лекции'},timestamp:new Date().toISOString()};
+    try{
+        const r=await fetch(LECTURE_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:'TrapTime · Лекции',embeds:[embed]})});
+        if(r.ok){showToast('Запрос на лекцию отправлен!','success');document.getElementById('lectureForm').reset();closeLecture()}
+        else showToast('Ошибка отправки','error');
+    }catch(e){showToast('Ошибка соединения','error')}
+    btn.disabled=false;
+    btn.innerHTML='<i class="fas fa-paper-plane"></i> Отправить запрос';
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-    const pc = document.getElementById('authParticles');
-    if (pc) {
-        const colors = ['#b48aff', '#6e9fff', '#ff7eb3', '#a0d0ff'];
-        for (let i = 0; i < 25; i++) {
-            const p = document.createElement('div');
-            p.className = 'auth-particle';
-            const size = Math.random() * 8 + 2;
-            p.style.width = size + 'px';
-            p.style.height = size + 'px';
-            p.style.left = Math.random() * 100 + '%';
-            p.style.background = colors[Math.floor(Math.random() * colors.length)];
-            p.style.animationDuration = (Math.random() * 10 + 8) + 's';
-            p.style.animationDelay = (Math.random() * 5) + 's';
+window.addEventListener('DOMContentLoaded',()=>{
+    const pc=document.getElementById('authParticles');
+    if(pc){
+        const colors=['#b48aff','#6e9fff','#ff7eb3','#a0d0ff'];
+        for(let i=0;i<25;i++){
+            const p=document.createElement('div');
+            p.className='auth-particle';
+            const size=Math.random()*8+2;
+            p.style.width=size+'px';
+            p.style.height=size+'px';
+            p.style.left=Math.random()*100+'%';
+            p.style.background=colors[Math.floor(Math.random()*colors.length)];
+            p.style.animationDuration=(Math.random()*10+8)+'s';
+            p.style.animationDelay=(Math.random()*5)+'s';
             pc.appendChild(p);
         }
     }
     switchForumView('schedule');
-    const session = getSession();
-    if (session) {
-        const users = getUsers();
-        const user = users[session.username.toLowerCase()];
-        if (user) { currentUser = user; showMainSite(); return; }
+    const session=getSession();
+    if(session){
+        const users=getUsers();
+        const user=users[session.username.toLowerCase()];
+        if(user){currentUser=user;showMainSite();return}
     }
     document.getElementById('authScreen').classList.remove('hidden');
 });
 
-document.addEventListener('click', (e) => {
-    if (e.target.classList.contains('modal-overlay')) e.target.classList.remove('active');
+document.addEventListener('click',(e)=>{
+    if(e.target.classList.contains('modal-overlay'))e.target.classList.remove('active');
 });
 </script>
 </body>

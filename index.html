@@ -1,0 +1,2652 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrapTime · Повышения</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0e0e14;
+            color: #eaeef2;
+            line-height: 1.5;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        /* ================= PRELOADER ================= */
+        #preloader {
+            position: fixed; inset: 0; background: #0a0a10;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        #preloader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .preloader-logo {
+            font-size: 4rem; font-weight: 700; letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #b48aff, #6e9fff, #a0d0ff, #ff7eb3);
+            background-size: 300% 300%;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease infinite, pulse 2s ease-in-out infinite;
+            margin-bottom: 1rem;
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.08); opacity: 0.9; }
+        }
+        .preloader-sub {
+            font-size: 1rem; color: #6b7689; letter-spacing: 0.3em;
+            text-transform: uppercase; margin-bottom: 2.5rem;
+            animation: fadeInOut 2s ease-in-out infinite;
+        }
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.5; } 50% { opacity: 1; }
+        }
+        .loading-bar {
+            width: 260px; height: 4px; background: #1c1f28;
+            border-radius: 10px; overflow: hidden; position: relative;
+        }
+        .loading-bar::after {
+            content: ''; position: absolute; inset: 0; width: 40%;
+            background: linear-gradient(90deg, #b48aff, #6e9fff, #ff7eb3);
+            border-radius: 10px; animation: loading 2.2s ease-in-out infinite;
+        }
+        @keyframes loading {
+            0% { left: -40%; } 100% { left: 100%; }
+        }
+        .loading-percent {
+            margin-top: 1rem; font-size: 0.85rem; color: #7a8499;
+            letter-spacing: 0.05em;
+        }
+        .particles { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+        .particle {
+            position: absolute; border-radius: 50%; opacity: 0.15;
+            animation: floatUp linear infinite;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 0.2; }
+            90% { opacity: 0.2; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        }
+
+        /* ================= NAVBAR ================= */
+        .navbar {
+            position: sticky; top: 0; z-index: 500;
+            background: rgba(14, 14, 20, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid #232a36;
+            padding: 0.9rem 2rem;
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 1rem;
+            opacity: 0; transition: opacity 1s ease;
+        }
+        .navbar.visible { opacity: 1; }
+
+        .nav-logo {
+            font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #b48aff, #6e9fff);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex; align-items: center; gap: 0.5rem;
+            cursor: pointer; transition: opacity 0.2s;
+        }
+        .nav-logo:hover { opacity: 0.85; }
+        .nav-logo i { font-size: 1.2rem; color: #b48aff; -webkit-text-fill-color: #b48aff; }
+
+        .nav-tabs {
+            display: flex; gap: 0.5rem;
+            background: #161a22;
+            border: 1px solid #272e3a;
+            border-radius: 50px;
+            padding: 0.35rem;
+        }
+
+        .nav-tab {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.6rem 1.4rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem; font-weight: 600;
+            letter-spacing: 0.02em; color: #9aa4b5;
+            background: transparent; border: none; border-radius: 50px;
+            cursor: pointer; transition: all 0.25s ease;
+            white-space: nowrap;
+        }
+        .nav-tab i { font-size: 0.95rem; }
+        .nav-tab:hover { color: #d4dae8; background: #1f2531; }
+        .nav-tab.active {
+            color: #ffffff;
+            background: linear-gradient(135deg, #8b5cf6, #6e9fff);
+            box-shadow: 0 6px 18px rgba(139, 92, 246, 0.45);
+        }
+
+        /* ================= PAGES ================= */
+        .page-container { padding: 2rem 1rem; display: flex; justify-content: center; }
+        .page-inner { max-width: 1200px; width: 100%; }
+
+        .view { display: none; }
+        .view.active { display: block; }
+
+        .header { text-align: center; margin-bottom: 3rem; }
+        .header h1 {
+            font-size: 3.5rem; font-weight: 700; letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #b48aff, #6e9fff, #a0d0ff);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 0.5rem;
+        }
+        .header .sub {
+            font-size: 1.2rem; color: #9aa4b5; font-weight: 400;
+            border-bottom: 1px solid #2a2f3a; padding-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .section-title {
+            display: flex; align-items: center; gap: 0.75rem;
+            font-size: 2rem; font-weight: 600; margin: 2.5rem 0 1.5rem;
+            padding-bottom: 0.5rem; border-bottom: 2px solid #2d3340;
+        }
+        .section-title i { color: #b48aff; font-size: 2rem; }
+        .section-title.media i { color: #ff7eb3; }
+        .section-title.moderation i { color: #6e9fff; }
+
+        .roles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem; margin-bottom: 2rem;
+        }
+
+        .role-card {
+            background: #161a22; border-radius: 1.25rem;
+            padding: 1.5rem 1.5rem 1.8rem;
+            border: 1px solid #272e3a;
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
+            display: flex; flex-direction: column;
+        }
+        .role-card:hover {
+            transform: translateY(-4px); border-color: #3e4a5c;
+            box-shadow: 0 14px 26px rgba(0, 0, 0, 0.6);
+        }
+
+        .role-card .role-icon {
+            font-size: 2rem; margin-bottom: 0.75rem;
+            width: 48px; height: 48px; display: flex;
+            align-items: center; justify-content: center;
+            border-radius: 12px; background: #1f2531; color: #cdd9f4;
+        }
+        .role-card.media-role .role-icon { color: #ffb0d0; background: #2a1f2a; }
+        .role-card.mod-role .role-icon { color: #a0c4ff; background: #1a2332; }
+
+        .role-card h3 { font-size: 1.4rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .role-card .badge {
+            display: inline-block; font-size: 0.75rem; font-weight: 600;
+            padding: 0.2rem 0.7rem; border-radius: 40px;
+            background: #2d3442; color: #cbd5e1; margin-bottom: 1rem;
+            letter-spacing: 0.02em; align-self: flex-start;
+        }
+
+        .role-card .requirements {
+            list-style: none; margin-top: 0.5rem; margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+        .role-card .requirements li {
+            display: flex; align-items: flex-start; gap: 0.5rem;
+            font-size: 0.9rem; color: #b1bbcf; margin-bottom: 0.65rem;
+        }
+        .role-card .requirements li i {
+            font-size: 0.8rem; margin-top: 0.25rem; color: #b48aff;
+            width: 16px; text-align: center;
+        }
+        .role-card.media-role .requirements li i { color: #ff8dc7; }
+        .role-card.mod-role .requirements li i { color: #6e9fff; }
+
+        .card-promote-btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            gap: 0.6rem; padding: 0.85rem 1.5rem;
+            font-family: 'Inter', sans-serif; font-size: 0.95rem;
+            font-weight: 700; letter-spacing: 0.06em;
+            text-transform: uppercase; color: #ffffff;
+            background: linear-gradient(135deg, #8b5cf6, #6e9fff, #ff7eb3);
+            background-size: 200% 200%;
+            border: none; border-radius: 40px; cursor: pointer;
+            box-shadow: 0 8px 22px rgba(139, 92, 246, 0.35);
+            transition: transform 0.2s ease, box-shadow 0.3s ease, background-position 0.5s ease;
+            animation: btnGradient 5s ease infinite;
+            width: 100%;
+        }
+        @keyframes btnGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .card-promote-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 14px 30px rgba(139, 92, 246, 0.6);
+        }
+        .card-promote-btn:active { transform: scale(0.98); }
+
+        .note {
+            font-size: 0.85rem; background: #1e222b;
+            padding: 1rem 1.5rem; border-radius: 1.5rem;
+            color: #a6b2c9; border-left: 6px solid #b48aff;
+            margin-top: 2rem; display: flex; align-items: center;
+            gap: 0.8rem; flex-wrap: wrap;
+        }
+        .note i { font-size: 1.4rem; color: #b48aff; }
+        .note.mod-note { border-left-color: #6e9fff; }
+        .note.mod-note i { color: #6e9fff; }
+
+        /* ================= FORUM ================= */
+        .forum-header { text-align: center; margin-bottom: 2rem; }
+        .forum-header h1 {
+            font-size: 2.8rem; font-weight: 700; letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #6e9fff, #b48aff, #ff7eb3);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 0.5rem;
+        }
+        .forum-header .sub { color: #9aa4b5; font-size: 1.05rem; }
+
+        .forum-layout {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        .forum-sidebar {
+            background: #161a22;
+            border: 1px solid #272e3a;
+            border-radius: 1.25rem;
+            padding: 0.75rem;
+            position: sticky;
+            top: 100px;
+        }
+
+        .forum-sidebar-title {
+            font-size: 0.75rem;
+            color: #6a7689;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 0.6rem 1rem 0.5rem;
+        }
+
+        .forum-tab {
+            display: flex; align-items: center; gap: 0.75rem;
+            width: 100%;
+            padding: 0.85rem 1rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.92rem; font-weight: 600;
+            color: #9aa4b5;
+            background: transparent; border: none; border-radius: 12px;
+            cursor: pointer; transition: all 0.2s ease;
+            text-align: left;
+            margin-bottom: 0.25rem;
+        }
+        .forum-tab i {
+            font-size: 1rem;
+            width: 20px; text-align: center;
+            color: #7a8699;
+            transition: color 0.2s ease;
+        }
+        .forum-tab:hover { color: #eaeef2; background: #1f2531; }
+        .forum-tab:hover i { color: #b48aff; }
+        .forum-tab.active {
+            color: #ffffff;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(110, 159, 255, 0.2));
+            border: 1px solid rgba(139, 92, 246, 0.5);
+        }
+        .forum-tab.active i { color: #b48aff; }
+
+        .forum-content { min-width: 0; }
+
+        .forum-view { display: none; }
+        .forum-view.active { display: block; }
+
+        /* ================= SCHEDULE ================= */
+        .schedule-card {
+            background: #161a22; border: 1px solid #272e3a;
+            border-radius: 1.25rem; padding: 1.5rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            margin-bottom: 1.5rem; overflow-x: auto;
+        }
+        .schedule-title {
+            display: flex; align-items: center; gap: 0.7rem;
+            font-size: 1.3rem; font-weight: 600;
+            margin-bottom: 1.2rem; color: #eaeef2;
+        }
+        .schedule-title i { color: #b48aff; }
+
+        table.schedule-table {
+            width: 100%; border-collapse: collapse;
+            min-width: 720px; font-size: 0.9rem;
+        }
+        table.schedule-table th {
+            background: #1f2531; color: #cbd5e1;
+            font-weight: 600; padding: 0.85rem 0.6rem;
+            text-align: center; border: 1px solid #2a3140;
+            font-size: 0.82rem; letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+        table.schedule-table th:first-child {
+            text-align: left; padding-left: 1rem; background: #232a3a;
+        }
+        table.schedule-table td {
+            padding: 0.85rem 0.6rem; text-align: center;
+            border: 1px solid #232a36; color: #b1bbcf; font-weight: 500;
+        }
+        table.schedule-table tr:nth-child(even) td { background: #13171f; }
+        table.schedule-table tr:hover td { background: #1a2030; }
+        table.schedule-table td:first-child {
+            text-align: left; padding-left: 1rem;
+            font-weight: 600; color: #eaeef2; background: #191e29;
+        }
+        .slot-media {
+            display: inline-block; padding: 0.25rem 0.7rem;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #ff8dc7, #ff7eb3);
+            color: #2a0f1e; font-weight: 700;
+            font-size: 0.78rem; letter-spacing: 0.02em;
+        }
+        .slot-mod {
+            display: inline-block; padding: 0.25rem 0.7rem;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #8fb8ff, #6e9fff);
+            color: #0f1a2a; font-weight: 700;
+            font-size: 0.78rem; letter-spacing: 0.02em;
+        }
+        .legend {
+            display: flex; gap: 1.5rem; flex-wrap: wrap;
+            margin-top: 1rem; justify-content: center;
+            font-size: 0.85rem; color: #9aa4b5;
+        }
+        .legend-item { display: flex; align-items: center; gap: 0.5rem; }
+        .legend-dot { width: 14px; height: 14px; border-radius: 50%; }
+        .legend-dot.media { background: linear-gradient(135deg, #ff8dc7, #ff7eb3); }
+        .legend-dot.mod { background: linear-gradient(135deg, #8fb8ff, #6e9fff); }
+
+        /* ================= STAFF (СОСТАВ) ================= */
+        .staff-card {
+            background: #161a22; border: 1px solid #272e3a;
+            border-radius: 1.25rem; padding: 2rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            margin-bottom: 1.5rem;
+        }
+        .staff-card h2 {
+            font-size: 1.6rem; font-weight: 700;
+            color: #eaeef2; margin-bottom: 0.5rem;
+            display: flex; align-items: center; gap: 0.7rem;
+            padding-bottom: 1rem; border-bottom: 2px solid #2d3340;
+        }
+        .staff-card h2 i { color: #b48aff; }
+
+        .staff-desc {
+            font-size: 0.95rem; color: #9aa4b5;
+            line-height: 1.7; margin: 1rem 0 2rem;
+        }
+
+        .staff-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .staff-group {
+            background: #1a1f29;
+            border: 1px solid #272e3a;
+            border-radius: 14px;
+            padding: 1.2rem 1.4rem;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .staff-group:hover {
+            transform: translateY(-2px);
+            border-color: #3e4a5c;
+        }
+
+        .staff-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            margin-bottom: 0.9rem;
+            padding-bottom: 0.7rem;
+            border-bottom: 1px solid #232a36;
+        }
+        .staff-group-header .emoji {
+            font-size: 1.4rem;
+        }
+        .staff-group-header .title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #eaeef2;
+            letter-spacing: 0.01em;
+        }
+
+        .staff-members {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .staff-member {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #eaeef2;
+            border: 1px solid #2d3442;
+            background: #232a3a;
+            transition: all 0.2s ease;
+        }
+        .staff-member:hover {
+            transform: translateY(-2px);
+            border-color: #8b5cf6;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(110, 159, 255, 0.15));
+        }
+        .staff-member .crown {
+            font-size: 0.9rem;
+        }
+
+        .staff-group.leadership { border-left: 4px solid #f5b400; }
+        .staff-group.leadership .staff-group-header .title { color: #f5b400; }
+
+        .staff-group.education { border-left: 4px solid #a855f7; }
+        .staff-group.education .staff-group-header .title { color: #c084fc; }
+
+        .staff-group.senior-helper { border-left: 4px solid #6e9fff; }
+        .staff-group.senior-helper .staff-group-header .title { color: #6e9fff; }
+
+        .staff-group.helpers { border-left: 4px solid #34d399; }
+        .staff-group.helpers .staff-group-header .title { color: #34d399; }
+
+        .staff-group.media { border-left: 4px solid #ff7eb3; }
+        .staff-group.media .staff-group-header .title { color: #ff8dc7; }
+
+        /* ================= RULES ================= */
+        .rules-card {
+            background: #161a22; border: 1px solid #272e3a;
+            border-radius: 1.25rem; padding: 2rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            margin-bottom: 1.5rem;
+        }
+        .rules-card h2 {
+            font-size: 1.6rem; font-weight: 700;
+            color: #eaeef2; margin-bottom: 0.5rem;
+            display: flex; align-items: center; gap: 0.7rem;
+            padding-bottom: 1rem; border-bottom: 2px solid #2d3340;
+        }
+        .rules-card h2 i { color: #b48aff; }
+        .rules-intro {
+            font-size: 0.9rem; color: #9aa4b5;
+            padding: 0.9rem 1.2rem; background: #1c212b;
+            border-left: 4px solid #b48aff; border-radius: 8px;
+            margin: 1.2rem 0 1.8rem; font-style: italic;
+        }
+        .rules-section { margin-bottom: 2.2rem; }
+        .rules-section h3 {
+            font-size: 1.25rem; font-weight: 700;
+            color: #eaeef2;
+            display: flex; align-items: center; gap: 0.6rem;
+            margin-bottom: 1rem; padding-bottom: 0.5rem;
+            border-bottom: 1px solid #232a36;
+        }
+        .rules-section h3 i { font-size: 1.1rem; }
+        .rules-subblock { margin-bottom: 1.2rem; padding-left: 0.5rem; }
+        .rules-subblock h4 {
+            font-size: 1rem; font-weight: 700;
+            margin-bottom: 0.7rem;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .rules-subblock h4.allowed { color: #4ade80; }
+        .rules-subblock h4.forbidden { color: #f87171; }
+        .rules-subblock h4 i { font-size: 1rem; }
+        .rules-list {
+            list-style: none; display: flex; flex-direction: column; gap: 0.45rem;
+        }
+        .rules-list li {
+            display: flex; align-items: flex-start; gap: 0.6rem;
+            font-size: 0.9rem; color: #b1bbcf;
+            padding: 0.45rem 0.8rem; border-radius: 8px;
+            background: #1a1f29; line-height: 1.5;
+        }
+        .rules-list li i {
+            font-size: 0.85rem; margin-top: 0.2rem; flex-shrink: 0;
+        }
+        .rules-list.allowed li i { color: #4ade80; }
+        .rules-list.forbidden li i { color: #f87171; }
+
+        .rules-table {
+            width: 100%; border-collapse: collapse;
+            font-size: 0.88rem; margin-top: 1rem;
+            border-radius: 10px; overflow: hidden;
+        }
+        .rules-table th {
+            background: #1f2531; color: #cbd5e1;
+            font-weight: 700; padding: 0.75rem 1rem;
+            text-align: left; font-size: 0.8rem;
+            letter-spacing: 0.04em; text-transform: uppercase;
+        }
+        .rules-table td {
+            padding: 0.7rem 1rem;
+            border-bottom: 1px solid #232a36;
+            color: #b1bbcf;
+        }
+        .rules-table tr:last-child td { border-bottom: none; }
+        .rules-table tr:nth-child(even) td { background: #13171f; }
+        .rules-table td:first-child { color: #eaeef2; font-weight: 500; }
+        .rules-table td:last-child { color: #fbbf24; font-weight: 600; }
+
+        .rules-footer {
+            text-align: center; padding: 1.5rem;
+            margin-top: 1.5rem;
+            background: linear-gradient(135deg, #1e1a2e, #1a2438);
+            border-radius: 14px; border: 1px solid #2d3340;
+        }
+        .rules-footer p {
+            font-size: 1.05rem; font-weight: 600;
+            color: #eaeef2; margin-bottom: 0.3rem;
+        }
+        .rules-footer span { color: #9aa4b5; font-size: 0.9rem; }
+
+        /* ================= ABOUT ================= */
+        .about-card {
+            background: #161a22; border: 1px solid #272e3a;
+            border-radius: 1.25rem; padding: 2rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            margin-bottom: 1.5rem;
+        }
+        .about-hero {
+            text-align: center; padding: 2rem 1rem 2.5rem;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(110, 159, 255, 0.1));
+            border-radius: 1rem; margin-bottom: 2rem;
+            border: 1px solid #2d3340;
+        }
+        .about-hero h2 {
+            font-size: 2.2rem; font-weight: 700;
+            background: linear-gradient(135deg, #b48aff, #6e9fff);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 0.6rem;
+        }
+        .about-hero p { color: #9aa4b5; font-size: 1rem; max-width: 600px; margin: 0 auto; }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem; margin-bottom: 2rem;
+        }
+        .about-stat {
+            background: #1a1f29; border: 1px solid #272e3a;
+            border-radius: 14px; padding: 1.4rem;
+            text-align: center; transition: transform 0.2s, border-color 0.2s;
+        }
+        .about-stat:hover { transform: translateY(-3px); border-color: #3e4a5c; }
+        .about-stat i {
+            font-size: 1.8rem; color: #b48aff;
+            margin-bottom: 0.7rem; display: block;
+        }
+        .about-stat .num {
+            font-size: 1.6rem; font-weight: 700;
+            color: #eaeef2; margin-bottom: 0.2rem;
+        }
+        .about-stat .label {
+            font-size: 0.82rem; color: #9aa4b5;
+            text-transform: uppercase; letter-spacing: 0.05em;
+        }
+        .about-block { margin-bottom: 1.8rem; }
+        .about-block h3 {
+            font-size: 1.15rem; font-weight: 700;
+            color: #eaeef2; margin-bottom: 0.9rem;
+            display: flex; align-items: center; gap: 0.6rem;
+        }
+        .about-block h3 i { color: #b48aff; font-size: 1rem; }
+        .about-block p {
+            color: #b1bbcf; font-size: 0.92rem;
+            margin-bottom: 0.7rem; line-height: 1.7;
+        }
+        .about-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 0.8rem; margin-top: 1rem;
+        }
+        .about-feature {
+            display: flex; align-items: flex-start; gap: 0.7rem;
+            padding: 0.9rem 1rem; background: #1a1f29;
+            border-radius: 12px; border: 1px solid #232a36;
+            font-size: 0.88rem; color: #b1bbcf;
+        }
+        .about-feature i {
+            color: #6e9fff; font-size: 1rem;
+            margin-top: 0.15rem; flex-shrink: 0;
+        }
+        .about-feature.warn i { color: #f87171; }
+        .about-tags {
+            display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem;
+        }
+        .about-tag {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            padding: 0.4rem 0.9rem; background: #1f2531;
+            border: 1px solid #2d3442; border-radius: 40px;
+            font-size: 0.78rem; color: #cbd5e1; font-weight: 500;
+        }
+        .about-tag i { font-size: 0.75rem; color: #b48aff; }
+
+        /* ================= REPORT (RAPORT) ================= */
+        .report-card {
+            background: #161a22;
+            border: 1px solid #272e3a;
+            border-radius: 1.25rem;
+            padding: 2rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            margin-bottom: 1.5rem;
+        }
+        .report-card h2 {
+            font-size: 1.6rem; font-weight: 700;
+            color: #eaeef2; margin-bottom: 0.5rem;
+            display: flex; align-items: center; gap: 0.7rem;
+            padding-bottom: 1rem; border-bottom: 2px solid #2d3340;
+        }
+        .report-card h2 i { color: #b48aff; }
+
+        .report-desc {
+            font-size: 0.95rem; color: #9aa4b5;
+            line-height: 1.7; margin: 1rem 0 1.5rem;
+        }
+        .report-desc strong { color: #eaeef2; }
+
+        .report-types {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        .report-type {
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 0.75rem;
+            background: #0e1219;
+            border: 2px solid #272e3a;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+            color: #9aa4b5;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-align: center;
+        }
+        .report-type i {
+            font-size: 1.3rem;
+            transition: color 0.2s;
+        }
+        .report-type:hover { border-color: #3e4a5c; color: #d4dae8; }
+        .report-type.active {
+            border-color: #8b5cf6;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(110, 159, 255, 0.1));
+            color: #ffffff;
+            box-shadow: 0 8px 22px rgba(139, 92, 246, 0.25);
+        }
+        .report-type.active i { color: #b48aff; }
+
+        .report-type[data-type="promote"].active { border-color: #10b981; background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(52, 211, 153, 0.1)); }
+        .report-type[data-type="promote"].active i { color: #34d399; }
+
+        .report-type[data-type="leave"].active { border-color: #f87171; background: linear-gradient(135deg, rgba(248, 113, 113, 0.15), rgba(239, 68, 68, 0.1)); }
+        .report-type[data-type="leave"].active i { color: #f87171; }
+
+        .report-type[data-type="post"].active { border-color: #f5b400; background: linear-gradient(135deg, rgba(245, 180, 0, 0.15), rgba(255, 200, 0, 0.1)); }
+        .report-type[data-type="post"].active i { color: #f5b400; }
+
+        .report-instructions {
+            background: #1a1f29;
+            border-left: 4px solid #f5b400;
+            border-radius: 10px;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .report-instructions.hidden { display: none; }
+        .report-instructions .title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #f5b400;
+            margin-bottom: 0.8rem;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .report-instructions ol {
+            padding-left: 1.3rem;
+            color: #b1bbcf;
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+        .report-instructions ol li { margin-bottom: 0.4rem; }
+        .report-instructions ol li strong { color: #eaeef2; }
+
+        .report-form {
+            display: flex; flex-direction: column; gap: 1.2rem;
+        }
+        .report-field {
+            display: flex; flex-direction: column; gap: 0.5rem;
+        }
+        .report-field.hidden { display: none; }
+
+        .report-field label {
+            font-size: 0.85rem; font-weight: 600;
+            color: #cbd5e1;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .report-field label i {
+            color: #b48aff; font-size: 0.9rem;
+            width: 16px; text-align: center;
+        }
+        .report-field label .required {
+            color: #f87171; font-size: 0.8rem;
+        }
+
+        .report-field input[type="text"],
+        .report-field input[type="number"],
+        .report-field input[type="url"],
+        .report-field input[type="time"],
+        .report-field select,
+        .report-field textarea {
+            padding: 0.85rem 1rem;
+            border-radius: 10px;
+            border: 1px solid #272e3a;
+            background: #0e1219;
+            color: #eaeef2;
+            font-size: 0.92rem;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .report-field input:focus,
+        .report-field select:focus,
+        .report-field textarea:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+        }
+        .report-field input::placeholder,
+        .report-field textarea::placeholder {
+            color: #5a6478;
+        }
+        .report-field textarea {
+            resize: vertical; min-height: 90px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .file-upload {
+            position: relative;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 0.5rem;
+            padding: 1.5rem 1rem;
+            border: 2px dashed #3a4454;
+            border-radius: 12px;
+            background: #0e1219;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        .file-upload:hover {
+            border-color: #8b5cf6;
+            background: #121826;
+        }
+        .file-upload.has-files {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.05);
+        }
+        .file-upload input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+        .file-upload .upload-icon {
+            font-size: 1.6rem;
+            color: #8b5cf6;
+            transition: color 0.2s;
+        }
+        .file-upload.has-files .upload-icon { color: #10b981; }
+        .file-upload .upload-text {
+            font-size: 0.85rem;
+            color: #9aa4b5;
+            font-weight: 500;
+        }
+        .file-upload .upload-hint {
+            font-size: 0.75rem;
+            color: #5a6478;
+        }
+        .file-upload .file-list {
+            display: flex; flex-direction: column;
+            gap: 0.3rem;
+            width: 100%;
+            margin-top: 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+        .file-upload .file-item {
+            display: flex; align-items: center; gap: 0.5rem;
+            padding: 0.4rem 0.7rem;
+            background: #1a1f29;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            color: #b1bbcf;
+        }
+        .file-upload .file-item i {
+            color: #10b981;
+            font-size: 0.8rem;
+        }
+
+        .report-hint {
+            font-size: 0.78rem;
+            color: #6a7689;
+            margin-top: 0.2rem;
+        }
+
+        .report-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .report-submit {
+            display: inline-flex;
+            align-items: center; justify-content: center;
+            gap: 0.6rem;
+            padding: 1rem 2rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem; font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #ffffff;
+            background: linear-gradient(135deg, #8b5cf6, #6e9fff, #ff7eb3);
+            background-size: 200% 200%;
+            border: none; border-radius: 50px; cursor: pointer;
+            box-shadow: 0 8px 22px rgba(139, 92, 246, 0.4);
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+            animation: btnGradient 5s ease infinite;
+            margin-top: 1rem;
+        }
+        .report-submit:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 14px 30px rgba(139, 92, 246, 0.6);
+        }
+        .report-submit:active { transform: scale(0.98); }
+        .report-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .report-note {
+            font-size: 0.85rem;
+            color: #8a94a8;
+            background: #1a1f29;
+            padding: 1rem 1.2rem;
+            border-radius: 12px;
+            border-left: 4px solid #6e9fff;
+            margin-top: 1.5rem;
+            display: flex; align-items: flex-start; gap: 0.7rem;
+            line-height: 1.6;
+        }
+        .report-note i { color: #6e9fff; font-size: 1.1rem; margin-top: 0.1rem; }
+
+        /* ================= LECTURE REQUEST ================= */
+        .lecture-card {
+            background: #161a22;
+            border: 1px solid #272e3a;
+            border-radius: 1.25rem;
+            padding: 2rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            margin-bottom: 1.5rem;
+        }
+        .lecture-card h2 {
+            font-size: 1.6rem; font-weight: 700;
+            color: #eaeef2; margin-bottom: 0.5rem;
+            display: flex; align-items: center; gap: 0.7rem;
+            padding-bottom: 1rem; border-bottom: 2px solid #2d3340;
+        }
+        .lecture-card h2 i { color: #a855f7; }
+
+        .lecture-desc {
+            font-size: 0.95rem; color: #9aa4b5;
+            line-height: 1.7; margin: 1rem 0 2rem;
+        }
+        .lecture-desc strong { color: #eaeef2; }
+
+        .lecture-info {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(110, 159, 255, 0.08));
+            border-left: 4px solid #a855f7;
+            border-radius: 10px;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .lecture-info .title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #c084fc;
+            margin-bottom: 0.8rem;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .lecture-info ul {
+            list-style: none;
+            padding-left: 0;
+            color: #b1bbcf;
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+        .lecture-info ul li {
+            display: flex; align-items: flex-start; gap: 0.6rem;
+            margin-bottom: 0.4rem;
+        }
+        .lecture-info ul li i {
+            color: #c084fc;
+            font-size: 0.85rem;
+            margin-top: 0.2rem;
+            flex-shrink: 0;
+        }
+        .lecture-info ul li strong { color: #eaeef2; }
+
+        /* ================= BOTTOM BUTTON ================= */
+        .bottom-btn-wrapper {
+            display: flex; justify-content: center;
+            margin: 3rem 0 1rem;
+        }
+        .bottom-btn {
+            display: inline-flex; align-items: center; gap: 0.8rem;
+            padding: 1.1rem 2.8rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.05rem; font-weight: 700;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            color: #ffffff;
+            background: linear-gradient(135deg, #8b5cf6, #6e9fff, #ff7eb3);
+            background-size: 200% 200%;
+            border: none; border-radius: 60px; cursor: pointer;
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+            animation: btnGradient 5s ease infinite;
+            position: relative;
+        }
+        .bottom-btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 16px 40px rgba(139, 92, 246, 0.65);
+        }
+        .bottom-btn:active { transform: scale(0.99); }
+        .bottom-btn i { font-size: 1.2rem; }
+
+        /* ================= FOOTER ================= */
+        .footer {
+            text-align: center; margin-top: 3.5rem; color: #5b6577;
+            font-size: 0.85rem; border-top: 1px solid #1f2530;
+            padding-top: 2rem;
+        }
+
+        /* ================= FLIGHT OVERLAY ================= */
+        #flightOverlay {
+            position: fixed; inset: 0; z-index: 10000;
+            background: radial-gradient(circle at center, rgba(20,15,40,0.96), rgba(5,5,12,0.99));
+            display: none; align-items: center; justify-content: center;
+            overflow: hidden; opacity: 0; transition: opacity 0.5s ease;
+        }
+        #flightOverlay.active { display: flex; opacity: 1; }
+        .star {
+            position: absolute; background: white; border-radius: 50%;
+            animation: twinkle 2s ease-in-out infinite;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.3); }
+        }
+        .flight-text {
+            position: absolute; top: 15%; left: 50%;
+            transform: translateX(-50%); text-align: center; z-index: 2;
+            opacity: 0; animation: textFade 15s ease forwards;
+            pointer-events: none;
+        }
+        @keyframes textFade {
+            0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            10% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            85% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        .flight-text h2 {
+            font-size: 2rem; font-weight: 700;
+            background: linear-gradient(135deg, #b48aff, #6e9fff, #ff7eb3);
+            background-size: 200% 200%;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; animation: gradientShift 3s ease infinite;
+            margin-bottom: 0.5rem;
+        }
+        .flight-text p {
+            color: #9aa4b5; font-size: 1rem; letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        .flight-progress {
+            position: absolute; bottom: 12%; left: 50%;
+            transform: translateX(-50%);
+            width: 300px; height: 4px; background: #1c1f28;
+            border-radius: 10px; overflow: hidden;
+            opacity: 0; animation: textFade 15s ease forwards; z-index: 2;
+        }
+        .flight-progress-bar {
+            height: 100%; width: 0%;
+            background: linear-gradient(90deg, #b48aff, #6e9fff, #ff7eb3);
+            border-radius: 10px;
+            animation: flightProgress 15s linear forwards;
+        }
+        @keyframes flightProgress {
+            0% { width: 0%; } 100% { width: 100%; }
+        }
+        .airplane {
+            position: absolute; font-size: 4rem; color: #ffffff;
+            text-shadow: 0 0 25px rgba(180,138,255,0.9), 0 0 50px rgba(110,159,255,0.6);
+            z-index: 3;
+            animation: flightPath 15s cubic-bezier(0.4, 0.0, 0.6, 1.0) forwards;
+        }
+        @keyframes flightPath {
+            0% { left: -15%; top: 95%; transform: rotate(-35deg) scale(0.7); opacity: 0; }
+            8% { opacity: 1; }
+            25% { left: 15%; top: 70%; transform: rotate(-25deg) scale(0.9); }
+            50% { left: 50%; top: 45%; transform: rotate(-15deg) scale(1.1); }
+            75% { left: 80%; top: 25%; transform: rotate(-10deg) scale(1); }
+            92% { opacity: 1; }
+            100% { left: 115%; top: 0%; transform: rotate(-5deg) scale(0.8); opacity: 0; }
+        }
+        .trail {
+            position: absolute; width: 120px; height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(180,138,255,0.8), transparent);
+            border-radius: 5px; filter: blur(3px); z-index: 2;
+            animation: flightPath 15s cubic-bezier(0.4, 0.0, 0.6, 1.0) forwards;
+        }
+
+        /* ================= SUCCESS OVERLAY ================= */
+        #successOverlay {
+            position: fixed; inset: 0; z-index: 10001;
+            background: linear-gradient(135deg, #059669, #10b981, #34d399);
+            display: none; align-items: center; justify-content: center;
+            flex-direction: column; opacity: 0;
+            transition: opacity 0.6s ease; overflow: hidden;
+        }
+        #successOverlay.active { display: flex; opacity: 1; }
+        .success-rings {
+            position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+            pointer-events: none;
+        }
+        .ring {
+            position: absolute;
+            border: 3px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            animation: ringPulse 2.5s ease-out infinite;
+        }
+        .ring:nth-child(1) { animation-delay: 0s; }
+        .ring:nth-child(2) { animation-delay: 0.5s; }
+        .ring:nth-child(3) { animation-delay: 1s; }
+        .ring:nth-child(4) { animation-delay: 1.5s; }
+        @keyframes ringPulse {
+            0% { width: 100px; height: 100px; opacity: 0.8; border-width: 4px; }
+            100% { width: 600px; height: 600px; opacity: 0; border-width: 1px; }
+        }
+        .success-content {
+            position: relative; z-index: 5;
+            display: flex; flex-direction: column; align-items: center;
+            text-align: center; padding: 2rem;
+            animation: successIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        @keyframes successIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .checkmark-circle {
+            width: 150px; height: 150px; background: #ffffff;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 0 15px rgba(255, 255, 255, 0.2);
+            margin-bottom: 2rem;
+            animation: checkPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
+        }
+        @keyframes checkPop {
+            0% { transform: scale(0); }
+            60% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+        .checkmark {
+            width: 75px; height: 75px;
+            stroke: #10b981; stroke-width: 7;
+            stroke-linecap: round; stroke-linejoin: round;
+            fill: none; stroke-dasharray: 100; stroke-dashoffset: 100;
+            animation: drawCheck 0.8s ease-out 0.6s forwards;
+        }
+        @keyframes drawCheck {
+            0% { stroke-dashoffset: 100; }
+            100% { stroke-dashoffset: 0; }
+        }
+        .success-title {
+            font-size: 2.5rem; font-weight: 700;
+            color: #ffffff; margin-bottom: 0.8rem;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+        }
+        .success-subtitle {
+            font-size: 1.15rem; font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: 0.08em; text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+        .redirect-text {
+            margin-top: 2rem; color: rgba(255, 255, 255, 0.85);
+            font-size: 0.95rem; letter-spacing: 0.1em;
+            display: flex; align-items: center; gap: 0.6rem;
+            animation: fadeInOut 1.5s ease-in-out infinite;
+        }
+
+        /* ================= MOBILE ================= */
+        @media (max-width: 900px) {
+            .forum-layout { grid-template-columns: 1fr; }
+            .forum-sidebar {
+                position: static; display: flex;
+                flex-wrap: wrap; gap: 0.3rem; padding: 0.5rem;
+            }
+            .forum-sidebar-title { display: none; }
+            .forum-tab {
+                flex: 1 1 auto; width: auto;
+                justify-content: center;
+                padding: 0.6rem 0.9rem;
+                font-size: 0.82rem; margin-bottom: 0;
+            }
+            .forum-tab span { display: none; }
+            .forum-tab i { margin: 0; }
+        }
+        @media (max-width: 700px) {
+            .navbar { padding: 0.7rem 1rem; flex-wrap: wrap; }
+            .nav-logo { font-size: 1.2rem; }
+            .nav-tab { padding: 0.5rem 1rem; font-size: 0.82rem; }
+            .header h1 { font-size: 2.3rem; }
+            .forum-header h1 { font-size: 2rem; }
+            .section-title { font-size: 1.6rem; }
+            .role-card { padding: 1.2rem; }
+            .preloader-logo { font-size: 2.8rem; }
+            .flight-text h2 { font-size: 1.4rem; }
+            .airplane { font-size: 2.8rem; }
+            .flight-progress { width: 220px; }
+            .success-title { font-size: 1.7rem; }
+            .success-subtitle { font-size: 0.9rem; }
+            .checkmark-circle { width: 110px; height: 110px; }
+            .checkmark { width: 55px; height: 55px; }
+            .bottom-btn { padding: 0.95rem 1.8rem; font-size: 0.95rem; }
+            .rules-card, .about-card, .report-card, .staff-card, .lecture-card { padding: 1.2rem; }
+            .about-hero h2 { font-size: 1.6rem; }
+            .report-row { grid-template-columns: 1fr; }
+            .report-types { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ================= PRELOADER ================= -->
+<div id="preloader">
+    <div class="particles" id="particles"></div>
+    <div class="preloader-logo">TrapTime</div>
+    <div class="preloader-sub">Загрузка системы</div>
+    <div class="loading-bar"></div>
+    <div class="loading-percent" id="loadingPercent">0%</div>
+</div>
+
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar" id="navbar">
+    <div class="nav-logo" id="navLogo">
+        <i class="fas fa-shield-hal"></i> TrapTime
+    </div>
+    <div class="nav-tabs">
+        <button class="nav-tab active" data-view="home">
+            <i class="fas fa-home"></i> Главная
+        </button>
+        <button class="nav-tab" data-view="forum">
+            <i class="fas fa-comments"></i> Форум
+        </button>
+    </div>
+</nav>
+
+<!-- ================= PAGE CONTAINER ================= -->
+<div class="page-container">
+    <div class="page-inner">
+
+        <!-- ============ VIEW: HOME ============ -->
+        <div class="view active" id="view-home">
+            <header class="header">
+                <h1>TrapTime</h1>
+                <div class="sub"><i class="fas fa-arrow-up" style="margin-right: 8px; color: #b48aff;"></i>Система повышений</div>
+            </header>
+
+            <!-- MEDIA -->
+            <div class="section-title media">
+                <i class="fas fa-video"></i> MEDIA
+            </div>
+            <div class="roles-grid">
+                <div class="role-card media-role">
+                    <div class="role-icon"><i class="fas fa-camera"></i></div>
+                    <h3>Media</h3>
+                    <span class="badge">Начальный уровень</span>
+                    <ul class="requirements">
+                        <li><i class="fas fa-circle-check"></i> <span>Снять 2–3 Shorts о сервере</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>Выложить в TikTok / YouTube Shorts (минимум 50 просмотров)</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>Указать IP сервера в описании</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>Без водяных знаков и некачественной съёмки</span></li>
+                    </ul>
+                    <button class="card-promote-btn" data-role="Media">
+                        <i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ
+                    </button>
+                </div>
+                <div class="role-card media-role">
+                    <div class="role-icon"><i class="fas fa-star"></i></div>
+                    <h3>Senior Media</h3>
+                    <span class="badge">Продвинутый</span>
+                    <ul class="requirements">
+                        <li><i class="fas fa-circle-check"></i> <span>5+ Shorts опубликовано на канале</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>1 Shorts с 500+ просмотров</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>Активно отвечать в комментариях</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>Помогать новым медиа советами по монтажу</span></li>
+                    </ul>
+                    <button class="card-promote-btn" data-role="Senior Media">
+                        <i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ
+                    </button>
+                </div>
+                <div class="role-card media-role">
+                    <div class="role-icon"><i class="fas fa-crown"></i></div>
+                    <h3>Admin Media</h3>
+                    <span class="badge">Руководство</span>
+                    <ul class="requirements">
+                        <li><i class="fas fa-circle-check"></i> <span>25+ качественных Shorts</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>Управлять командой медиа и проводить ивенты</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>Организовывать конкурсы и розыгрыши</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>Прямая связь с кураторами</span></li>
+                    </ul>
+                    <button class="card-promote-btn" data-role="Admin Media">
+                        <i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ
+                    </button>
+                </div>
+            </div>
+            <div class="note">
+                <i class="fas fa-clapperboard"></i>
+                <span><strong>Повышение в MEDIA:</strong> все Shorts должны быть авторскими, без кликбейта. Отправляйте работы на <strong>@TrapTimeMedia</strong> на проверку.</span>
+            </div>
+
+            <!-- MODERATION -->
+            <div class="section-title moderation">
+                <i class="fas fa-shield-hal"></i> MODERATION
+            </div>
+            <div class="roles-grid">
+                <div class="role-card mod-role">
+                    <div class="role-icon"><i class="fas fa-hands-helping"></i></div>
+                    <h3>Helper</h3>
+                    <span class="badge">Испытательный</span>
+                    <ul class="requirements">
+                        <li><i class="fas fa-circle-check"></i> <span>Знать базовые команды: /mute, /kick</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>Обработать 5+ жалоб от игроков</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>Быть спокойным и вежливым в чате</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>Онлайн: 2+ часа в день</span></li>
+                    </ul>
+                    <button class="card-promote-btn" data-role="Helper">
+                        <i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ
+                    </button>
+                </div>
+                <div class="role-card mod-role">
+                    <div class="role-icon"><i class="fas fa-user-tie"></i></div>
+                    <h3>Senior Helper</h3>
+                    <span class="badge">Опытный</span>
+                    <ul class="requirements">
+                        <li><i class="fas fa-circle-check"></i> <span>10+ закрытых тикетов</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>Правильно применять /mute, /kick, /ban</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>Сообщать о багах и нарушителях</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>Наставлять новых хелперов</span></li>
+                    </ul>
+                    <button class="card-promote-btn" data-role="Senior Helper">
+                        <i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ
+                    </button>
+                </div>
+                <div class="role-card mod-role">
+                    <div class="role-icon"><i class="fas fa-gavel"></i></div>
+                    <h3>Moderator</h3>
+                    <span class="badge">Основной состав</span>
+                    <ul class="requirements">
+                        <li><i class="fas fa-circle-check"></i> <span>Полный доступ к /ban и /tempban</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>20+ наказаний за неделю</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>Проверять логи и апелляции</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>Следить за читерами</span></li>
+                    </ul>
+                    <button class="card-promote-btn" data-role="Moderator">
+                        <i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ
+                    </button>
+                </div>
+                <div class="role-card mod-role">
+                    <div class="role-icon"><i class="fas fa-shield"></i></div>
+                    <h3>Senior Moderator</h3>
+                    <span class="badge">Доверенный</span>
+                    <ul class="requirements">
+                        <li><i class="fas fa-circle-check"></i> <span>Разобрать 5+ апелляций на бан</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>Обучать новых модераторов</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>Выявлять твинки и обход блокировок</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>Помогать кураторам с отчётами</span></li>
+                    </ul>
+                    <button class="card-promote-btn" data-role="Senior Moderator">
+                        <i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ
+                    </button>
+                </div>
+                <div class="role-card mod-role">
+                    <div class="role-icon"><i class="fas fa-user-shield"></i></div>
+                    <h3>Head Moderator</h3>
+                    <span class="badge">Руководство</span>
+                    <ul class="requirements">
+                        <li><i class="fas fa-circle-check"></i> <span>Курировать команду модерации</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>Одобрять перманентные баны</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>Создавать регламенты модерации</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>Еженедельные встречи с кураторами</span></li>
+                    </ul>
+                    <button class="card-promote-btn" data-role="Head Moderator">
+                        <i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ
+                    </button>
+                </div>
+                <div class="role-card mod-role">
+                    <div class="role-icon"><i class="fas fa-photo-film"></i></div>
+                    <h3>Media Curator</h3>
+                    <span class="badge">Гибрид</span>
+                    <ul class="requirements">
+                        <li><i class="fas fa-circle-check"></i> <span>Курировать медиа-контент и кампании</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>Проверять заявки на медиа-роли</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>Управлять составом медиа-команды</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>Координировать работу с Admin Media</span></li>
+                    </ul>
+                    <button class="card-promote-btn" data-role="Media Curator">
+                        <i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ
+                    </button>
+                </div>
+                <div class="role-card mod-role">
+                    <div class="role-icon"><i class="fas fa-user-cog"></i></div>
+                    <h3>Curator</h3>
+                    <span class="badge">Высший</span>
+                    <ul class="requirements">
+                        <li><i class="fas fa-circle-check"></i> <span>Полное управление сервером и составом</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>Назначать и снимать кураторов</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>Финальное решение по банам и разбанам</span></li>
+                        <li><i class="fas fa-circle-check"></i> <span>Разрабатывать политику повышений</span></li>
+                    </ul>
+                    <button class="card-promote-btn" data-role="Curator">
+                        <i class="fas fa-rocket"></i> ПОВЫСИТЬСЯ
+                    </button>
+                </div>
+            </div>
+
+            <div class="note mod-note">
+                <i class="fas fa-bolt"></i>
+                <span><strong>Повышение в MODERATION:</strong> покажи знание команд <strong>/mute, /kick, /ban</strong>. Все действия должны фиксироваться в логах. Мы начинаем с малого — докажи себя!</span>
+            </div>
+
+            <div class="bottom-btn-wrapper">
+                <button class="bottom-btn" id="bottomToPromote">
+                    <i class="fas fa-arrow-up"></i> Перейти к повышениям
+                </button>
+            </div>
+
+            <div class="footer">
+                <i class="fas fa-clock"></i> TrapTime · требования для повышений · обновлено 2026
+            </div>
+        </div>
+
+        <!-- ============ VIEW: FORUM ============ -->
+        <div class="view" id="view-forum">
+            <header class="forum-header">
+                <h1><i class="fas fa-comments" style="font-size: 2rem; margin-right: 10px;"></i>Форум</h1>
+                <div class="sub">Информация о проекте TrapTime</div>
+            </header>
+
+            <div class="forum-layout">
+                <aside class="forum-sidebar">
+                    <div class="forum-sidebar-title">Разделы</div>
+
+                    <button class="forum-tab active" data-fview="schedule">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Расписание</span>
+                    </button>
+                    <button class="forum-tab" data-fview="rules">
+                        <i class="fas fa-scroll"></i>
+                        <span>Правила проекта</span>
+                    </button>
+                    <button class="forum-tab" data-fview="about">
+                        <i class="fas fa-info-circle"></i>
+                        <span>О сервере</span>
+                    </button>
+                    <button class="forum-tab" data-fview="staff">
+                        <i class="fas fa-users-gear"></i>
+                        <span>Состав</span>
+                    </button>
+                    <button class="forum-tab" data-fview="lecture">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>Запрос на лекцию</span>
+                    </button>
+                    <button class="forum-tab" data-fview="report">
+                        <i class="fas fa-file-signature"></i>
+                        <span>Рапорт</span>
+                    </button>
+                </aside>
+
+                <main class="forum-content">
+
+                    <!-- РАСПИСАНИЕ -->
+                    <div class="forum-view active" id="fview-schedule">
+                        <div class="schedule-card">
+                            <div class="schedule-title">
+                                <i class="fas fa-clock"></i> Общее расписание рассмотрения
+                            </div>
+                            <table class="schedule-table">
+                                <thead>
+                                    <tr>
+                                        <th>День недели</th>
+                                        <th>10:00</th>
+                                        <th>13:00</th>
+                                        <th>15:30</th>
+                                        <th>16:30</th>
+                                        <th>20:00</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Понедельник</td>
+                                        <td><span class="slot-media">MEDIA</span></td>
+                                        <td><span class="slot-media">MEDIA</span></td>
+                                        <td><span class="slot-media">MEDIA</span></td>
+                                        <td><span class="slot-media">MEDIA</span></td>
+                                        <td><span class="slot-media">MEDIA</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Вторник</td>
+                                        <td><span class="slot-media">MEDIA</span></td>
+                                        <td><span class="slot-mod">MOD</span></td>
+                                        <td><span class="slot-media">MEDIA</span></td>
+                                        <td><span class="slot-mod">MOD</span></td>
+                                        <td><span class="slot-media">MEDIA</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Среда</td>
+                                        <td><span class="slot-media">MEDIA</span></td>
+                                        <td><span class="slot-mod">MOD</span></td>
+                                        <td><span class="slot-media">MEDIA</span></td>
+                                        <td><span class="slot-mod">MOD</span></td>
+                                        <td><span class="slot-media">MEDIA</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Четверг</td>
+                                        <td><span class="slot-media">MEDIA</span></td>
+                                        <td><span class="slot-mod">MOD</span></td>
+                                        <td><span class="slot-media">MEDIA</span></td>
+                                        <td><span class="slot-mod">MOD</span></td>
+                                        <td><span class="slot-media">MEDIA</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Пятница</td>
+                                        <td><span class="slot-media">MEDIA</span></td>
+                                        <td><span class="slot-mod">MOD</span></td>
+                                        <td><span class="slot-media">MEDIA</span></td>
+                                        <td><span class="slot-mod">MOD</span></td>
+                                        <td><span class="slot-media">MEDIA</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Суббота</td>
+                                        <td><span class="slot-media">MEDIA</span></td>
+                                        <td><span class="slot-mod">MOD</span></td>
+                                        <td><span class="slot-media">MEDIA</span></td>
+                                        <td><span class="slot-mod">MOD</span></td>
+                                        <td><span class="slot-media">MEDIA</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Воскресенье</td>
+                                        <td><span class="slot-media">MEDIA</span></td>
+                                        <td><span class="slot-mod">MOD</span></td>
+                                        <td><span class="slot-media">MEDIA</span></td>
+                                        <td><span class="slot-mod">MOD</span></td>
+                                        <td><span class="slot-media">MEDIA</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="legend">
+                            <div class="legend-item"><span class="legend-dot media"></span> MEDIA — рассмотрение медиа-ролей</div>
+                            <div class="legend-item"><span class="legend-dot mod"></span> MOD — рассмотрение модерации</div>
+                        </div>
+                    </div>
+
+                    <!-- ПРАВИЛА -->
+                    <div class="forum-view" id="fview-rules">
+                        <div class="rules-card">
+                            <h2><i class="fas fa-scroll"></i> ПРАВИЛА СЕРВЕРА «ГРИФ СЕРВЕР»</h2>
+                            <div class="rules-intro">
+                                <strong>Важно:</strong> Незнание правил не освобождает от ответственности.
+                                Заходя на сервер и в Discord, вы автоматически соглашаетесь с этими правилами.
+                            </div>
+
+                            <div class="rules-section">
+                                <h3><i class="fas fa-gamepad" style="color: #4ade80;"></i> 🎮 1. ПРАВИЛА ИГРОВОГО СЕРВЕРА</h3>
+                                <div class="rules-subblock">
+                                    <h4 class="allowed"><i class="fas fa-check-circle"></i> ✅ Разрешено:</h4>
+                                    <ul class="rules-list allowed">
+                                        <li><i class="fas fa-circle-check"></i> Гриферство, рейды, кражи, ловушки — это гриф-сервер.</li>
+                                        <li><i class="fas fa-circle-check"></i> PvP в любой точке мира (кроме спавна и безопасных зон).</li>
+                                        <li><i class="fas fa-circle-check"></i> Строительство баз, ферм, ловушек.</li>
+                                        <li><i class="fas fa-circle-check"></i> Объединение в кланы, союзы, войны.</li>
+                                        <li><i class="fas fa-circle-check"></i> Торговля, обман в сделках (кроме скама за реальные деньги).</li>
+                                        <li><i class="fas fa-circle-check"></i> Приват территорий и построек (защита от гриферства).</li>
+                                    </ul>
+                                </div>
+                                <div class="rules-subblock">
+                                    <h4 class="forbidden"><i class="fas fa-times-circle"></i> ❌ Запрещено:</h4>
+                                    <ul class="rules-list forbidden">
+                                        <li><i class="fas fa-circle-xmark"></i> Читы и стороннее ПО: KillAura, Fly, X-Ray, Nuker, FreeCam, Baritone, авто-кликеры и т.д.</li>
+                                        <li><i class="fas fa-circle-xmark"></i> Дюпы и баги: использование багов сервера для получения предметов/валюты.</li>
+                                        <li><i class="fas fa-circle-xmark"></i> Лаг-машины: механизмы, намеренно нагружающие сервер (запрещены полностью).</li>
+                                        <li><i class="fas fa-circle-xmark"></i> Оскорбления по признаку: раса, религия, национальность, пол.</li>
+                                        <li><i class="fas fa-circle-xmark"></i> Угрозы жизни, DDoS, доксинг — мгновенный бан без разбора.</li>
+                                        <li><i class="fas fa-circle-xmark"></i> Реклама других серверов, читов, соцсетей без разрешения администрации.</li>
+                                        <li><i class="fas fa-circle-xmark"></i> Скам за реальные деньги — обман при продаже/покупке доната.</li>
+                                        <li><i class="fas fa-circle-xmark"></i> Использование багов привата для кражи чужих вещей.</li>
+                                    </ul>
+                                </div>
+                                <h4 style="color: #fbbf24; margin: 1rem 0 0.5rem;"><i class="fas fa-gavel"></i> ⚖️ Наказания:</h4>
+                                <table class="rules-table">
+                                    <thead><tr><th>Нарушение</th><th>Наказание</th></tr></thead>
+                                    <tbody>
+                                        <tr><td>Читы (1-й раз)</td><td>Бан 14 дней</td></tr>
+                                        <tr><td>Читы (повторно)</td><td>Бан навсегда</td></tr>
+                                        <tr><td>Дюп / баг</td><td>Бан 30 дней + вайп инвентаря</td></tr>
+                                        <tr><td>Лаг-машины</td><td>Бан 7 дней</td></tr>
+                                        <tr><td>Оскорбления</td><td>Мут 1-24 часа</td></tr>
+                                        <tr><td>Реклама</td><td>Мут 7 дней / Бан 30 дней</td></tr>
+                                        <tr><td>DDoS / доксинг</td><td>Бан навсегда</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="rules-section">
+                                <h3><i class="fas fa-comments" style="color: #6e9fff;"></i> 💬 2. ПРАВИЛА ЧАТА В DISCORD</h3>
+                                <div class="rules-subblock">
+                                    <h4 class="allowed"><i class="fas fa-check-circle"></i> ✅ Разрешено:</h4>
+                                    <ul class="rules-list allowed">
+                                        <li><i class="fas fa-circle-check"></i> Общение на любые темы (в соответствующих каналах).</li>
+                                        <li><i class="fas fa-circle-check"></i> Обсуждение игровых моментов, механик, кланов.</li>
+                                        <li><i class="fas fa-circle-check"></i> Мемы, шутки (в рамках приличия).</li>
+                                        <li><i class="fas fa-circle-check"></i> Помощь новичкам.</li>
+                                    </ul>
+                                </div>
+                                <div class="rules-subblock">
+                                    <h4 class="forbidden"><i class="fas fa-times-circle"></i> ❌ Запрещено:</h4>
+                                    <ul class="rules-list forbidden">
+                                        <li><i class="fas fa-circle-xmark"></i> Спам, флуд, капс — сообщения подряд, бессмысленный текст.</li>
+                                        <li><i class="fas fa-circle-xmark"></i> Оскорбления участников, администрации, их родных.</li>
+                                        <li><i class="fas fa-circle-xmark"></i> NSFW-контент — порно, шок-контент, 18+.</li>
+                                        <li><i class="fas fa-circle-xmark"></i> Реклама — других серверов, читов, каналов, товаров.</li>
+                                        <li><i class="fas fa-circle-xmark"></i> Политика и религия — провокационные темы.</li>
+                                        <li><i class="fas fa-circle-xmark"></i> Попрошайничество — «дайте донат», «выдайте админку».</li>
+                                        <li><i class="fas fa-circle-xmark"></i> Обход наказаний — заходить с твинков после бана/мута.</li>
+                                        <li><i class="fas fa-circle-xmark"></i> Публикация личных данных (чужих) без согласия.</li>
+                                        <li><i class="fas fa-circle-xmark"></i> Спойлеры без пометки (если это касается ивентов).</li>
+                                    </ul>
+                                </div>
+                                <h4 style="color: #fbbf24; margin: 1rem 0 0.5rem;"><i class="fas fa-gavel"></i> ⚖️ Наказания:</h4>
+                                <table class="rules-table">
+                                    <thead><tr><th>Нарушение</th><th>Наказание</th></tr></thead>
+                                    <tbody>
+                                        <tr><td>Спам / флуд</td><td>Мут 1-6 часов</td></tr>
+                                        <tr><td>Оскорбления</td><td>Мут 12-48 часов</td></tr>
+                                        <tr><td>NSFW</td><td>Бан 7 дней</td></tr>
+                                        <tr><td>Реклама</td><td>Бан 30 дней</td></tr>
+                                        <tr><td>Обход наказания</td><td>Бан навсегда</td></tr>
+                                        <tr><td>Доксинг</td><td>Бан навсегда</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="rules-section">
+                                <h3><i class="fas fa-microphone" style="color: #ff7eb3;"></i> 🔊 3. ПРАВИЛА ГОЛОСОВЫХ КАНАЛОВ В DISCORD</h3>
+                                <div class="rules-subblock">
+                                    <h4 class="allowed"><i class="fas fa-check-circle"></i> ✅ Разрешено:</h4>
+                                    <ul class="rules-list allowed">
+                                        <li><i class="fas fa-circle-check"></i> Общение, обсуждение игры, мемы.</li>
+                                        <li><i class="fas fa-circle-check"></i> Стрим игры (если канал для этого).</li>
+                                        <li><i class="fas fa-circle-check"></i> Музыка (в специально отведённых каналах).</li>
+                                        <li><i class="fas fa-circle-check"></i> AFK (в канале #afk).</li>
+                                    </ul>
+                                </div>
+                                <div class="rules-subblock">
+                                    <h4 class="forbidden"><i class="fas fa-times-circle"></i> ❌ Запрещено:</h4>
+                                    <ul class="rules-list forbidden">
+                                        <li><i class="fas fa-circle-xmark"></i> Крики, ор, писк в микрофон — мешает другим.</li>
+                                        <li><i class="fas fa-circle-xmark"></i> Soundpad / Soundboard без разрешения участников канала.</li>
+                                        <li><i class="fas fa-circle-xmark"></i> Включённый микрофон с фоновым шумом (ремонт, музыка, собаки).</li>
+                                        <li><i class="fas fa-circle-xmark"></i> Перебивание, хамство, троллинг участников.</li>
+                                        <li><i class="fas fa-circle-xmark"></i> Заход в чужой канал и мешать общению.</li>
+                                        <li><i class="fas fa-circle-xmark"></i> Стрим NSFW-контента через демонстрацию экрана.</li>
+                                        <li><i class="fas fa-circle-xmark"></i> Реклама в голосовых каналах.</li>
+                                    </ul>
+                                </div>
+                                <h4 style="color: #fbbf24; margin: 1rem 0 0.5rem;"><i class="fas fa-gavel"></i> ⚖️ Наказания:</h4>
+                                <table class="rules-table">
+                                    <thead><tr><th>Нарушение</th><th>Наказание</th></tr></thead>
+                                    <tbody>
+                                        <tr><td>Шум / крик</td><td>Мут 30 мин (в войсе)</td></tr>
+                                        <tr><td>Soundpad</td><td>Кик из канала</td></tr>
+                                        <tr><td>Перебивание / хамство</td><td>Мут 1-3 часа</td></tr>
+                                        <tr><td>Мешать другим</td><td>Кик + предупреждение</td></tr>
+                                        <tr><td>Стрим NSFW</td><td>Бан навсегда</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="rules-section">
+                                <h3><i class="fas fa-user-shield" style="color: #b48aff;"></i> 🛡️ 4. ПРАВИЛА ДЛЯ АДМИНИСТРАЦИИ</h3>
+                                <ul class="rules-list" style="margin-top: 0.5rem;">
+                                    <li><i class="fas fa-info-circle" style="color: #b48aff;"></i> Администрация не обязана объяснять причину наказания, но может по запросу.</li>
+                                    <li><i class="fas fa-info-circle" style="color: #b48aff;"></i> Запрещено использовать права для личной выгоды (выдача предметов, телепорт к игрокам без причины).</li>
+                                    <li><i class="fas fa-info-circle" style="color: #b48aff;"></i> Запрещено снимать наказания за реальные деньги или услуги.</li>
+                                    <li><i class="fas fa-info-circle" style="color: #b48aff;"></i> Обжалование — только через тикет в Discord (#тикеты).</li>
+                                    <li><i class="fas fa-info-circle" style="color: #b48aff;"></i> Жалоба на администратора — через ЛС владельцу сервера.</li>
+                                </ul>
+                            </div>
+
+                            <div class="rules-section">
+                                <h3><i class="fas fa-book" style="color: #fbbf24;"></i> 📌 5. ОБЩИЕ ПОЛОЖЕНИЯ</h3>
+                                <ul class="rules-list" style="margin-top: 0.5rem;">
+                                    <li><i class="fas fa-circle-info" style="color: #fbbf24;"></i> Администрация вправе изменять правила без уведомления.</li>
+                                    <li><i class="fas fa-circle-info" style="color: #fbbf24;"></i> Незнание правил не освобождает от наказания.</li>
+                                    <li><i class="fas fa-circle-info" style="color: #fbbf24;"></i> Все решения администрации окончательны (кроме обжалования через тикет).</li>
+                                    <li><i class="fas fa-circle-info" style="color: #fbbf24;"></i> Вайпы могут происходить по решению администрации.</li>
+                                    <li><i class="fas fa-circle-info" style="color: #fbbf24;"></i> Донат не возвращается, если игрок получил бан за нарушение правил.</li>
+                                </ul>
+                            </div>
+
+                            <div class="rules-footer">
+                                <p>❤️ СПАСИБО ЗА ПОНИМАНИЕ!</p>
+                                <span>Играйте честно, уважайте других, и пусть удача будет на вашей стороне.<br>Приятной игры на ГРИФ СЕРВЕРЕ!</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- О СЕРВЕРЕ -->
+                    <div class="forum-view" id="fview-about">
+                        <div class="about-card">
+                            <div class="about-hero">
+                                <h2>ГРИФ СЕРВЕР · TrapTime</h2>
+                                <p>Мир без правил с приватом территорий. Строй, грабь, защищай своё и захватывай чужое.</p>
+                            </div>
+
+                            <div class="about-grid">
+                                <div class="about-stat">
+                                    <i class="fas fa-users"></i>
+                                    <div class="num">1 200+</div>
+                                    <div class="label">Игроков</div>
+                                </div>
+                                <div class="about-stat">
+                                    <i class="fas fa-server"></i>
+                                    <div class="num">24/7</div>
+                                    <div class="label">Онлайн сервер</div>
+                                </div>
+                                <div class="about-stat">
+                                    <i class="fas fa-lock"></i>
+                                    <div class="num">Приват</div>
+                                    <div class="label">Защита территорий</div>
+                                </div>
+                                <div class="about-stat">
+                                    <i class="fas fa-shield-hal"></i>
+                                    <div class="num">7+</div>
+                                    <div class="label">Ролей команды</div>
+                                </div>
+                            </div>
+
+                            <div class="about-block">
+                                <h3><i class="fas fa-gamepad"></i> Что такое ГРИФ СЕРВЕР?</h3>
+                                <p>
+                                    <strong>ГРИФ СЕРВЕР</strong> — это Minecraft-сервер в жанре <em>grief</em>, где разрешено гриферство,
+                                    рейды, кражи, ловушки и PvP в любой точке мира. Здесь нет сезонов и ролевых команд —
+                                    только ты, твоя база, твой приват и твои враги.
+                                </p>
+                                <p>
+                                    Сервер создан для тех, кто любит настоящий хардкор: без правил «нельзя ломать чужие постройки»,
+                                    без лишних ограничений. Но при этом у каждого игрока есть <strong>приват</strong> — защита
+                                    своих территорий и построек от гриферства.
+                                </p>
+                            </div>
+
+                            <div class="about-block">
+                                <h3><i class="fas fa-star"></i> Особенности сервера</h3>
+                                <div class="about-features">
+                                    <div class="about-feature">
+                                        <i class="fas fa-bomb"></i>
+                                        <span>Гриферство и рейды разрешены — никаких ограничений на разрушение</span>
+                                    </div>
+                                    <div class="about-feature">
+                                        <i class="fas fa-lock"></i>
+                                        <span>Приват территорий и построек — защити своё имущество от гриферов</span>
+                                    </div>
+                                    <div class="about-feature">
+                                        <i class="fas fa-crosshairs"></i>
+                                        <span>PvP в любой точке мира, кроме спавна и безопасных зон</span>
+                                    </div>
+                                    <div class="about-feature">
+                                        <i class="fas fa-users"></i>
+                                        <span>Кланы, союзы и войны — объединяйся с друзьями</span>
+                                    </div>
+                                    <div class="about-feature">
+                                        <i class="fas fa-coins"></i>
+                                        <span>Свободная торговля и обман в сделках (кроме скама за реальные деньги)</span>
+                                    </div>
+                                    <div class="about-feature warn">
+                                        <i class="fas fa-triangle-exclamation"></i>
+                                        <span>Лаг-машины строго запрещены — за них бан 7 дней</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="about-block">
+                                <h3><i class="fas fa-shield-hal"></i> Команда сервера</h3>
+                                <p>
+                                    На сервере действует система ролей и повышений. Ты можешь начать как
+                                    <strong>Media</strong> или <strong>Helper</strong>, а со временем дорасти до
+                                    <strong>Head Moderator</strong> или <strong>Curator</strong> — управлять составом
+                                    и принимать решения.
+                                </p>
+                                <p>
+                                    Все заявки на повышение рассматриваются по расписанию (см. вкладку «Расписание»).
+                                    Подать заявку можно на вкладке «Рапорт», выбрав тип «Повыситься».
+                                </p>
+                            </div>
+
+                            <div class="about-block">
+                                <h3><i class="fas fa-bolt"></i> Теги и жанр</h3>
+                                <div class="about-tags">
+                                    <span class="about-tag"><i class="fas fa-bomb"></i> Grief</span>
+                                    <span class="about-tag"><i class="fas fa-crosshairs"></i> PvP</span>
+                                    <span class="about-tag"><i class="fas fa-lock"></i> Приват</span>
+                                    <span class="about-tag"><i class="fas fa-users"></i> Кланы</span>
+                                    <span class="about-tag"><i class="fas fa-coins"></i> Экономика</span>
+                                    <span class="about-tag"><i class="fas fa-hammer"></i> Выживание</span>
+                                    <span class="about-tag"><i class="fas fa-shield-hal"></i> 24/7</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- СОСТАВ -->
+                    <div class="forum-view" id="fview-staff">
+                        <div class="staff-card">
+                            <h2><i class="fas fa-users-gear"></i> Состав сервера</h2>
+                            <p class="staff-desc">
+                                Актуальный состав команды проекта <strong>TrapTime</strong>. Здесь указаны все роли
+                                и участники, которые следят за порядком на сервере и в Discord.
+                            </p>
+
+                            <div class="staff-list">
+
+                                <!-- Руководство -->
+                                <div class="staff-group leadership">
+                                    <div class="staff-group-header">
+                                        <span class="emoji">👑</span>
+                                        <span class="title">Руководство</span>
+                                    </div>
+                                    <div class="staff-members">
+                                        <span class="staff-member"><span class="crown">👑</span> B1shechka</span>
+                                        <span class="staff-member"><span class="crown">👑</span> Boba2020</span>
+                                        <span class="staff-member"><span class="crown">👑</span> rip_RNdracon</span>
+                                    </div>
+                                </div>
+
+                                <!-- Учебное руководство -->
+                                <div class="staff-group education">
+                                    <div class="staff-group-header">
+                                        <span class="emoji">🎓</span>
+                                        <span class="title">Учебное руководство</span>
+                                    </div>
+                                    <div class="staff-members">
+                                        <span class="staff-member">🎓 B1shechka</span>
+                                        <span class="staff-member">🎓 Maks_Delovoy</span>
+                                    </div>
+                                </div>
+
+                                <!-- Старший хелпер -->
+                                <div class="staff-group senior-helper">
+                                    <div class="staff-group-header">
+                                        <span class="emoji">⭐</span>
+                                        <span class="title">Старший хелпер</span>
+                                    </div>
+                                    <div class="staff-members">
+                                        <span class="staff-member">⭐ Maks_Delovoy</span>
+                                    </div>
+                                </div>
+
+                                <!-- Хелперы -->
+                                <div class="staff-group helpers">
+                                    <div class="staff-group-header">
+                                        <span class="emoji">🛡️</span>
+                                        <span class="title">Хелперы</span>
+                                    </div>
+                                    <div class="staff-members">
+                                        <span class="staff-member">🛡️ WospinPlay</span>
+                                    </div>
+                                </div>
+
+                                <!-- Медиа -->
+                                <div class="staff-group media">
+                                    <div class="staff-group-header">
+                                        <span class="emoji">🎬</span>
+                                        <span class="title">Медиа</span>
+                                    </div>
+                                    <div class="staff-members">
+                                        <span class="staff-member">🎬 Vaxmi555</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ЗАПРОС НА ЛЕКЦИЮ -->
+                    <div class="forum-view" id="fview-lecture">
+                        <div class="lecture-card">
+                            <h2><i class="fas fa-graduation-cap"></i> Запрос на лекцию</h2>
+
+                            <p class="lecture-desc">
+                                Заполни форму, чтобы запросить <strong>лекцию по правилам сервера</strong> или
+                                <strong>инструктаж по обязанностям</strong>. Учебное руководство свяжется с тобой
+                                в Discord и назначит время.
+                            </p>
+
+                            <div class="lecture-info">
+                                <div class="title"><i class="fas fa-circle-info"></i> Что нужно указать</div>
+                                <ul>
+                                    <li><i class="fas fa-discord"></i> <span><strong>Ваш Discord</strong> — username (например: username#0000 или @username)</span></li>
+                                    <li><i class="fas fa-shield-hal"></i> <span><strong>Ваш ранг / на кого хотите поступить</strong> — текущая роль или желаемая</span></li>
+                                    <li><i class="fas fa-clock"></i> <span><strong>Во сколько готовы пройти лекцию</strong> — время (например: 15:30)</span></li>
+                                    <li><i class="fas fa-calendar-day"></i> <span><strong>Когда готовы пройти лекцию</strong> — день недели (например: Понедельник)</span></li>
+                                </ul>
+                            </div>
+
+                            <form class="report-form" id="lectureForm" onsubmit="submitLecture(event)">
+
+                                <div class="report-field">
+                                    <label><i class="fab fa-discord"></i> Ваш Discord <span class="required">*</span></label>
+                                    <input type="text" id="lectureDiscord" placeholder="username#0000 или @username">
+                                </div>
+
+                                <div class="report-field">
+                                    <label><i class="fas fa-shield-hal"></i> Ваш ранг / на кого хотите поступить <span class="required">*</span></label>
+                                    <select id="lectureRank">
+                                        <option value="">Выбери ранг</option>
+                                        <option value="Media">Media</option>
+                                        <option value="Senior Media">Senior Media</option>
+                                        <option value="Admin Media">Admin Media</option>
+                                        <option value="Helper">Helper</option>
+                                        <option value="Senior Helper">Senior Helper</option>
+                                        <option value="Moderator">Moderator</option>
+                                        <option value="Senior Moderator">Senior Moderator</option>
+                                        <option value="Head Moderator">Head Moderator</option>
+                                        <option value="Media Curator">Media Curator</option>
+                                        <option value="Curator">Curator</option>
+                                    </select>
+                                </div>
+
+                                <div class="report-row">
+                                    <div class="report-field">
+                                        <label><i class="fas fa-clock"></i> Во сколько готовы пройти лекцию <span class="required">*</span></label>
+                                        <input type="time" id="lectureTime">
+                                    </div>
+                                    <div class="report-field">
+                                        <label><i class="fas fa-calendar-day"></i> Когда готовы пройти лекцию <span class="required">*</span></label>
+                                        <select id="lectureDay">
+                                            <option value="">Выбери день</option>
+                                            <option value="Понедельник">Понедельник</option>
+                                            <option value="Вторник">Вторник</option>
+                                            <option value="Среда">Среда</option>
+                                            <option value="Четверг">Четверг</option>
+                                            <option value="Пятница">Пятница</option>
+                                            <option value="Суббота">Суббота</option>
+                                            <option value="Воскресенье">Воскресенье</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="report-submit" id="lectureSubmitBtn">
+                                    <i class="fas fa-paper-plane"></i> Отправить запрос в Discord
+                                </button>
+                            </form>
+
+                            <div class="report-note">
+                                <i class="fas fa-circle-info"></i>
+                                <div>
+                                    После нажатия кнопки <strong>«Отправить запрос»</strong> данные будут отправлены
+                                    в специальный канал Discord. Учебное руководство свяжется с тобой для назначения лекции.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- РАПОРТ -->
+                    <div class="forum-view" id="fview-report">
+                        <div class="report-card">
+                            <h2><i class="fas fa-file-signature"></i> Рапорт</h2>
+
+                            <p class="report-desc">
+                                Выбери тип рапорта, заполни поля и отправь заявку.
+                                <strong>Все рапорты рассматриваются кураторами в порядке очереди</strong> согласно расписанию.
+                            </p>
+
+                            <!-- ТИПЫ РАПОРТА -->
+                            <div class="report-types">
+                                <button type="button" class="report-type active" data-type="promote">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>Повыситься</span>
+                                </button>
+                                <button type="button" class="report-type" data-type="post">
+                                    <i class="fas fa-user-plus"></i>
+                                    <span>Стать на пост</span>
+                                </button>
+                                <button type="button" class="report-type" data-type="leave">
+                                    <i class="fas fa-right-from-bracket"></i>
+                                    <span>Уволиться</span>
+                                </button>
+                            </div>
+
+                            <!-- ИНСТРУКЦИЯ (повышение) -->
+                            <div class="report-instructions" id="reportInstructions">
+                                <div class="title"><i class="fas fa-circle-info"></i> Как правильно писать рапорт на повышение</div>
+                                <ol>
+                                    <li><strong>Фото о пройденной инструкции по обязанностям</strong> — загрузи скриншот прямо здесь (кнопка ниже).</li>
+                                    <li><strong>Фото о пройденной лекции по знанию правил сервера</strong> — загрузи скриншот прямо здесь.</li>
+                                    <li><strong>Имя</strong> — твоё настоящее имя.</li>
+                                    <li><strong>Никнейм в игре</strong> — твой игровой ник на сервере TrapTime.</li>
+                                    <li><strong>Возраст</strong> — сколько тебе полных лет.</li>
+                                    <li><strong>С какого ранга</strong> — текущая роль (например: Helper, Media).</li>
+                                    <li><strong>По какой ранг</strong> — желаемая роль (например: Moderator, Senior Media).</li>
+                                    <li><strong>Ваш Discord юз</strong> — твой Discord username (например: username#0000 или @username).</li>
+                                </ol>
+                            </div>
+
+                            <!-- ИНСТРУКЦИЯ (увольнение) -->
+                            <div class="report-instructions hidden" id="leaveInstructions" style="border-left-color: #f87171;">
+                                <div class="title" style="color: #f87171;"><i class="fas fa-circle-info"></i> Как правильно писать рапорт на увольнение</div>
+                                <ol>
+                                    <li><strong>Discord юз</strong> — твой Discord username.</li>
+                                    <li><strong>Имя</strong> — твоё настоящее имя.</li>
+                                    <li><strong>Сколько пробыл на посту</strong> — минимум 7 дней.</li>
+                                    <li><strong>Причина</strong> — по какой причине уходишь с поста.</li>
+                                </ol>
+                            </div>
+
+                            <!-- ИНСТРУКЦИЯ (стать на пост) -->
+                            <div class="report-instructions hidden" id="postInstructions" style="border-left-color: #f5b400;">
+                                <div class="title" style="color: #f5b400;"><i class="fas fa-circle-info"></i> Как правильно писать рапорт на становление на пост</div>
+                                <ol>
+                                    <li><strong>Фото о пройденной инструкции по обязанностям</strong> — загрузи скриншот прямо здесь.</li>
+                                    <li><strong>Фото о пройденной лекции по знанию правил сервера</strong> — загрузи скриншот прямо здесь.</li>
+                                    <li><strong>Имя</strong> — твоё настоящее имя.</li>
+                                    <li><strong>Никнейм в игре</strong> — твой игровой ник на сервере TrapTime.</li>
+                                    <li><strong>Возраст</strong> — сколько тебе полных лет.</li>
+                                    <li><strong>На какой пост</strong> — желаемая роль.</li>
+                                    <li><strong>Ваш Discord юз</strong> — твой Discord username.</li>
+                                </ol>
+                            </div>
+
+                            <form class="report-form" id="reportForm" onsubmit="submitReport(event)">
+
+                                <!-- ФОТО: инструкция -->
+                                <div class="report-field" id="fieldInstr">
+                                    <label><i class="fas fa-image"></i> Фото о пройденной инструкции по обязанностям <span class="required">*</span></label>
+                                    <label class="file-upload" id="uploadInstr">
+                                        <input type="file" id="reportInstr" accept="image/*" multiple>
+                                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                                        <div class="upload-text">Нажми, чтобы выбрать фото</div>
+                                        <div class="upload-hint">Можно несколько фото · JPG, PNG, WEBP</div>
+                                        <div class="file-list" id="listInstr"></div>
+                                    </label>
+                                </div>
+
+                                <!-- ФОТО: лекция -->
+                                <div class="report-field" id="fieldLecture">
+                                    <label><i class="fas fa-image"></i> Фото о пройденной лекции по знанию правил сервера <span class="required">*</span></label>
+                                    <label class="file-upload" id="uploadLecture">
+                                        <input type="file" id="reportLecture" accept="image/*" multiple>
+                                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                                        <div class="upload-text">Нажми, чтобы выбрать фото</div>
+                                        <div class="upload-hint">Можно несколько фото · JPG, PNG, WEBP</div>
+                                        <div class="file-list" id="listLecture"></div>
+                                    </label>
+                                </div>
+
+                                <div class="report-row">
+                                    <div class="report-field">
+                                        <label><i class="fas fa-user"></i> Имя <span class="required">*</span></label>
+                                        <input type="text" id="reportName" placeholder="Иван">
+                                    </div>
+                                    <div class="report-field">
+                                        <label><i class="fas fa-gamepad"></i> Никнейм в игре <span class="required">*</span></label>
+                                        <input type="text" id="reportNick" placeholder="Steve123">
+                                    </div>
+                                </div>
+
+                                <div class="report-row">
+                                    <div class="report-field">
+                                        <label><i class="fas fa-birthday-cake"></i> Возраст <span class="required">*</span></label>
+                                        <input type="number" id="reportAge" placeholder="16" min="10" max="99">
+                                    </div>
+                                    <div class="report-field">
+                                        <label><i class="fab fa-discord"></i> Ваш Discord юз <span class="required">*</span></label>
+                                        <input type="text" id="reportDiscord" placeholder="username#0000 или @username">
+                                    </div>
+                                </div>
+
+                                <!-- Для повышения -->
+                                <div class="report-row" id="rankRow">
+                                    <div class="report-field">
+                                        <label><i class="fas fa-arrow-up-right-from-square"></i> С какого ранга <span class="required">*</span></label>
+                                        <select id="reportFrom">
+                                            <option value="">Выбери ранг</option>
+                                            <option value="Media">Media</option>
+                                            <option value="Senior Media">Senior Media</option>
+                                            <option value="Admin Media">Admin Media</option>
+                                            <option value="Helper">Helper</option>
+                                            <option value="Senior Helper">Senior Helper</option>
+                                            <option value="Moderator">Moderator</option>
+                                            <option value="Senior Moderator">Senior Moderator</option>
+                                            <option value="Head Moderator">Head Moderator</option>
+                                            <option value="Media Curator">Media Curator</option>
+                                            <option value="Curator">Curator</option>
+                                        </select>
+                                    </div>
+                                    <div class="report-field">
+                                        <label><i class="fas fa-arrow-right-to-bracket"></i> По какой ранг <span class="required">*</span></label>
+                                        <select id="reportTo">
+                                            <option value="">Выбери ранг</option>
+                                            <option value="Media">Media</option>
+                                            <option value="Senior Media">Senior Media</option>
+                                            <option value="Admin Media">Admin Media</option>
+                                            <option value="Helper">Helper</option>
+                                            <option value="Senior Helper">Senior Helper</option>
+                                            <option value="Moderator">Moderator</option>
+                                            <option value="Senior Moderator">Senior Moderator</option>
+                                            <option value="Head Moderator">Head Moderator</option>
+                                            <option value="Media Curator">Media Curator</option>
+                                            <option value="Curator">Curator</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Для становления на пост -->
+                                <div class="report-field hidden" id="fieldPost">
+                                    <label><i class="fas fa-user-plus"></i> На какой пост <span class="required">*</span></label>
+                                    <select id="reportPost">
+                                        <option value="">Выбери пост</option>
+                                        <option value="Media">Media</option>
+                                        <option value="Senior Media">Senior Media</option>
+                                        <option value="Admin Media">Admin Media</option>
+                                        <option value="Helper">Helper</option>
+                                        <option value="Senior Helper">Senior Helper</option>
+                                        <option value="Moderator">Moderator</option>
+                                        <option value="Senior Moderator">Senior Moderator</option>
+                                        <option value="Head Moderator">Head Moderator</option>
+                                        <option value="Media Curator">Media Curator</option>
+                                        <option value="Curator">Curator</option>
+                                    </select>
+                                </div>
+
+                                <!-- Для увольнения -->
+                                <div class="report-field hidden" id="fieldLeaveTime">
+                                    <label><i class="fas fa-clock"></i> Сколько пробыл на посту (от 7 дней) <span class="required">*</span></label>
+                                    <input type="text" id="reportLeaveTime" placeholder="Например: 14 дней">
+                                    <div class="report-hint">Минимум 7 дней на посту</div>
+                                </div>
+
+                                <div class="report-field hidden" id="fieldLeaveReason">
+                                    <label><i class="fas fa-comment-dots"></i> Причина увольнения <span class="required">*</span></label>
+                                    <textarea id="reportLeaveReason" placeholder="Опиши причину увольнения..."></textarea>
+                                </div>
+
+                                <button type="submit" class="report-submit" id="reportSubmitBtn">
+                                    <i class="fas fa-paper-plane"></i> Отправить рапорт в Discord
+                                </button>
+                            </form>
+
+                            <div class="report-note">
+                                <i class="fas fa-circle-info"></i>
+                                <div>
+                                    После нажатия кнопки <strong>«Отправить рапорт»</strong> данные и фотографии
+                                    будут отправлены в специальный канал Discord. Если возникли проблемы — напиши куратору в личку.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </main>
+            </div>
+
+            <div class="bottom-btn-wrapper">
+                <button class="bottom-btn" id="bottomToPromote2">
+                    <i class="fas fa-arrow-up"></i> Перейти к повышениям
+                </button>
+            </div>
+
+            <div class="footer">
+                <i class="fas fa-clock"></i> TrapTime · форум · 2026
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ================= FLIGHT OVERLAY ================= -->
+<div id="flightOverlay">
+    <div id="stars"></div>
+    <div class="flight-text">
+        <h2 id="flightTitle">ПОВЫШЕНИЕ</h2>
+        <p id="flightSubtitle">Отправляем заявку...</p>
+    </div>
+    <i class="fas fa-plane airplane" id="airplane"></i>
+    <div class="trail" id="trail"></div>
+    <div class="flight-progress">
+        <div class="flight-progress-bar"></div>
+    </div>
+</div>
+
+<!-- ================= SUCCESS OVERLAY ================= -->
+<div id="successOverlay">
+    <div class="success-rings">
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+    </div>
+    <div class="success-content">
+        <div class="checkmark-circle">
+            <svg class="checkmark" viewBox="0 0 52 52">
+                <path d="M14 27 L22 35 L38 19" />
+            </svg>
+        </div>
+        <div class="success-title">УСПЕШНЫЙ ПЕРЕХОД</div>
+        <div class="success-subtitle">на сайт</div>
+        <div class="success-role" id="successRole">Роль: —</div>
+        <div class="redirect-text">
+            <i class="fas fa-spinner fa-spin"></i>
+            Перенаправление...
+        </div>
+    </div>
+</div>
+
+<script>
+    // ================= PRELOADER =================
+    (function() {
+        const preloader = document.getElementById('preloader');
+        const navbar = document.getElementById('navbar');
+        const percentEl = document.getElementById('loadingPercent');
+        const particlesContainer = document.getElementById('particles');
+
+        for (let i = 0; i < 28; i++) {
+            const p = document.createElement('div');
+            p.classList.add('particle');
+            const size = Math.random() * 6 + 2;
+            p.style.width = size + 'px';
+            p.style.height = size + 'px';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDuration = (Math.random() * 8 + 8) + 's';
+            p.style.animationDelay = (Math.random() * 5) + 's';
+            const colors = ['#b48aff', '#6e9fff', '#ff7eb3', '#a0d0ff'];
+            p.style.background = colors[Math.floor(Math.random() * colors.length)];
+            particlesContainer.appendChild(p);
+        }
+
+        const totalDuration = 14000;
+        const interval = 100;
+        const step = (100 / (totalDuration / interval));
+        let progress = 0;
+
+        const progressTimer = setInterval(() => {
+            progress += step;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(progressTimer);
+                setTimeout(() => {
+                    preloader.classList.add('hidden');
+                    navbar.classList.add('visible');
+                }, 600);
+            }
+            percentEl.textContent = Math.floor(progress) + '%';
+        }, interval);
+    })();
+
+    // ================= НАВИГАЦИЯ =================
+    const navTabs = document.querySelectorAll('.nav-tab');
+    const views = {
+        home: document.getElementById('view-home'),
+        forum: document.getElementById('view-forum')
+    };
+
+    function switchView(viewName) {
+        navTabs.forEach(t => t.classList.toggle('active', t.getAttribute('data-view') === viewName));
+        Object.keys(views).forEach(k => views[k].classList.toggle('active', k === viewName));
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function switchForumView(fview) {
+        document.querySelectorAll('.forum-tab').forEach(t => t.classList.toggle('active', t.dataset.fview === fview));
+        document.querySelectorAll('.forum-view').forEach(v => v.classList.toggle('active', v.id === 'fview-' + fview));
+    }
+
+    navTabs.forEach(tab => {
+        tab.addEventListener('click', () => switchView(tab.getAttribute('data-view')));
+    });
+
+    document.getElementById('navLogo').addEventListener('click', () => switchView('home'));
+    document.getElementById('bottomToPromote').addEventListener('click', () => switchView('home'));
+    document.getElementById('bottomToPromote2').addEventListener('click', () => switchView('home'));
+
+    // ================= ФОРУМ =================
+    document.querySelectorAll('.forum-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            switchForumView(tab.dataset.fview);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    });
+
+    // ================= STARS =================
+    (function() {
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 60; i++) {
+            const s = document.createElement('div');
+            s.classList.add('star');
+            const size = Math.random() * 3 + 1;
+            s.style.width = size + 'px';
+            s.style.height = size + 'px';
+            s.style.left = Math.random() * 100 + '%';
+            s.style.top = Math.random() * 100 + '%';
+            s.style.animationDelay = (Math.random() * 2) + 's';
+            s.style.animationDuration = (Math.random() * 1.5 + 1.5) + 's';
+            starsContainer.appendChild(s);
+        }
+    })();
+
+    // ================= ПОВЫШЕНИЯ =================
+    document.querySelectorAll('.card-promote-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const role = this.getAttribute('data-role');
+            switchView('forum');
+            switchForumView('report');
+            setReportType('promote');
+
+            const reportTo = document.getElementById('reportTo');
+            if (reportTo) reportTo.value = role;
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    });
+
+    // ================= ТИПЫ РАПОРТА =================
+    let currentReportType = 'promote';
+
+    function setReportType(type) {
+        currentReportType = type;
+
+        document.querySelectorAll('.report-type').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.type === type);
+        });
+
+        const fieldInstr = document.getElementById('fieldInstr');
+        const fieldLecture = document.getElementById('fieldLecture');
+        const fieldPost = document.getElementById('fieldPost');
+        const rankRow = document.getElementById('rankRow');
+        const fieldLeaveTime = document.getElementById('fieldLeaveTime');
+        const fieldLeaveReason = document.getElementById('fieldLeaveReason');
+
+        const instrBlock = document.getElementById('reportInstructions');
+        const leaveInstrBlock = document.getElementById('leaveInstructions');
+        const postInstrBlock = document.getElementById('postInstructions');
+
+        document.getElementById('reportInstr').required = false;
+        document.getElementById('reportLecture').required = false;
+        document.getElementById('reportFrom').required = false;
+        document.getElementById('reportTo').required = false;
+        document.getElementById('reportPost').required = false;
+        document.getElementById('reportLeaveTime').required = false;
+        document.getElementById('reportLeaveReason').required = false;
+
+        if (type === 'promote') {
+            fieldInstr.classList.remove('hidden');
+            fieldLecture.classList.remove('hidden');
+            rankRow.classList.remove('hidden');
+            fieldPost.classList.add('hidden');
+            fieldLeaveTime.classList.add('hidden');
+            fieldLeaveReason.classList.add('hidden');
+
+            instrBlock.classList.remove('hidden');
+            leaveInstrBlock.classList.add('hidden');
+            postInstrBlock.classList.add('hidden');
+
+            document.getElementById('reportInstr').required = true;
+            document.getElementById('reportLecture').required = true;
+            document.getElementById('reportFrom').required = true;
+            document.getElementById('reportTo').required = true;
+
+        } else if (type === 'post') {
+            fieldInstr.classList.remove('hidden');
+            fieldLecture.classList.remove('hidden');
+            rankRow.classList.add('hidden');
+            fieldPost.classList.remove('hidden');
+            fieldLeaveTime.classList.add('hidden');
+            fieldLeaveReason.classList.add('hidden');
+
+            instrBlock.classList.add('hidden');
+            leaveInstrBlock.classList.add('hidden');
+            postInstrBlock.classList.remove('hidden');
+
+            document.getElementById('reportInstr').required = true;
+            document.getElementById('reportLecture').required = true;
+            document.getElementById('reportPost').required = true;
+
+        } else if (type === 'leave') {
+            fieldInstr.classList.add('hidden');
+            fieldLecture.classList.add('hidden');
+            rankRow.classList.add('hidden');
+            fieldPost.classList.add('hidden');
+            fieldLeaveTime.classList.remove('hidden');
+            fieldLeaveReason.classList.remove('hidden');
+
+            instrBlock.classList.add('hidden');
+            leaveInstrBlock.classList.remove('hidden');
+            postInstrBlock.classList.add('hidden');
+
+            document.getElementById('reportLeaveTime').required = true;
+            document.getElementById('reportLeaveReason').required = true;
+        }
+    }
+
+    document.querySelectorAll('.report-type').forEach(btn => {
+        btn.addEventListener('click', () => setReportType(btn.dataset.type));
+    });
+
+    // ================= ПРЕВЬЮ ФАЙЛОВ =================
+    function bindFilePreview(inputId, listId, uploadId) {
+        const input = document.getElementById(inputId);
+        const list = document.getElementById(listId);
+        const upload = document.getElementById(uploadId);
+
+        if (!input) return;
+
+        input.addEventListener('change', () => {
+            list.innerHTML = '';
+            const files = Array.from(input.files);
+            if (files.length === 0) {
+                upload.classList.remove('has-files');
+                return;
+            }
+            upload.classList.add('has-files');
+            files.forEach(f => {
+                const item = document.createElement('div');
+                item.className = 'file-item';
+                item.innerHTML = `<i class="fas fa-check-circle"></i> <span>${f.name}</span>`;
+                list.appendChild(item);
+            });
+        });
+    }
+
+    bindFilePreview('reportInstr', 'listInstr', 'uploadInstr');
+    bindFilePreview('reportLecture', 'listLecture', 'uploadLecture');
+
+    // ================= ОТПРАВКА РАПОРТА =================
+    const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1556993048309923941/G62oMDQK8BWNlwF9obxqqzzqSkOGdKb2ngq93Xg6YExKPzPqkTrL0iwm89s_ynnht3E1';
+    const DEVELOPER_ID = '1554060822416855120';
+
+    async function submitReport(event) {
+        event.preventDefault();
+
+        const name = document.getElementById('reportName').value.trim();
+        const nick = document.getElementById('reportNick').value.trim();
+        const age = document.getElementById('reportAge').value.trim();
+        const discord = document.getElementById('reportDiscord').value.trim();
+
+        if (!name || !nick || !age || !discord) {
+            showReportToast('error', 'Заполни все обязательные поля!');
+            return;
+        }
+
+        let embed;
+        const files = [];
+
+        if (currentReportType === 'promote') {
+            const instrInput = document.getElementById('reportInstr');
+            const lectureInput = document.getElementById('reportLecture');
+            const fromRank = document.getElementById('reportFrom').value;
+            const toRank = document.getElementById('reportTo').value;
+
+            if (!instrInput.files.length || !lectureInput.files.length || !fromRank || !toRank) {
+                showReportToast('error', 'Заполни все поля и прикрепи фото!');
+                return;
+            }
+
+            Array.from(instrInput.files).forEach(f => files.push({ file: f, name: `instr_${f.name}` }));
+            Array.from(lectureInput.files).forEach(f => files.push({ file: f, name: `lecture_${f.name}` }));
+
+            embed = {
+                title: "🚀 Рапорт · Повыситься",
+                color: 0x10b981,
+                description: `**Отправитель:** <@${DEVELOPER_ID}>\n**Дата:** ${new Date().toLocaleString('ru-RU')}`,
+                fields: [
+                    { name: "👤 Имя", value: name, inline: false },
+                    { name: "🎮 Никнейм", value: nick, inline: false },
+                    { name: "🎂 Возраст", value: age, inline: false },
+                    { name: "📤 С какого ранга", value: fromRank, inline: false },
+                    { name: "📥 По какой ранг", value: toRank, inline: false },
+                    { name: "💬 Discord", value: discord, inline: false },
+                    { name: "📸 Фото инструкции", value: `${instrInput.files.length} шт. (см. вложения)`, inline: false },
+                    { name: "📚 Фото лекции", value: `${lectureInput.files.length} шт. (см. вложения)`, inline: false }
+                ],
+                footer: { text: "TrapTime · Рапорт на повышение" },
+                timestamp: new Date().toISOString()
+            };
+
+        } else if (currentReportType === 'post') {
+            const instrInput = document.getElementById('reportInstr');
+            const lectureInput = document.getElementById('reportLecture');
+            const post = document.getElementById('reportPost').value;
+
+            if (!instrInput.files.length || !lectureInput.files.length || !post) {
+                showReportToast('error', 'Заполни все поля и прикрепи фото!');
+                return;
+            }
+
+            Array.from(instrInput.files).forEach(f => files.push({ file: f, name: `instr_${f.name}` }));
+            Array.from(lectureInput.files).forEach(f => files.push({ file: f, name: `lecture_${f.name}` }));
+
+            embed = {
+                title: "🌟 Рапорт · Стать на пост",
+                color: 0xf5b400,
+                description: `**Отправитель:** <@${DEVELOPER_ID}>\n**Дата:** ${new Date().toLocaleString('ru-RU')}`,
+                fields: [
+                    { name: "👤 Имя", value: name, inline: false },
+                    { name: "🎮 Никнейм", value: nick, inline: false },
+                    { name: "🎂 Возраст", value: age, inline: false },
+                    { name: "🎯 На какой пост", value: post, inline: false },
+                    { name: "💬 Discord", value: discord, inline: false },
+                    { name: "📸 Фото инструкции", value: `${instrInput.files.length} шт. (см. вложения)`, inline: false },
+                    { name: "📚 Фото лекции", value: `${lectureInput.files.length} шт. (см. вложения)`, inline: false }
+                ],
+                footer: { text: "TrapTime · Рапорт на становление" },
+                timestamp: new Date().toISOString()
+            };
+
+        } else if (currentReportType === 'leave') {
+            const leaveTime = document.getElementById('reportLeaveTime').value.trim();
+            const leaveReason = document.getElementById('reportLeaveReason').value.trim();
+
+            if (!leaveTime || !leaveReason) {
+                showReportToast('error', 'Заполни все поля рапорта!');
+                return;
+            }
+
+            embed = {
+                title: "🚪 Рапорт · Уволиться",
+                color: 0xf87171,
+                description: `**Отправитель:** <@${DEVELOPER_ID}>\n**Дата:** ${new Date().toLocaleString('ru-RU')}`,
+                fields: [
+                    { name: "💬 Discord", value: discord, inline: false },
+                    { name: "👤 Имя", value: name, inline: false },
+                    { name: "⏳ Сколько пробыл на посту", value: leaveTime, inline: false },
+                    { name: "📝 Причина увольнения", value: leaveReason, inline: false }
+                ],
+                footer: { text: "TrapTime · Рапорт на увольнение" },
+                timestamp: new Date().toISOString()
+            };
+        }
+
+        const formData = new FormData();
+        formData.append('payload_json', JSON.stringify({
+            username: "TrapTime · Рапорты",
+            content: `<@${DEVELOPER_ID}> — новый рапорт!`,
+            embeds: [embed]
+        }));
+
+        files.forEach((f, i) => {
+            formData.append(`files[${i}]`, f.file, f.name);
+        });
+
+        const submitBtn = document.getElementById('reportSubmitBtn');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+
+        try {
+            const response = await fetch(DISCORD_WEBHOOK_URL, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                showReportToast('success', 'Рапорт успешно отправлен в Discord!');
+                document.getElementById('reportForm').reset();
+                document.getElementById('listInstr').innerHTML = '';
+                document.getElementById('listLecture').innerHTML = '';
+                document.getElementById('uploadInstr').classList.remove('has-files');
+                document.getElementById('uploadLecture').classList.remove('has-files');
+                setReportType(currentReportType);
+            } else {
+                showReportToast('error', 'Ошибка отправки. Проверь вебхук.');
+            }
+        } catch (e) {
+            console.error(e);
+            showReportToast('error', 'Ошибка соединения с Discord.');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+        }
+    }
+
+    // ================= ЗАПРОС НА ЛЕКЦИЮ =================
+    const LECTURE_WEBHOOK_URL = 'https://discord.com/api/webhooks/1557358230961786951/c_nezeXcrmoK3fKgZxDIdSn0o6W4nnXyQtMR7oESdao16hWAnv1uSeC8N6j8GSNNZkC7';
+
+    async function submitLecture(event) {
+        event.preventDefault();
+
+        const discord = document.getElementById('lectureDiscord').value.trim();
+        const rank = document.getElementById('lectureRank').value;
+        const time = document.getElementById('lectureTime').value;
+        const day = document.getElementById('lectureDay').value;
+
+        if (!discord || !rank || !time || !day) {
+            showReportToast('error', 'Заполни все поля запроса!');
+            return;
+        }
+
+        const embed = {
+            title: "📚 Запрос на лекцию",
+            color: 0xa855f7,
+            description: `**Дата:** ${new Date().toLocaleString('ru-RU')}`,
+            fields: [
+                { name: "💬 Ваш Discord", value: discord, inline: false },
+                { name: "🎯 Ваш ранг / На кого хотите поступить", value: rank, inline: false },
+                { name: "🕐 Во сколько готовы пройти лекцию", value: time, inline: false },
+                { name: "📅 Когда готовы пройти лекцию", value: day, inline: false }
+            ],
+            footer: { text: "TrapTime · Запрос на лекцию" },
+            timestamp: new Date().toISOString()
+        };
+
+        const submitBtn = document.getElementById('lectureSubmitBtn');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+
+        try {
+            const response = await fetch(LECTURE_WEBHOOK_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    username: "TrapTime · Запросы на лекцию",
+                    embeds: [embed]
+                })
+            });
+
+            if (response.ok) {
+                showReportToast('success', 'Запрос на лекцию отправлен в Discord!');
+                document.getElementById('lectureForm').reset();
+            } else {
+                showReportToast('error', 'Ошибка отправки. Проверь вебхук.');
+            }
+        } catch (e) {
+            console.error(e);
+            showReportToast('error', 'Ошибка соединения с Discord.');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+        }
+    }
+
+    // ================= ТОСТ =================
+    function showReportToast(type, message) {
+        const toast = document.createElement('div');
+        toast.style.cssText = `
+            position: fixed; bottom: 30px; right: 30px;
+            background: #161a22; color: #eaeef2;
+            border-left: 4px solid ${type === 'success' ? '#10b981' : '#f87171'};
+            padding: 1rem 1.5rem; border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            font-family: Inter, sans-serif; font-size: 0.9rem; font-weight: 600;
+            z-index: 100000;
+            animation: slideInToast 0.3s ease;
+        `;
+        toast.textContent = message;
+        document.body.appendChild(toast);
+
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInToast {
+                from { transform: translateX(400px); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        setTimeout(() => {
+            toast.style.transition = '0.3s';
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(400px)';
+            setTimeout(() => toast.remove(), 300);
+        }, 3500);
+    }
+</script>
+</body>
+</html>

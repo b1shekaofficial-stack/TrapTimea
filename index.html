@@ -82,8 +82,6 @@ body{font-family:'Inter',sans-serif;background:#0e0e14;color:#eaeef2;line-height
 .card-promote-btn:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 14px 30px rgba(139,92,246,.6)}
 .note{font-size:.85rem;background:#1e222b;padding:1rem 1.5rem;border-radius:1.5rem;color:#a6b2c9;border-left:6px solid #b48aff;margin-top:2rem;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
 .note i{font-size:1.4rem;color:#b48aff}
-.note.mod-note{border-left-color:#6e9fff}
-.note.mod-note i{color:#6e9fff}
 .forum-header{text-align:center;margin-bottom:2rem}
 .forum-header h1{font-size:2.8rem;font-weight:700;background:linear-gradient(135deg,#6e9fff,#b48aff,#ff7eb3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.5rem}
 .forum-header .sub{color:#9aa4b5;font-size:1.05rem}
@@ -91,14 +89,12 @@ body{font-family:'Inter',sans-serif;background:#0e0e14;color:#eaeef2;line-height
 .forum-sidebar{background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:.75rem;position:sticky;top:100px}
 .forum-sidebar-title{font-size:.75rem;color:#6a7689;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.6rem 1rem .5rem}
 .forum-tab{display:flex;align-items:center;gap:.75rem;width:100%;padding:.85rem 1rem;font-family:'Inter',sans-serif;font-size:.92rem;font-weight:600;color:#9aa4b5;background:transparent;border:none;border-radius:12px;cursor:pointer;transition:all .2s ease;text-align:left;margin-bottom:.25rem}
-.forum-tab i{font-size:1rem;width:20px;text-align:center;color:#7a8699;transition:color .2s ease}
+.forum-tab i{font-size:1rem;width:20px;text-align:center;color:#7a8699}
 .forum-tab:hover{color:#eaeef2;background:#1f2531}
 .forum-tab:hover i{color:#b48aff}
 .forum-tab.active{color:#fff;background:linear-gradient(135deg,rgba(139,92,246,.25),rgba(110,159,255,.2));border:1px solid rgba(139,92,246,.5)}
 .forum-tab.active i{color:#b48aff}
 .forum-content{min-width:0}
-.forum-view{display:none}
-.forum-view.active{display:block}
 .chat-layout{display:grid;grid-template-columns:1fr 280px;gap:1.5rem;align-items:start}
 .chat-main{background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;overflow:hidden;display:flex;flex-direction:column;height:70vh;min-height:500px;position:relative}
 .chat-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid #232a36;background:linear-gradient(135deg,rgba(139,92,246,.1),rgba(110,159,255,.05))}
@@ -170,6 +166,10 @@ body{font-family:'Inter',sans-serif;background:#0e0e14;color:#eaeef2;line-height
 .report-field input:focus,.report-field select:focus,.report-field textarea:focus{outline:none;border-color:#8b5cf6;box-shadow:0 0 0 3px rgba(139,92,246,.15)}
 .report-field textarea{resize:vertical;min-height:70px}
 .report-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.day-picker{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.day-btn{flex:1;min-width:50px;padding:10px 8px;border-radius:10px;border:2px solid #272e3a;background:#0e1219;color:#9aa4b5;font-family:'Inter',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .2s}
+.day-btn:hover{border-color:#8b5cf6;color:#d4dae8}
+.day-btn.active{border-color:#a855f7;background:linear-gradient(135deg,rgba(168,85,247,.25),rgba(139,92,246,.15));color:#c084fc;box-shadow:0 6px 18px rgba(168,85,247,.3)}
 .toast-container{position:fixed;top:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px}
 .toast{background:#161a22;border:1px solid #272e3a;border-left:4px solid #b48aff;border-radius:12px;padding:14px 18px;min-width:260px;box-shadow:0 10px 30px rgba(0,0,0,.6);animation:toastIn .3s ease;font-size:.85rem;color:#eaeef2}
 .toast.success{border-left-color:#10b981}
@@ -347,9 +347,18 @@ body{font-family:'Inter',sans-serif;background:#0e0e14;color:#eaeef2;line-height
             <div class="form-group"><label>Ваш Discord</label><input type="text" id="lDiscord" placeholder="@username" required></div>
             <div class="form-group"><label>Ваш ранг / на кого хотите поступить</label><select id="lRank" required><option value="">Выбери</option><option>Media</option><option>Senior Media</option><option>Admin Media</option><option>Helper</option><option>Senior Helper</option><option>Moderator</option><option>Senior Moderator</option><option>Head Moderator</option><option>Media Curator</option><option>Curator</option></select></div>
             <div class="report-row">
-                <div class="form-group"><label>Во сколько</label><input type="time" id="lTime" required></div>
-                <div class="form-group"><label>Когда</label><select id="lDay" required><option value="">Выбери</option><option>Понедельник</option><option>Вторник</option><option>Среда</option><option>Четверг</option><option>Пятница</option><option>Суббота</option><option>Воскресенье</option></select></div>
+                <div class="form-group"><label>Во сколько (время)</label><input type="time" id="lTime" required></div>
+                <div class="form-group"><label>Когда (день)</label><input type="hidden" id="lDay" required></div>
             </div>
+            <div class="form-group"><label>Выбери день недели</label><div class="day-picker" id="lDayPicker">
+                <button type="button" class="day-btn" data-day="Понедельник" onclick="selectDay(this)">Пн</button>
+                <button type="button" class="day-btn" data-day="Вторник" onclick="selectDay(this)">Вт</button>
+                <button type="button" class="day-btn" data-day="Среда" onclick="selectDay(this)">Ср</button>
+                <button type="button" class="day-btn" data-day="Четверг" onclick="selectDay(this)">Чт</button>
+                <button type="button" class="day-btn" data-day="Пятница" onclick="selectDay(this)">Пт</button>
+                <button type="button" class="day-btn" data-day="Суббота" onclick="selectDay(this)">Сб</button>
+                <button type="button" class="day-btn" data-day="Воскресенье" onclick="selectDay(this)">Вс</button>
+            </div></div>
             <button type="submit" class="modal-save-btn" id="lectureSubmitBtn"><i class="fas fa-paper-plane"></i> Отправить запрос</button>
         </form>
     </div>
@@ -358,12 +367,12 @@ body{font-family:'Inter',sans-serif;background:#0e0e14;color:#eaeef2;line-height
 <div class="toast-container" id="toastContainer"></div>
 
 <script>
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx9x974QRvJ8ibSnW_MEjNOT_h31nOEtPGqSVkz9O_xTb2za7i-h6DzpIpQp0xRg37i/exec';
-const REPORT_WEBHOOK = 'https://discord.com/api/webhooks/1556993048309923941/G62oMDQK8BWNlwF9obxqqzzqSkOGdKb2ngq93Xg6YExKPzPqkTrL0iwm89s_ynnht3E1';
-const LECTURE_WEBHOOK = 'https://discord.com/api/webhooks/1557358230961786951/c_nezeXcrmoK3fKgZxDIdSn0o6W4nnXyQtMR7oESdao16hWAnv1uSeC8N6j8GSNNZkC7';
-const DEVELOPER_ID = '1554060822416855120';
-const LS_USERS = 'traptime_users';
-const LS_SESSION = 'traptime_session';
+const GOOGLE_SCRIPT_URL='https://script.google.com/macros/s/AKfycbx9x974QRvJ8ibSnW_MEjNOT_h31nOEtPGqSVkz9O_xTb2za7i-h6DzpIpQp0xRg37i/exec';
+const REPORT_WEBHOOK='https://discord.com/api/webhooks/1556993048309923941/G62oMDQK8BWNlwF9obxqqzzqSkOGdKb2ngq93Xg6YExKPzPqkTrL0iwm89s_ynnht3E1';
+const LECTURE_WEBHOOK='https://discord.com/api/webhooks/1557358230961786951/c_nezeXcrmoK3fKgZxDIdSn0o6W4nnXyQtMR7oESdao16hWAnv1uSeC8N6j8GSNNZkC7';
+const DEVELOPER_ID='1554060822416855120';
+const LS_USERS='traptime_users';
+const LS_SESSION='traptime_session';
 
 function getUsers(){try{return JSON.parse(localStorage.getItem(LS_USERS))||{}}catch(e){return{}}}
 function saveUsers(u){localStorage.setItem(LS_USERS,JSON.stringify(u))}
@@ -466,12 +475,12 @@ function switchView(view){
 }
 
 const FORUM_CONTENT={
-    schedule:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:1.5rem"><h3 style="margin-bottom:1rem"><i class="fas fa-clock" style="color:#b48aff"></i> Расписание рассмотрения</h3><div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;min-width:600px"><thead><tr style="background:#1f2531"><th style="padding:.7rem;border:1px solid #2a3140;text-align:left;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">День</th><th style="padding:.7rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">10:00</th><th style="padding:.7rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">13:00</th><th style="padding:.7rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">15:30</th><th style="padding:.7rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">16:30</th><th style="padding:.7rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">20:00</th></tr></thead><tbody><tr><td style="padding:.7rem;border:1px solid #232a36;font-weight:600;background:#191e29">Понедельник</td><td style="padding:.7rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td></tr><tr><td style="padding:.7rem;border:1px solid #232a36;font-weight:600;background:#191e29">Вт–Вс</td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-mod">MOD</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-mod">MOD</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td></tr></tbody></table></div></div>',
+    schedule:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:1.5rem"><h3 style="margin-bottom:1rem;color:#eaeef2"><i class="fas fa-clock" style="color:#b48aff"></i> Расписание рассмотрения</h3><div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;min-width:600px"><thead><tr style="background:#1f2531"><th style="padding:.7rem;border:1px solid #2a3140;text-align:left;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">День</th><th style="padding:.7rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">10:00</th><th style="padding:.7rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">13:00</th><th style="padding:.7rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">15:30</th><th style="padding:.7rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">16:30</th><th style="padding:.7rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">20:00</th></tr></thead><tbody><tr><td style="padding:.7rem;border:1px solid #232a36;font-weight:600;background:#191e29;color:#eaeef2">Понедельник</td><td style="padding:.7rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td></tr><tr><td style="padding:.7rem;border:1px solid #232a36;font-weight:600;background:#191e29;color:#eaeef2">Вт–Вс</td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-mod">MOD</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-mod">MOD</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td></tr></tbody></table></div></div>',
     rules:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1rem;color:#eaeef2"><i class="fas fa-scroll" style="color:#b48aff"></i> Правила сервера</h2><p style="color:#b1bbcf;line-height:1.7">Полные правила доступны в Discord-канале #правила. Незнание правил не освобождает от ответственности.</p></div>',
     about:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1rem;color:#eaeef2"><i class="fas fa-info-circle" style="color:#b48aff"></i> О сервере TrapTime</h2><p style="color:#b1bbcf;margin-bottom:.7rem;line-height:1.7">🎮 ГРИФ СЕРВЕР с приватом территорий.</p><p style="color:#b1bbcf;line-height:1.7">Строй, грабь, защищай своё и захватывай чужое. Приват защищает постройки от гриферства, но лаг-машины строго запрещены.</p></div>',
     staff:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1.5rem;color:#eaeef2"><i class="fas fa-users-gear" style="color:#b48aff"></i> Состав команды</h2><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #f5b400;border-radius:14px;padding:1.2rem;margin-bottom:1rem"><div style="font-weight:700;color:#f5b400;margin-bottom:.7rem">👑 Руководство</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">👑 B1shechka</span><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">👑 Boba2020</span><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">👑 rip_RNdracon</span></div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #a855f7;border-radius:14px;padding:1.2rem;margin-bottom:1rem"><div style="font-weight:700;color:#c084fc;margin-bottom:.7rem">🎓 Учебное руководство</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">🎓 B1shechka</span><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">🎓 Maks_Delovoy</span></div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #6e9fff;border-radius:14px;padding:1.2rem;margin-bottom:1rem"><div style="font-weight:700;color:#6e9fff;margin-bottom:.7rem">⭐ Старший хелпер</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">⭐ Maks_Delovoy</span></div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #34d399;border-radius:14px;padding:1.2rem;margin-bottom:1rem"><div style="font-weight:700;color:#34d399;margin-bottom:.7rem">🛡️ Хелперы</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">🛡️ WospinPlay</span></div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #ff7eb3;border-radius:14px;padding:1.2rem"><div style="font-weight:700;color:#ff8dc7;margin-bottom:.7rem">🎬 Медиа</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">🎬 Vaxmi555</span></div></div></div>',
-    lecture:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1rem;color:#eaeef2"><i class="fas fa-graduation-cap" style="color:#a855f7"></i> Запрос на лекцию</h2><p style="color:#b1bbcf;margin-bottom:1.5rem;line-height:1.7">Заполни форму, чтобы запросить лекцию по правилам или инструктаж по обязанностям. Учебное руководство свяжется с тобой.</p><button class="modal-save-btn" onclick="openLecture()" style="max-width:250px"><i class="fas fa-paper-plane"></i> Открыть форму</button></div>',
-    report:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1rem;color:#eaeef2"><i class="fas fa-file-signature" style="color:#b48aff"></i> Рапорт</h2><p style="color:#b1bbcf;margin-bottom:1.5rem;line-height:1.7">Подай рапорт на повышение, становление на пост или увольнение. Рапорт отправится в Discord.</p><button class="modal-save-btn" onclick="openReport()" style="max-width:250px"><i class="fas fa-paper-plane"></i> Открыть форму рапорта</button></div>'
+    lecture:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1rem;color:#eaeef2"><i class="fas fa-graduation-cap" style="color:#a855f7"></i> Запрос на лекцию</h2><p style="color:#b1bbcf;margin-bottom:1.5rem;line-height:1.7">Заполни форму, чтобы запросить лекцию по правилам или инструктаж по обязанностям.</p><button class="modal-save-btn" onclick="openLecture()" style="max-width:250px"><i class="fas fa-paper-plane"></i> Открыть форму</button></div>',
+    report:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1rem;color:#eaeef2"><i class="fas fa-file-signature" style="color:#b48aff"></i> Рапорт</h2><p style="color:#b1bbcf;margin-bottom:1.5rem;line-height:1.7">Подай рапорт на повышение, становление на пост или увольнение.</p><button class="modal-save-btn" onclick="openReport()" style="max-width:250px"><i class="fas fa-paper-plane"></i> Открыть форму рапорта</button></div>'
 };
 
 function switchForumView(view){
@@ -493,18 +502,30 @@ function closeProfile(){document.getElementById('profileModal').classList.remove
 function changeAvatar(e){
     const file=e.target.files[0];
     if(!file)return;
-    if(file.size>500*1024)return showToast('Аватарка макс 500KB','error');
+    if(file.size>2*1024*1024)return showToast('Аватарка макс 2MB','error');
     const reader=new FileReader();
     reader.onload=(ev)=>{
-        currentUser.avatar=ev.target.result;
-        const users=getUsers();
-        if(users[currentUser.username.toLowerCase()]){
-            users[currentUser.username.toLowerCase()].avatar=ev.target.result;
-            saveUsers(users);
-        }
-        document.getElementById('profileAvatarBig').innerHTML='<img src="'+ev.target.result+'">';
-        updateNavbar();
-        showToast('Аватарка обновлена','success');
+        const img=new Image();
+        img.onload=()=>{
+            const canvas=document.createElement('canvas');
+            const maxSize=64;
+            let w=img.width,h=img.height;
+            if(w>h){h=Math.round(h*maxSize/w);w=maxSize}else{w=Math.round(w*maxSize/h);h=maxSize}
+            canvas.width=w;canvas.height=h;
+            const ctx=canvas.getContext('2d');
+            ctx.drawImage(img,0,0,w,h);
+            const compressed=canvas.toDataURL('image/jpeg',0.7);
+            currentUser.avatar=compressed;
+            const users=getUsers();
+            if(users[currentUser.username.toLowerCase()]){
+                users[currentUser.username.toLowerCase()].avatar=compressed;
+                saveUsers(users);
+            }
+            document.getElementById('profileAvatarBig').innerHTML='<img src="'+compressed+'">';
+            updateNavbar();
+            showToast('Аватарка обновлена','success');
+        };
+        img.src=ev.target.result;
     };
     reader.readAsDataURL(file);
 }
@@ -536,7 +557,6 @@ let chatInterval=null;
 let lastMsgCount=0;
 
 async function loadChatMessages(){
-    if(!GOOGLE_SCRIPT_URL)return;
     try{
         const r=await fetch(GOOGLE_SCRIPT_URL+'?action=getMessages');
         const msgs=await r.json();
@@ -548,9 +568,9 @@ function renderMessages(msgs){
     const c=document.getElementById('chatMessages');if(!c)return;
     if(!msgs.length){c.innerHTML='<div style="text-align:center;color:#5a6478;font-size:.9rem;padding:2rem">Пока нет сообщений. Будь первым!</div>';return}
     c.innerHTML=msgs.map(m=>{
-        const avatar=m.avatar?'<img src="'+m.avatar+'">':m.user.charAt(0).toUpperCase();
+        const avatar=m.avatar?'<img src="'+m.avatar+'">':(m.user||'?').charAt(0).toUpperCase();
         const avatarClass=m.avatar?'':(m.color||'av-1');
-        return '<div class="chat-message"><div class="msg-avatar '+avatarClass+'">'+avatar+'</div><div class="msg-body"><div class="msg-head"><span class="msg-name">'+escapeHtml(m.user)+'</span><span class="msg-time">'+formatTime(m.time)+'</span></div><div class="msg-text">'+escapeHtml(m.text)+'</div></div></div>';
+        return '<div class="chat-message"><div class="msg-avatar '+avatarClass+'">'+avatar+'</div><div class="msg-body"><div class="msg-head"><span class="msg-name">'+escapeHtml(m.user||'')+'</span><span class="msg-time">'+formatTime(m.time)+'</span></div><div class="msg-text">'+escapeHtml(m.text||'')+'</div></div></div>';
     }).join('');
     c.scrollTop=c.scrollHeight;
 }
@@ -566,12 +586,12 @@ async function sendChatMessage(){
     input.value='';
     const data={user:currentUser.username,rank:currentUser.rank||'player',avatar:currentUser.avatar||'',color:currentUser.color||'av-1',text:text};
     try{
-        await fetch(GOOGLE_SCRIPT_URL+'?action=sendMessage&data='+encodeURIComponent(JSON.stringify(data)));
-        loadChatMessages();
+        await fetch(GOOGLE_SCRIPT_URL+'?action=sendMessage&data='+encodeURIComponent(JSON.stringify(data)),{mode:'no-cors'});
+        setTimeout(loadChatMessages,800);
     }catch(e){showToast('Ошибка отправки','error')}
 }
 
-const EMOJIS=['😀','😂','🥰','😎','🤔','😴','🤯','🥳','😭','😡','👍','👎','❤️','🔥','✨','💯','🎉','🎮','🏆','⚡','💎','👑','🌸','🎬','🛡️','⚔️','📜','📢','💬','🤝','🙏','😅','🤣','😍','🤩','😇','🥺','😤','🤝','✌️','👋','🫡'];
+const EMOJIS=['😀','😂','🥰','😎','🤔','😴','🤯','🥳','😭','😡','👍','👎','❤️','🔥','✨','💯','🎉','🎮','🏆','⚡','💎','👑','🌸','🎬','🛡️','⚔️','📜','📢','💬','🤝','🙏','😅','🤣','😍','🤩','😇','🥺','😤','✌️','👋','🫡'];
 
 function toggleEmojiPicker(){
     const p=document.getElementById('emojiPicker');if(!p)return;
@@ -590,7 +610,7 @@ function toggleEmojiPicker(){
     p.style.zIndex='10';
     p.style.maxWidth='320px';
     if(!p.dataset.filled){
-        p.innerHTML=EMOJIS.map(e=>'<button type="button" onclick="insertEmoji(\''+e+'\')" style="background:transparent;border:none;font-size:1.2rem;cursor:pointer;padding:4px;border-radius:8px;transition:background .2s" onmouseover="this.style.background=\'#1f2531\'" onmouseout="this.style.background=\'transparent\'">'+e+'</button>').join('');
+        p.innerHTML=EMOJIS.map(e=>'<button type="button" onclick="insertEmoji(\''+e+'\')" style="background:transparent;border:none;font-size:1.2rem;cursor:pointer;padding:4px;border-radius:8px">'+e+'</button>').join('');
         p.dataset.filled='1';
     }
 }
@@ -602,7 +622,6 @@ function insertEmoji(e){
 }
 
 async function loadOnline(){
-    if(!GOOGLE_SCRIPT_URL)return;
     try{
         const r=await fetch(GOOGLE_SCRIPT_URL+'?action=getOnline');
         const users=await r.json();
@@ -612,9 +631,9 @@ async function loadOnline(){
         if(!list)return;
         if(!users.length){list.innerHTML='<div style="text-align:center;color:#5a6478;font-size:.85rem;padding:1rem">Никого нет</div>';return}
         list.innerHTML=users.map(u=>{
-            const av=u.avatar?'<img src="'+u.avatar+'">':u.user.charAt(0).toUpperCase();
+            const av=u.avatar?'<img src="'+u.avatar+'">':(u.user||'?').charAt(0).toUpperCase();
             const avClass=u.avatar?'':(u.color||'av-1');
-            return '<div class="online-user"><div class="ou-avatar '+avClass+'">'+av+'</div><span class="ou-name">'+escapeHtml(u.user)+'</span></div>';
+            return '<div class="online-user"><div class="ou-avatar '+avClass+'">'+av+'</div><span class="ou-name">'+escapeHtml(u.user||'')+'</span></div>';
         }).join('');
     }catch(e){}
 }
@@ -626,9 +645,9 @@ function startHeartbeat(){
 }
 
 async function sendHeartbeat(){
-    if(!currentUser||!GOOGLE_SCRIPT_URL)return;
+    if(!currentUser)return;
     const data={user:currentUser.username,rank:currentUser.rank||'player',avatar:currentUser.avatar||'',color:currentUser.color||'av-1'};
-    try{await fetch(GOOGLE_SCRIPT_URL+'?action=heartbeat&data='+encodeURIComponent(JSON.stringify(data)))}catch(e){}
+    try{await fetch(GOOGLE_SCRIPT_URL+'?action=heartbeat&data='+encodeURIComponent(JSON.stringify(data)),{mode:'no-cors'})}catch(e){}
 }
 
 let reportType='promote';
@@ -710,6 +729,12 @@ function openLecture(){
 }
 function closeLecture(){document.getElementById('lectureModal').classList.remove('active')}
 
+function selectDay(btn){
+    document.querySelectorAll('.day-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('lDay').value=btn.dataset.day;
+}
+
 async function submitLecture(e){
     e.preventDefault();
     const btn=document.getElementById('lectureSubmitBtn');
@@ -719,10 +744,11 @@ async function submitLecture(e){
     const rank=document.getElementById('lRank').value;
     const time=document.getElementById('lTime').value;
     const day=document.getElementById('lDay').value;
+    if(!discord||!rank||!time||!day){showToast('Заполни все поля','error');btn.disabled=false;btn.innerHTML='<i class="fas fa-paper-plane"></i> Отправить запрос';return}
     const embed={title:'📚 Запрос на лекцию',color:0xa855f7,description:'**Дата:** '+new Date().toLocaleString('ru-RU'),fields:[{name:'💬 Discord',value:discord,inline:false},{name:'🎯 Ранг / на кого',value:rank,inline:false},{name:'🕐 Во сколько',value:time,inline:false},{name:'📅 Когда',value:day,inline:false}],footer:{text:'TrapTime · Лекции'},timestamp:new Date().toISOString()};
     try{
         const r=await fetch(LECTURE_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:'TrapTime · Лекции',embeds:[embed]})});
-        if(r.ok){showToast('Запрос на лекцию отправлен!','success');document.getElementById('lectureForm').reset();closeLecture()}
+        if(r.ok){showToast('Запрос на лекцию отправлен!','success');document.getElementById('lectureForm').reset();document.querySelectorAll('.day-btn').forEach(b=>b.classList.remove('active'));closeLecture()}
         else showToast('Ошибка отправки','error');
     }catch(e){showToast('Ошибка соединения','error')}
     btn.disabled=false;

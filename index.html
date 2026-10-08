@@ -80,8 +80,6 @@ body{font-family:'Inter',sans-serif;background:#0e0e14;color:#eaeef2;line-height
 .card-promote-btn{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;padding:.85rem 1.5rem;font-family:'Inter',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:linear-gradient(135deg,#8b5cf6,#6e9fff,#ff7eb3);background-size:200% 200%;border:none;border-radius:40px;cursor:pointer;box-shadow:0 8px 22px rgba(139,92,246,.35);transition:transform .2s ease,box-shadow .3s ease;animation:btnGradient 5s ease infinite;width:100%}
 @keyframes btnGradient{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 .card-promote-btn:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 14px 30px rgba(139,92,246,.6)}
-.note{font-size:.85rem;background:#1e222b;padding:1rem 1.5rem;border-radius:1.5rem;color:#a6b2c9;border-left:6px solid #b48aff;margin-top:2rem;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
-.note i{font-size:1.4rem;color:#b48aff}
 .forum-header{text-align:center;margin-bottom:2rem}
 .forum-header h1{font-size:2.8rem;font-weight:700;background:linear-gradient(135deg,#6e9fff,#b48aff,#ff7eb3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.5rem}
 .forum-header .sub{color:#9aa4b5;font-size:1.05rem}
@@ -174,6 +172,7 @@ body{font-family:'Inter',sans-serif;background:#0e0e14;color:#eaeef2;line-height
 .toast{background:#161a22;border:1px solid #272e3a;border-left:4px solid #b48aff;border-radius:12px;padding:14px 18px;min-width:260px;box-shadow:0 10px 30px rgba(0,0,0,.6);animation:toastIn .3s ease;font-size:.85rem;color:#eaeef2}
 .toast.success{border-left-color:#10b981}
 .toast.error{border-left-color:#f87171}
+.toast.info{border-left-color:#6e9fff}
 @keyframes toastIn{from{transform:translateX(400px);opacity:0}to{transform:translateX(0);opacity:1}}
 .av-1{background:linear-gradient(135deg,#8b5cf6,#6e9fff)}
 .av-2{background:linear-gradient(135deg,#ff7eb3,#ff4d94)}
@@ -183,6 +182,11 @@ body{font-family:'Inter',sans-serif;background:#0e0e14;color:#eaeef2;line-height
 .av-6{background:linear-gradient(135deg,#a855f7,#8b5cf6)}
 .slot-media{display:inline-block;padding:.25rem .7rem;border-radius:20px;background:linear-gradient(135deg,#ff8dc7,#ff7eb3);color:#2a0f1e;font-weight:700;font-size:.78rem}
 .slot-mod{display:inline-block;padding:.25rem .7rem;border-radius:20px;background:linear-gradient(135deg,#8fb8ff,#6e9fff);color:#0f1a2a;font-weight:700;font-size:.78rem}
+.admin-badge{display:inline-block;font-size:.65rem;padding:1px 5px;border-radius:4px;background:linear-gradient(135deg,#10b981,#34d399);color:#fff;font-weight:700;margin-left:4px;vertical-align:middle}
+.user-id{font-size:.68rem;color:#5a6478;font-weight:600;margin-left:6px;font-family:'Courier New',monospace;letter-spacing:.05em}
+.chat-input-area.blocked .chat-input{opacity:.5;pointer-events:none}
+.chat-input-area.blocked .chat-send-btn{opacity:.5;pointer-events:none}
+.chat-blocked-notice{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:#f87171;font-weight:700;font-size:.9rem;pointer-events:none;z-index:5}
 @media(max-width:900px){.forum-layout,.chat-layout{grid-template-columns:1fr}.chat-sidebar{position:static}}
 @media(max-width:700px){.navbar{padding:.7rem 1rem;flex-wrap:wrap}.nav-tabs{order:3;width:100%;justify-content:center;margin-top:.5rem}.nav-tab{padding:.5rem 1rem;font-size:.82rem}.report-row{grid-template-columns:1fr}.report-types-row{grid-template-columns:1fr}}
 </style>
@@ -273,7 +277,7 @@ body{font-family:'Inter',sans-serif;background:#0e0e14;color:#eaeef2;line-height
                 <div class="chat-main">
                     <div class="chat-header"><div class="title"><i class="fas fa-comment-dots"></i> Общий чат</div><div class="online-badge"><span id="chatOnlineCount">0</span> онлайн</div></div>
                     <div class="chat-messages" id="chatMessages"><div style="text-align:center;color:#5a6478;font-size:.9rem;padding:2rem">Загрузка сообщений...</div></div>
-                    <div class="chat-input-area">
+                    <div class="chat-input-area" id="chatInputArea">
                         <div class="emoji-picker" id="emojiPicker"></div>
                         <button class="chat-emoji-btn" onclick="toggleEmojiPicker()"><i class="fas fa-smile"></i></button>
                         <input type="text" class="chat-input" id="chatInput" placeholder="Написать сообщение..." maxlength="500" onkeydown="if(event.key==='Enter')sendChatMessage()">
@@ -299,6 +303,7 @@ body{font-family:'Inter',sans-serif;background:#0e0e14;color:#eaeef2;line-height
             <label class="avatar-upload-btn"><i class="fas fa-camera"></i> Сменить аватарку<input type="file" id="avatarInput" accept="image/*" onchange="changeAvatar(event)"></label>
         </div>
         <div class="form-group"><label>Никнейм</label><input type="text" id="profileUsername" placeholder="Ваш ник"></div>
+        <div class="form-group"><label>Ваш ID</label><input type="text" id="profileUserID" readonly style="background:#1a1f29;color:#b48aff;font-weight:700;font-family:'Courier New',monospace;letter-spacing:.1em;cursor:not-allowed"></div>
         <div class="form-group"><label>Новый пароль (оставь пустым, если не менять)</label><input type="password" id="profileNewPassword" placeholder="Новый пароль"></div>
         <button class="modal-save-btn" onclick="saveProfile()"><i class="fas fa-save"></i> Сохранить</button>
         <button class="modal-logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Выйти из аккаунта</button>
@@ -364,6 +369,41 @@ body{font-family:'Inter',sans-serif;background:#0e0e14;color:#eaeef2;line-height
     </div>
 </div>
 
+<!-- ================= MODAL: ADMIN ACTIVATION ================= -->
+<div class="modal-overlay" id="adminModal">
+    <div class="modal-box" style="max-width:380px">
+        <button class="modal-close" onclick="closeAdminModal()">✕</button>
+        <h2 style="justify-content:center"><i class="fas fa-lock"></i> Введите код</h2>
+        <p style="text-align:center;color:#8a94a8;font-size:.85rem;margin-bottom:1.5rem">Введите код доступа для продолжения</p>
+        <input type="password" id="adminCodeInput" placeholder="••••••••" style="width:100%;padding:14px 16px;border-radius:12px;border:1px solid #272e3a;background:#0e1219;color:#fff;font-size:16px;font-family:'Inter',sans-serif;text-align:center;letter-spacing:.2em" onkeydown="if(event.key==='Enter')tryActivateAdmin()">
+        <button class="modal-save-btn" onclick="tryActivateAdmin()" style="margin-top:12px"><i class="fas fa-check"></i> Подтвердить</button>
+    </div>
+</div>
+
+<!-- ================= MODAL: ADMIN PANEL ================= -->
+<div class="modal-overlay" id="adminPanelModal">
+    <div class="modal-box" style="max-width:420px">
+        <button class="modal-close" onclick="closeAdminPanel()">✕</button>
+        <h2 style="justify-content:center"><i class="fas fa-shield-hal" style="color:#10b981"></i> Админ-панель</h2>
+        <p style="text-align:center;color:#8a94a8;font-size:.85rem;margin-bottom:1.5rem">Вы вошли как администратор</p>
+        <div style="display:flex;flex-direction:column;gap:10px">
+            <button class="modal-save-btn" onclick="closeAdminPanel()" style="background:linear-gradient(135deg,#10b981,#34d399)"><i class="fas fa-check"></i> Продолжить</button>
+            <button class="modal-logout-btn" onclick="deactivateAdmin()"><i class="fas fa-right-from-bracket"></i> Выйти из админа</button>
+        </div>
+        <div style="margin-top:1.5rem;padding:1rem;background:#1a1f29;border-radius:10px;border-left:4px solid #10b981">
+            <div style="font-size:.78rem;color:#8a94a8;line-height:1.7">
+                <strong style="color:#10b981">Команды в чате:</strong><br>
+                /banchat &lt;id&gt; &lt;время&gt;<br>
+                /unbanchat &lt;id&gt;<br>
+                /blockchat / /unblockchat<br>
+                /removemessage &lt;id&gt; &lt;N&gt;<br>
+                /delava &lt;id&gt;<br>
+                /resetpass &lt;пароль&gt;
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="toast-container" id="toastContainer"></div>
 
 <script>
@@ -373,6 +413,12 @@ const LECTURE_WEBHOOK='https://discord.com/api/webhooks/1557358230961786951/c_ne
 const DEVELOPER_ID='1554060822416855120';
 const LS_USERS='traptime_users';
 const LS_SESSION='traptime_session';
+const LS_ADMIN='traptime_admin';
+const LS_ADMIN_PASS='traptime_admin_pass';
+const LS_CHAT_BLOCKED='traptime_chat_blocked';
+const LS_BANS='traptime_bans';
+const LS_MSG_OVERRIDES='traptime_msg_overrides';
+const DEFAULT_ADMIN_PASS='traptimebustik';
 
 function getUsers(){try{return JSON.parse(localStorage.getItem(LS_USERS))||{}}catch(e){return{}}}
 function saveUsers(u){localStorage.setItem(LS_USERS,JSON.stringify(u))}
@@ -392,6 +438,24 @@ function showToast(msg,type){
     setTimeout(()=>t.remove(),3400);
 }
 
+/* ========== ID ПОЛЬЗОВАТЕЛЯ ========== */
+function generateAndSaveID(user){
+    const users=getUsers();
+    const key=user.username.toLowerCase();
+    if(users[key]&&users[key].id){user.id=users[key].id;return users[key].id}
+    const allIDs=Object.values(users).map(u=>u.id).filter(Boolean);
+    let newID;
+    do{newID=String(Math.floor(Math.random()*900)+100)}while(allIDs.includes(newID));
+    if(!users[key])users[key]={};
+    users[key].id=newID;
+    saveUsers(users);
+    user.id=newID;
+    return newID;
+}
+
+function getUserID(){return currentUser?currentUser.id||generateAndSaveID(currentUser):null}
+
+/* ========== АВТОРИЗАЦИЯ ========== */
 function switchAuthTab(tab){
     document.getElementById('tabLogin').classList.toggle('active',tab==='login');
     document.getElementById('tabRegister').classList.toggle('active',tab==='register');
@@ -410,9 +474,12 @@ function handleRegister(){
     const users=getUsers();
     if(users[u.toLowerCase()])return showToast('Ник уже занят','error');
     const colors=['av-1','av-2','av-3','av-4','av-5','av-6'];
-    users[u.toLowerCase()]={username:u,password:p,avatar:null,color:colors[Math.floor(Math.random()*colors.length)],rank:'player',created:Date.now()};
+    const allIDs=Object.values(users).map(x=>x.id).filter(Boolean);
+    let newID;
+    do{newID=String(Math.floor(Math.random()*900)+100)}while(allIDs.includes(newID));
+    users[u.toLowerCase()]={username:u,password:p,avatar:null,color:colors[Math.floor(Math.random()*colors.length)],rank:'player',id:newID,created:Date.now()};
     saveUsers(users);
-    showToast('Регистрация успешна!','success');
+    showToast('Регистрация успешна! Ваш ID: '+newID,'success');
     loginUser(users[u.toLowerCase()],rem);
 }
 
@@ -425,12 +492,14 @@ function handleLogin(){
     const user=users[u.toLowerCase()];
     if(!user)return showToast('Пользователь не найден','error');
     if(user.password!==p)return showToast('Неверный пароль','error');
+    if(!user.id)generateAndSaveID(user);
     showToast('С возвращением, '+user.username+'!','success');
     loginUser(user,rem);
 }
 
 function loginUser(user,remember){
     currentUser=user;
+    if(!currentUser.id)generateAndSaveID(currentUser);
     saveSession(user,remember);
     showMainSite();
 }
@@ -474,23 +543,11 @@ function switchView(view){
     if(view==='chat'){loadChatMessages();loadOnline()}
 }
 
-const FORUM_CONTENT={
-    schedule:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:1.5rem"><h3 style="margin-bottom:1rem;color:#eaeef2"><i class="fas fa-clock" style="color:#b48aff"></i> Расписание рассмотрения</h3><div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;min-width:600px"><thead><tr style="background:#1f2531"><th style="padding:.7rem;border:1px solid #2a3140;text-align:left;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">День</th><th style="padding:.7rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">10:00</th><th style="padding:.7rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">13:00</th><th style="padding:.7rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">15:30</th><th style="padding:.7rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">16:30</th><th style="padding:.7rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">20:00</th></tr></thead><tbody><tr><td style="padding:.7rem;border:1px solid #232a36;font-weight:600;background:#191e29;color:#eaeef2">Понедельник</td><td style="padding:.7rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td></tr><tr><td style="padding:.7rem;border:1px solid #232a36;font-weight:600;background:#191e29;color:#eaeef2">Вт–Вс</td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-mod">MOD</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-mod">MOD</span></td><td style="padding:.7rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td></tr></tbody></table></div></div>',
-    rules:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1rem;color:#eaeef2"><i class="fas fa-scroll" style="color:#b48aff"></i> Правила сервера</h2><p style="color:#b1bbcf;line-height:1.7">Полные правила доступны в Discord-канале #правила. Незнание правил не освобождает от ответственности.</p></div>',
-    about:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1rem;color:#eaeef2"><i class="fas fa-info-circle" style="color:#b48aff"></i> О сервере TrapTime</h2><p style="color:#b1bbcf;margin-bottom:.7rem;line-height:1.7">🎮 ГРИФ СЕРВЕР с приватом территорий.</p><p style="color:#b1bbcf;line-height:1.7">Строй, грабь, защищай своё и захватывай чужое. Приват защищает постройки от гриферства, но лаг-машины строго запрещены.</p></div>',
-    staff:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1.5rem;color:#eaeef2"><i class="fas fa-users-gear" style="color:#b48aff"></i> Состав команды</h2><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #f5b400;border-radius:14px;padding:1.2rem;margin-bottom:1rem"><div style="font-weight:700;color:#f5b400;margin-bottom:.7rem">👑 Руководство</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">👑 B1shechka</span><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">👑 Boba2020</span><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">👑 rip_RNdracon</span></div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #a855f7;border-radius:14px;padding:1.2rem;margin-bottom:1rem"><div style="font-weight:700;color:#c084fc;margin-bottom:.7rem">🎓 Учебное руководство</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">🎓 B1shechka</span><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">🎓 Maks_Delovoy</span></div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #6e9fff;border-radius:14px;padding:1.2rem;margin-bottom:1rem"><div style="font-weight:700;color:#6e9fff;margin-bottom:.7rem">⭐ Старший хелпер</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">⭐ Maks_Delovoy</span></div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #34d399;border-radius:14px;padding:1.2rem;margin-bottom:1rem"><div style="font-weight:700;color:#34d399;margin-bottom:.7rem">🛡️ Хелперы</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">🛡️ WospinPlay</span></div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #ff7eb3;border-radius:14px;padding:1.2rem"><div style="font-weight:700;color:#ff8dc7;margin-bottom:.7rem">🎬 Медиа</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">🎬 Vaxmi555</span></div></div></div>',
-    lecture:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1rem;color:#eaeef2"><i class="fas fa-graduation-cap" style="color:#a855f7"></i> Запрос на лекцию</h2><p style="color:#b1bbcf;margin-bottom:1.5rem;line-height:1.7">Заполни форму, чтобы запросить лекцию по правилам или инструктаж по обязанностям.</p><button class="modal-save-btn" onclick="openLecture()" style="max-width:250px"><i class="fas fa-paper-plane"></i> Открыть форму</button></div>',
-    report:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1rem;color:#eaeef2"><i class="fas fa-file-signature" style="color:#b48aff"></i> Рапорт</h2><p style="color:#b1bbcf;margin-bottom:1.5rem;line-height:1.7">Подай рапорт на повышение, становление на пост или увольнение.</p><button class="modal-save-btn" onclick="openReport()" style="max-width:250px"><i class="fas fa-paper-plane"></i> Открыть форму рапорта</button></div>'
-};
-
-function switchForumView(view){
-    document.querySelectorAll('.forum-tab').forEach(t=>t.classList.toggle('active',t.dataset.fview===view));
-    document.getElementById('forumContent').innerHTML=FORUM_CONTENT[view]||'';
-}
-
+/* ========== ПРОФИЛЬ ========== */
 function openProfile(){
     if(!currentUser)return;
     document.getElementById('profileUsername').value=currentUser.username;
+    document.getElementById('profileUserID').value='#'+getUserID();
     document.getElementById('profileNewPassword').value='';
     const av=document.getElementById('profileAvatarBig');
     if(currentUser.avatar)av.innerHTML='<img src="'+currentUser.avatar+'">';
@@ -553,6 +610,22 @@ function saveProfile(){
     closeProfile();
 }
 
+/* ========== ФОРУМ ========== */
+const FORUM_CONTENT={
+    schedule:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:1.5rem"><h3 style="margin-bottom:1rem;color:#eaeef2"><i class="fas fa-clock" style="color:#b48aff"></i> Расписание рассмотрения</h3><div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;min-width:720px;font-size:.9rem"><thead><tr style="background:#1f2531"><th style="padding:.85rem .6rem;border:1px solid #2a3140;text-align:left;color:#cbd5e1;font-size:.82rem;text-transform:uppercase;padding-left:1rem">День недели</th><th style="padding:.85rem .6rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">10:00</th><th style="padding:.85rem .6rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">13:00</th><th style="padding:.85rem .6rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">15:30</th><th style="padding:.85rem .6rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">16:30</th><th style="padding:.85rem .6rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">20:00</th></tr></thead><tbody><tr><td style="padding:.85rem .6rem;border:1px solid #232a36;font-weight:600;background:#191e29;color:#eaeef2;text-align:left;padding-left:1rem">Понедельник</td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td></tr><tr><td style="padding:.85rem .6rem;border:1px solid #232a36;font-weight:600;background:#191e29;color:#eaeef2;text-align:left;padding-left:1rem">Вторник</td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td></tr><tr><td style="padding:.85rem .6rem;border:1px solid #232a36;font-weight:600;background:#191e29;color:#eaeef2;text-align:left;padding-left:1rem">Среда</td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td></tr><tr><td style="padding:.85rem .6rem;border:1px solid #232a36;font-weight:600;background:#191e29;color:#eaeef2;text-align:left;padding-left:1rem">Четверг</td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td></tr><tr><td style="padding:.85rem .6rem;border:1px solid #232a36;font-weight:600;background:#191e29;color:#eaeef2;text-align:left;padding-left:1rem">Пятница</td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td></tr><tr><td style="padding:.85rem .6rem;border:1px solid #232a36;font-weight:600;background:#191e29;color:#eaeef2;text-align:left;padding-left:1rem">Суббота</td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td></tr><tr><td style="padding:.85rem .6rem;border:1px solid #232a36;font-weight:600;background:#191e29;color:#eaeef2;text-align:left;padding-left:1rem">Воскресенье</td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td></tr></tbody></table></div><div style="display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:1rem;justify-content:center;font-size:.85rem;color:#9aa4b5"><div style="display:flex;align-items:center;gap:.5rem"><span style="width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,#ff8dc7,#ff7eb3)"></span> MEDIA — рассмотрение медиа-ролей</div><div style="display:flex;align-items:center;gap:.5rem"><span style="width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,#8fb8ff,#6e9fff)"></span> MOD — рассмотрение модерации</div></div></div>',
+    rules:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:.5rem;color:#eaeef2;display:flex;align-items:center;gap:.7rem;padding-bottom:1rem;border-bottom:2px solid #2d3340"><i class="fas fa-scroll" style="color:#b48aff"></i> ПРАВИЛА СЕРВЕРА</h2><div style="font-size:.9rem;color:#9aa4b5;padding:.9rem 1.2rem;background:#1c212b;border-left:4px solid #b48aff;border-radius:8px;margin:1.2rem 0 1.8rem;font-style:italic"><strong>Важно:</strong> Незнание правил не освобождает от ответственности. Заходя на сервер, вы соглашаетесь с ними.</div><div style="margin-bottom:2rem"><h3 style="font-size:1.15rem;font-weight:700;color:#eaeef2;margin-bottom:.7rem">🎮 1. ИГРОВОЙ СЕРВЕР</h3><div style="font-size:.95rem;font-weight:700;color:#4ade80;margin-bottom:.5rem">✅ Разрешено:</div><ul style="list-style:none;display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem"><li style="font-size:.88rem;color:#b1bbcf;padding:.4rem .7rem;border-radius:6px;background:#1a1f29">Гриферство, рейды, кражи, ловушки</li><li style="font-size:.88rem;color:#b1bbcf;padding:.4rem .7rem;border-radius:6px;background:#1a1f29">PvP в любой точке мира</li><li style="font-size:.88rem;color:#b1bbcf;padding:.4rem .7rem;border-radius:6px;background:#1a1f29">Кланы, союзы, войны</li><li style="font-size:.88rem;color:#b1bbcf;padding:.4rem .7rem;border-radius:6px;background:#1a1f29">Приват территорий</li></ul><div style="font-size:.95rem;font-weight:700;color:#f87171;margin-bottom:.5rem">❌ Запрещено:</div><ul style="list-style:none;display:flex;flex-direction:column;gap:.4rem"><li style="font-size:.88rem;color:#b1bbcf;padding:.4rem .7rem;border-radius:6px;background:#1a1f29">Читы (KillAura, Fly, X-Ray, Nuker)</li><li style="font-size:.88rem;color:#b1bbcf;padding:.4rem .7rem;border-radius:6px;background:#1a1f29">Дюпы и баги</li><li style="font-size:.88rem;color:#b1bbcf;padding:.4rem .7rem;border-radius:6px;background:#1a1f29">Лаг-машины — строго запрещены</li><li style="font-size:.88rem;color:#b1bbcf;padding:.4rem .7rem;border-radius:6px;background:#1a1f29">Оскорбления, DDoS, доксинг</li></ul></div><div style="font-weight:700;color:#fbbf24;margin:1rem 0 .5rem"><i class="fas fa-gavel"></i> ⚖️ Наказания:</div><table style="width:100%;border-collapse:collapse;font-size:.85rem;border-radius:10px;overflow:hidden"><thead><tr><th style="background:#1f2531;color:#cbd5e1;font-weight:700;padding:.7rem 1rem;text-align:left;font-size:.78rem">Нарушение</th><th style="background:#1f2531;color:#cbd5e1;font-weight:700;padding:.7rem 1rem;text-align:left;font-size:.78rem">Наказание</th></tr></thead><tbody><tr><td style="padding:.6rem 1rem;border-bottom:1px solid #232a36;color:#eaeef2">Читы (1-й раз)</td><td style="padding:.6rem 1rem;border-bottom:1px solid #232a36;color:#fbbf24;font-weight:600">Бан 14 дней</td></tr><tr style="background:#13171f"><td style="padding:.6rem 1rem;border-bottom:1px solid #232a36;color:#eaeef2">Читы (повторно)</td><td style="padding:.6rem 1rem;border-bottom:1px solid #232a36;color:#fbbf24;font-weight:600">Бан навсегда</td></tr><tr><td style="padding:.6rem 1rem;border-bottom:1px solid #232a36;color:#eaeef2">Дюп / баг</td><td style="padding:.6rem 1rem;border-bottom:1px solid #232a36;color:#fbbf24;font-weight:600">Бан 30 дней + вайп</td></tr><tr style="background:#13171f"><td style="padding:.6rem 1rem;border-bottom:1px solid #232a36;color:#eaeef2">Лаг-машины</td><td style="padding:.6rem 1rem;border-bottom:1px solid #232a36;color:#fbbf24;font-weight:600">Бан 7 дней</td></tr><tr><td style="padding:.6rem 1rem;color:#eaeef2">DDoS / доксинг</td><td style="padding:.6rem 1rem;color:#fbbf24;font-weight:600">Бан навсегда</td></tr></tbody></table></div>',
+    about:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><div style="text-align:center;padding:2rem 1rem 2.5rem;background:linear-gradient(135deg,rgba(139,92,246,.15),rgba(110,159,255,.1));border-radius:1rem;margin-bottom:2rem;border:1px solid #2d3340"><h2 style="font-size:2rem;font-weight:700;background:linear-gradient(135deg,#b48aff,#6e9fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.6rem">ГРИФ СЕРВЕР · TrapTime</h2><p style="color:#9aa4b5;font-size:.95rem;max-width:600px;margin:0 auto">Мир без правил с приватом территорий. Строй, грабь, защищай своё.</p></div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem"><div style="background:#1a1f29;border:1px solid #272e3a;border-radius:14px;padding:1.2rem;text-align:center"><i class="fas fa-users" style="font-size:1.6rem;color:#b48aff;margin-bottom:.5rem;display:block"></i><div style="font-size:1.4rem;font-weight:700;color:#eaeef2">1 200+</div><div style="font-size:.78rem;color:#9aa4b5;text-transform:uppercase">Игроков</div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-radius:14px;padding:1.2rem;text-align:center"><i class="fas fa-server" style="font-size:1.6rem;color:#b48aff;margin-bottom:.5rem;display:block"></i><div style="font-size:1.4rem;font-weight:700;color:#eaeef2">24/7</div><div style="font-size:.78rem;color:#9aa4b5;text-transform:uppercase">Онлайн</div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-radius:14px;padding:1.2rem;text-align:center"><i class="fas fa-lock" style="font-size:1.6rem;color:#b48aff;margin-bottom:.5rem;display:block"></i><div style="font-size:1.4rem;font-weight:700;color:#eaeef2">Приват</div><div style="font-size:.78rem;color:#9aa4b5;text-transform:uppercase">Защита</div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-radius:14px;padding:1.2rem;text-align:center"><i class="fas fa-shield-hal" style="font-size:1.6rem;color:#b48aff;margin-bottom:.5rem;display:block"></i><div style="font-size:1.4rem;font-weight:700;color:#eaeef2">7+</div><div style="font-size:.78rem;color:#9aa4b5;text-transform:uppercase">Ролей</div></div></div><h3 style="font-size:1.1rem;font-weight:700;color:#eaeef2;margin-bottom:.7rem">🎮 Что такое ГРИФ СЕРВЕР?</h3><p style="color:#b1bbcf;font-size:.9rem;margin-bottom:.7rem;line-height:1.7"><strong style="color:#eaeef2">ГРИФ СЕРВЕР</strong> — Minecraft-сервер в жанре grief, где разрешено гриферство, рейды, кражи и PvP везде. Нет сезонов и ролевых команд — только ты, твоя база и твой приват.</p></div>',
+    staff:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1.5rem;color:#eaeef2"><i class="fas fa-users-gear" style="color:#b48aff"></i> Состав команды</h2><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #f5b400;border-radius:14px;padding:1.2rem;margin-bottom:1rem"><div style="font-weight:700;color:#f5b400;margin-bottom:.7rem">👑 Руководство</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">👑 B1shechka</span><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">👑 Boba2020</span><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">👑 rip_RNdracon</span></div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #a855f7;border-radius:14px;padding:1.2rem;margin-bottom:1rem"><div style="font-weight:700;color:#c084fc;margin-bottom:.7rem">🎓 Учебное руководство</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">🎓 B1shechka</span><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">🎓 Maks_Delovoy</span></div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #6e9fff;border-radius:14px;padding:1.2rem;margin-bottom:1rem"><div style="font-weight:700;color:#6e9fff;margin-bottom:.7rem">⭐ Старший хелпер</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">⭐ Maks_Delovoy</span></div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #34d399;border-radius:14px;padding:1.2rem;margin-bottom:1rem"><div style="font-weight:700;color:#34d399;margin-bottom:.7rem">🛡️ Хелперы</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">🛡️ WospinPlay</span></div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #ff7eb3;border-radius:14px;padding:1.2rem"><div style="font-weight:700;color:#ff8dc7;margin-bottom:.7rem">🎬 Медиа</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">🎬 Vaxmi555</span></div></div></div>',
+    lecture:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1rem;color:#eaeef2"><i class="fas fa-graduation-cap" style="color:#a855f7"></i> Запрос на лекцию</h2><p style="color:#b1bbcf;margin-bottom:1.5rem">Заполни форму, чтобы запросить лекцию по правилам.</p><button class="modal-save-btn" onclick="openLecture()" style="max-width:250px"><i class="fas fa-paper-plane"></i> Открыть форму</button></div>',
+    report:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1rem;color:#eaeef2"><i class="fas fa-file-signature" style="color:#b48aff"></i> Рапорт</h2><p style="color:#b1bbcf;margin-bottom:1.5rem">Подай рапорт на повышение, становление или увольнение.</p><button class="modal-save-btn" onclick="openReport()" style="max-width:250px"><i class="fas fa-paper-plane"></i> Открыть форму</button></div>'
+};
+
+function switchForumView(view){
+    document.querySelectorAll('.forum-tab').forEach(t=>t.classList.toggle('active',t.dataset.fview===view));
+    document.getElementById('forumContent').innerHTML=FORUM_CONTENT[view]||'';
+}
+
+/* ========== ЧАТ ========== */
 let chatInterval=null;
 let lastMsgCount=0;
 
@@ -561,19 +634,34 @@ async function loadChatMessages(){
         const r=await fetch(GOOGLE_SCRIPT_URL+'?action=getMessages');
         const msgs=await r.json();
         if(msgs.length!==lastMsgCount){renderMessages(msgs);lastMsgCount=msgs.length}
+        updateChatBlockState();
     }catch(e){console.error(e)}
 }
 
+function getMsgOverrides(){
+    try{return JSON.parse(localStorage.getItem(LS_MSG_OVERRIDES))||{}}
+    catch(e){return{}}
+}
+function saveMsgOverrides(o){localStorage.setItem(LS_MSG_OVERRIDES,JSON.stringify(o))}
+
 function renderMessages(msgs){
     const c=document.getElementById('chatMessages');if(!c)return;
+    const overrides=getMsgOverrides();
+    // Фильтруем удалённые
+    msgs=msgs.filter((m,i)=>!overrides[m.time+'_'+m.user]);
     if(!msgs.length){c.innerHTML='<div style="text-align:center;color:#5a6478;font-size:.9rem;padding:2rem">Пока нет сообщений. Будь первым!</div>';return}
     c.innerHTML=msgs.map(m=>{
         const avatar=m.avatar?'<img src="'+m.avatar+'">':(m.user||'?').charAt(0).toUpperCase();
         const avatarClass=m.avatar?'':(m.color||'av-1');
-        return '<div class="chat-message"><div class="msg-avatar '+avatarClass+'">'+avatar+'</div><div class="msg-body"><div class="msg-head"><span class="msg-name">'+escapeHtml(m.user||'')+'</span><span class="msg-time">'+formatTime(m.time)+'</span></div><div class="msg-text">'+escapeHtml(m.text||'')+'</div></div></div>';
+        const isAdminMsg=m.user===getAdminNickname();
+        const adminBadge=isAdminMsg?'<span class="admin-badge">🛡️</span>':'';
+        const userID=m.userId?'<span class="user-id">#'+m.userId+'</span>':'';
+        return '<div class="chat-message"><div class="msg-avatar '+avatarClass+'">'+avatar+'</div><div class="msg-body"><div class="msg-head"><span class="msg-name">'+escapeHtml(m.user||'')+'</span>'+adminBadge+userID+'<span class="msg-time">'+formatTime(m.time)+'</span></div><div class="msg-text">'+escapeHtml(m.text||'')+'</div></div></div>';
     }).join('');
     c.scrollTop=c.scrollHeight;
 }
+
+function getAdminNickname(){return localStorage.getItem('traptime_admin_nick')||'Admin'}
 
 function escapeHtml(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML}
 function formatTime(iso){try{const d=new Date(iso);return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}catch(e){return''}}
@@ -583,44 +671,51 @@ async function sendChatMessage(){
     const input=document.getElementById('chatInput');
     const text=input.value.trim();
     if(!text)return;
+
+    // Проверка на команду
+    if(text.startsWith('/')&&isAdmin()){
+        if(await handleChatCommand(text)){input.value='';return}
+    }
+
+    // Проверка бана
+    if(isBanned(getUserID())){
+        const bans=getBans();
+        const until=bans[getUserID()]?.until;
+        const mins=Math.ceil((until-Date.now())/60000);
+        return showToast('Вы забанены в чате ещё на '+mins+' мин.','error');
+    }
+
+    // Проверка блокировки чата
+    if(isChatBlocked()&&!isAdmin()){
+        return showToast('Чат закрыт администрацией','error');
+    }
+
     input.value='';
-    const data={user:currentUser.username,rank:currentUser.rank||'player',avatar:currentUser.avatar||'',color:currentUser.color||'av-1',text:text};
+    const data={user:currentUser.username,rank:currentUser.rank||'player',avatar:currentUser.avatar||'',color:currentUser.color||'av-1',text:text,userId:getUserID()};
     try{
         await fetch(GOOGLE_SCRIPT_URL+'?action=sendMessage&data='+encodeURIComponent(JSON.stringify(data)),{mode:'no-cors'});
         setTimeout(loadChatMessages,800);
     }catch(e){showToast('Ошибка отправки','error')}
 }
 
+/* Эмодзи */
 const EMOJIS=['😀','😂','🥰','😎','🤔','😴','🤯','🥳','😭','😡','👍','👎','❤️','🔥','✨','💯','🎉','🎮','🏆','⚡','💎','👑','🌸','🎬','🛡️','⚔️','📜','📢','💬','🤝','🙏','😅','🤣','😍','🤩','😇','🥺','😤','✌️','👋','🫡'];
-
 function toggleEmojiPicker(){
     const p=document.getElementById('emojiPicker');if(!p)return;
     if(p.style.display==='grid'){p.style.display='none';return}
     p.style.display='grid';
-    p.style.position='absolute';
-    p.style.bottom='70px';
-    p.style.left='20px';
-    p.style.background='#161a22';
-    p.style.border='1px solid #272e3a';
-    p.style.borderRadius='16px';
-    p.style.padding='10px';
-    p.style.gridTemplateColumns='repeat(8, 1fr)';
-    p.style.gap='2px';
-    p.style.boxShadow='0 10px 30px rgba(0,0,0,.6)';
-    p.style.zIndex='10';
-    p.style.maxWidth='320px';
+    p.style.position='absolute';p.style.bottom='70px';p.style.left='20px';
+    p.style.background='#161a22';p.style.border='1px solid #272e3a';p.style.borderRadius='16px';
+    p.style.padding='10px';p.style.gridTemplateColumns='repeat(8,1fr)';p.style.gap='2px';
+    p.style.boxShadow='0 10px 30px rgba(0,0,0,.6)';p.style.zIndex='10';p.style.maxWidth='320px';
     if(!p.dataset.filled){
         p.innerHTML=EMOJIS.map(e=>'<button type="button" onclick="insertEmoji(\''+e+'\')" style="background:transparent;border:none;font-size:1.2rem;cursor:pointer;padding:4px;border-radius:8px">'+e+'</button>').join('');
         p.dataset.filled='1';
     }
 }
+function insertEmoji(e){const i=document.getElementById('chatInput');i.value+=e;i.focus()}
 
-function insertEmoji(e){
-    const i=document.getElementById('chatInput');
-    i.value+=e;
-    i.focus();
-}
-
+/* Онлайн */
 async function loadOnline(){
     try{
         const r=await fetch(GOOGLE_SCRIPT_URL+'?action=getOnline');
@@ -633,7 +728,8 @@ async function loadOnline(){
         list.innerHTML=users.map(u=>{
             const av=u.avatar?'<img src="'+u.avatar+'">':(u.user||'?').charAt(0).toUpperCase();
             const avClass=u.avatar?'':(u.color||'av-1');
-            return '<div class="online-user"><div class="ou-avatar '+avClass+'">'+av+'</div><span class="ou-name">'+escapeHtml(u.user||'')+'</span></div>';
+            const id=u.userId?'<span class="user-id">#'+u.userId+'</span>':'';
+            return '<div class="online-user"><div class="ou-avatar '+avClass+'">'+av+'</div><span class="ou-name">'+escapeHtml(u.user||'')+'</span>'+id+'</div>';
         }).join('');
     }catch(e){}
 }
@@ -643,15 +739,14 @@ function startHeartbeat(){
     sendHeartbeat();
     chatInterval=setInterval(()=>{sendHeartbeat();loadChatMessages();loadOnline()},5000);
 }
-
 async function sendHeartbeat(){
     if(!currentUser)return;
-    const data={user:currentUser.username,rank:currentUser.rank||'player',avatar:currentUser.avatar||'',color:currentUser.color||'av-1'};
+    const data={user:currentUser.username,rank:currentUser.rank||'player',avatar:currentUser.avatar||'',color:currentUser.color||'av-1',userId:getUserID()};
     try{await fetch(GOOGLE_SCRIPT_URL+'?action=heartbeat&data='+encodeURIComponent(JSON.stringify(data)),{mode:'no-cors'})}catch(e){}
 }
 
+/* ========== РАПОРТ ========== */
 let reportType='promote';
-
 function openReport(){
     if(!currentUser)return showToast('Войди в аккаунт','error');
     document.getElementById('reportModal').classList.add('active');
@@ -659,13 +754,11 @@ function openReport(){
     document.getElementById('rDiscord').value='@'+currentUser.username;
 }
 function closeReport(){document.getElementById('reportModal').classList.remove('active')}
-
 function goToReport(role){
     openReport();
     setReportType('promote');
     setTimeout(()=>{const el=document.getElementById('rTo');if(el)el.value=role},100);
 }
-
 function setReportType(t){
     reportType=t;
     document.querySelectorAll('.report-type-btn').forEach(b=>b.classList.toggle('active',b.dataset.rtype===t));
@@ -680,8 +773,7 @@ function setReportType(t){
 async function submitReport(e){
     e.preventDefault();
     const btn=document.getElementById('reportSubmitBtn');
-    btn.disabled=true;
-    btn.innerHTML='⏳ Отправка...';
+    btn.disabled=true;btn.innerHTML='⏳ Отправка...';
     try{
         const name=document.getElementById('rName').value.trim();
         const nick=document.getElementById('rNick').value.trim();
@@ -693,23 +785,23 @@ async function submitReport(e){
             const lec=document.getElementById('rLecture').files;
             const from=document.getElementById('rFrom').value;
             const to=document.getElementById('rTo').value;
-            if(!instr.length||!lec.length||!from||!to){showToast('Заполни все поля','error');btn.disabled=false;btn.innerHTML='<i class="fas fa-paper-plane"></i> Отправить рапорт';return}
+            if(!instr.length||!lec.length||!from||!to){showToast('Заполни все поля','error');btn.disabled=false;btn.innerHTML='<i class="fas fa-paper-plane"></i> Отправить';return}
             Array.from(instr).forEach(f=>files.push({file:f,name:'instr_'+f.name}));
             Array.from(lec).forEach(f=>files.push({file:f,name:'lecture_'+f.name}));
-            embed={title:'🚀 Рапорт · Повыситься',color:0x10b981,description:'**Отправитель:** <@'+DEVELOPER_ID+'>\n**Дата:** '+new Date().toLocaleString('ru-RU'),fields:[{name:'👤 Имя',value:name,inline:false},{name:'🎮 Никнейм',value:nick,inline:false},{name:'🎂 Возраст',value:age,inline:false},{name:'📤 С какого ранга',value:from,inline:false},{name:'📥 По какой ранг',value:to,inline:false},{name:'💬 Discord',value:discord,inline:false}],footer:{text:'TrapTime · Рапорт'},timestamp:new Date().toISOString()};
+            embed={title:'🚀 Рапорт · Повыситься',color:0x10b981,description:'**От ID:** #'+getUserID()+'\n**Отправитель:** <@'+DEVELOPER_ID+'>\n**Дата:** '+new Date().toLocaleString('ru-RU'),fields:[{name:'👤 Имя',value:name,inline:false},{name:'🎮 Никнейм',value:nick,inline:false},{name:'🎂 Возраст',value:age,inline:false},{name:'📤 С какого ранга',value:from,inline:false},{name:'📥 По какой ранг',value:to,inline:false},{name:'💬 Discord',value:discord,inline:false}],footer:{text:'TrapTime · Рапорт'},timestamp:new Date().toISOString()};
         }else if(reportType==='post'){
             const instr=document.getElementById('rInstr').files;
             const lec=document.getElementById('rLecture').files;
             const post=document.getElementById('rPost').value;
-            if(!instr.length||!lec.length||!post){showToast('Заполни все поля','error');btn.disabled=false;btn.innerHTML='<i class="fas fa-paper-plane"></i> Отправить рапорт';return}
+            if(!instr.length||!lec.length||!post){showToast('Заполни все поля','error');btn.disabled=false;btn.innerHTML='<i class="fas fa-paper-plane"></i> Отправить';return}
             Array.from(instr).forEach(f=>files.push({file:f,name:'instr_'+f.name}));
             Array.from(lec).forEach(f=>files.push({file:f,name:'lecture_'+f.name}));
-            embed={title:'🌟 Рапорт · Стать на пост',color:0xf5b400,description:'**Отправитель:** <@'+DEVELOPER_ID+'>\n**Дата:** '+new Date().toLocaleString('ru-RU'),fields:[{name:'👤 Имя',value:name,inline:false},{name:'🎮 Никнейм',value:nick,inline:false},{name:'🎂 Возраст',value:age,inline:false},{name:'🎯 На какой пост',value:post,inline:false},{name:'💬 Discord',value:discord,inline:false}],footer:{text:'TrapTime · Рапорт'},timestamp:new Date().toISOString()};
+            embed={title:'🌟 Рапорт · Стать на пост',color:0xf5b400,description:'**От ID:** #'+getUserID()+'\n**Отправитель:** <@'+DEVELOPER_ID+'>\n**Дата:** '+new Date().toLocaleString('ru-RU'),fields:[{name:'👤 Имя',value:name,inline:false},{name:'🎮 Никнейм',value:nick,inline:false},{name:'🎂 Возраст',value:age,inline:false},{name:'🎯 На какой пост',value:post,inline:false},{name:'💬 Discord',value:discord,inline:false}],footer:{text:'TrapTime · Рапорт'},timestamp:new Date().toISOString()};
         }else{
             const time=document.getElementById('rLeaveTime').value.trim();
             const reason=document.getElementById('rLeaveReason').value.trim();
-            if(!time||!reason){showToast('Заполни все поля','error');btn.disabled=false;btn.innerHTML='<i class="fas fa-paper-plane"></i> Отправить рапорт';return}
-            embed={title:'🚪 Рапорт · Уволиться',color:0xf87171,description:'**Отправитель:** <@'+DEVELOPER_ID+'>\n**Дата:** '+new Date().toLocaleString('ru-RU'),fields:[{name:'💬 Discord',value:discord,inline:false},{name:'👤 Имя',value:name,inline:false},{name:'⏳ Сколько пробыл',value:time,inline:false},{name:'📝 Причина',value:reason,inline:false}],footer:{text:'TrapTime · Рапорт'},timestamp:new Date().toISOString()};
+            if(!time||!reason){showToast('Заполни все поля','error');btn.disabled=false;btn.innerHTML='<i class="fas fa-paper-plane"></i> Отправить';return}
+            embed={title:'🚪 Рапорт · Уволиться',color:0xf87171,description:'**От ID:** #'+getUserID()+'\n**Отправитель:** <@'+DEVELOPER_ID+'>\n**Дата:** '+new Date().toLocaleString('ru-RU'),fields:[{name:'💬 Discord',value:discord,inline:false},{name:'👤 Имя',value:name,inline:false},{name:'⏳ Сколько пробыл',value:time,inline:false},{name:'📝 Причина',value:reason,inline:false}],footer:{text:'TrapTime · Рапорт'},timestamp:new Date().toISOString()};
         }
         const fd=new FormData();
         fd.append('payload_json',JSON.stringify({username:'TrapTime · Рапорты',content:'<@'+DEVELOPER_ID+'> — новый рапорт!',embeds:[embed]}));
@@ -718,43 +810,169 @@ async function submitReport(e){
         if(r.ok){showToast('Рапорт отправлен!','success');document.getElementById('reportForm').reset();setReportType(reportType)}
         else showToast('Ошибка отправки','error');
     }catch(e){console.error(e);showToast('Ошибка соединения','error')}
-    btn.disabled=false;
-    btn.innerHTML='<i class="fas fa-paper-plane"></i> Отправить рапорт';
+    btn.disabled=false;btn.innerHTML='<i class="fas fa-paper-plane"></i> Отправить рапорт';
 }
 
+/* ========== ЛЕКЦИЯ ========== */
 function openLecture(){
     if(!currentUser)return showToast('Войди в аккаунт','error');
     document.getElementById('lectureModal').classList.add('active');
     document.getElementById('lDiscord').value='@'+currentUser.username;
 }
 function closeLecture(){document.getElementById('lectureModal').classList.remove('active')}
-
 function selectDay(btn){
     document.querySelectorAll('.day-btn').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
     document.getElementById('lDay').value=btn.dataset.day;
 }
-
 async function submitLecture(e){
     e.preventDefault();
     const btn=document.getElementById('lectureSubmitBtn');
-    btn.disabled=true;
-    btn.innerHTML='⏳ Отправка...';
+    btn.disabled=true;btn.innerHTML='⏳ Отправка...';
     const discord=document.getElementById('lDiscord').value.trim();
     const rank=document.getElementById('lRank').value;
     const time=document.getElementById('lTime').value;
     const day=document.getElementById('lDay').value;
-    if(!discord||!rank||!time||!day){showToast('Заполни все поля','error');btn.disabled=false;btn.innerHTML='<i class="fas fa-paper-plane"></i> Отправить запрос';return}
-    const embed={title:'📚 Запрос на лекцию',color:0xa855f7,description:'**Дата:** '+new Date().toLocaleString('ru-RU'),fields:[{name:'💬 Discord',value:discord,inline:false},{name:'🎯 Ранг / на кого',value:rank,inline:false},{name:'🕐 Во сколько',value:time,inline:false},{name:'📅 Когда',value:day,inline:false}],footer:{text:'TrapTime · Лекции'},timestamp:new Date().toISOString()};
+    if(!discord||!rank||!time||!day){showToast('Заполни все поля','error');btn.disabled=false;btn.innerHTML='<i class="fas fa-paper-plane"></i> Отправить';return}
+    const embed={title:'📚 Запрос на лекцию',color:0xa855f7,description:'**От ID:** #'+getUserID()+'\n**Дата:** '+new Date().toLocaleString('ru-RU'),fields:[{name:'💬 Discord',value:discord,inline:false},{name:'🎯 Ранг / на кого',value:rank,inline:false},{name:'🕐 Во сколько',value:time,inline:false},{name:'📅 Когда',value:day,inline:false}],footer:{text:'TrapTime · Лекции'},timestamp:new Date().toISOString()};
     try{
         const r=await fetch(LECTURE_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:'TrapTime · Лекции',embeds:[embed]})});
         if(r.ok){showToast('Запрос на лекцию отправлен!','success');document.getElementById('lectureForm').reset();document.querySelectorAll('.day-btn').forEach(b=>b.classList.remove('active'));closeLecture()}
         else showToast('Ошибка отправки','error');
     }catch(e){showToast('Ошибка соединения','error')}
-    btn.disabled=false;
-    btn.innerHTML='<i class="fas fa-paper-plane"></i> Отправить запрос';
+    btn.disabled=false;btn.innerHTML='<i class="fas fa-paper-plane"></i> Отправить запрос';
 }
 
+/* ========== АДМИН-СИСТЕМА ========== */
+document.addEventListener('keydown',function(e){
+    if(e.code==='ShiftRight'&&!e.repeat){
+        e.preventDefault();
+        if(isAdmin()){document.getElementById('adminPanelModal').classList.add('active')}
+        else{document.getElementById('adminModal').classList.add('active');setTimeout(()=>document.getElementById('adminCodeInput').focus(),100)}
+    }
+});
+function isAdmin(){return localStorage.getItem(LS_ADMIN)==='true'}
+function getAdminPass(){return localStorage.getItem(LS_ADMIN_PASS)||DEFAULT_ADMIN_PASS}
+function tryActivateAdmin(){
+    const input=document.getElementById('adminCodeInput');
+    const code=input.value;
+    if(code===getAdminPass()){
+        localStorage.setItem(LS_ADMIN,'true');
+        localStorage.setItem('traptime_admin_nick',currentUser?currentUser.username:'Admin');
+        input.value='';
+        closeAdminModal();
+        document.getElementById('adminPanelModal').classList.add('active');
+        showToast('Админ-права активированы 🛡️','success');
+    }else{
+        showToast('Неверный код','error');
+        input.value='';input.focus();
+    }
+}
+function closeAdminModal(){document.getElementById('adminModal').classList.remove('active');document.getElementById('adminCodeInput').value=''}
+function closeAdminPanel(){document.getElementById('adminPanelModal').classList.remove('active')}
+function deactivateAdmin(){localStorage.removeItem(LS_ADMIN);closeAdminPanel();showToast('Админ-права сняты','info')}
+
+/* Баны */
+function getBans(){try{return JSON.parse(localStorage.getItem(LS_BANS))||{}}catch(e){return{}}}
+function saveBans(b){localStorage.setItem(LS_BANS,JSON.stringify(b))}
+function isBanned(id){const bans=getBans();if(!bans[id])return false;if(Date.now()>bans[id].until){delete bans[id];saveBans(bans);return false}return true}
+function parseTime(s){const m=s.match(/^(\d+)([smhd])$/);if(!m)return null;const n=parseInt(m[1]);const u=m[2];return n*{s:1000,m:60000,h:3600000,d:86400000}[u]}
+
+/* Блокировка чата */
+function isChatBlocked(){return localStorage.getItem(LS_CHAT_BLOCKED)==='true'}
+function updateChatBlockState(){
+    const area=document.getElementById('chatInputArea');
+    if(!area)return;
+    if(isChatBlocked()&&!isAdmin()){
+        area.classList.add('blocked');
+        if(!area.querySelector('.chat-blocked-notice')){
+            const n=document.createElement('div');n.className='chat-blocked-notice';n.textContent='🔒 Чат закрыт администрацией';area.appendChild(n);
+        }
+    }else{
+        area.classList.remove('blocked');
+        const n=area.querySelector('.chat-blocked-notice');if(n)n.remove();
+    }
+}
+
+/* ОБРАБОТКА КОМАНД */
+async function handleChatCommand(text){
+    const parts=text.trim().split(/\s+/);
+    const cmd=parts[0].toLowerCase();
+    const args=parts.slice(1);
+    const users=getUsers();
+    const findUserByID=(id)=>{
+        for(const k in users){if(users[k].id===id)return{key:k,user:users[k]}}
+        return null;
+    };
+
+    if(cmd==='/banchat'){
+        if(!args[0]||!args[1])return showToast('Использование: /banchat id время','error');
+        const found=findUserByID(args[0]);
+        if(!found)return showToast('ID не найден','error');
+        const ms=parseTime(args[1]);
+        if(!ms)return showToast('Формат: 1h, 30m, 1d, 30s','error');
+        const bans=getBans();
+        bans[args[0]]={until:Date.now()+ms,user:found.user.username};
+        saveBans(bans);
+        showToast(found.user.username+' забанен в чате на '+args[1],'success');
+        return true;
+    }
+    if(cmd==='/unbanchat'){
+        if(!args[0])return showToast('Использование: /unbanchat id','error');
+        const bans=getBans();
+        if(!bans[args[0]])return showToast('Этот ID не забанен','error');
+        delete bans[args[0]];saveBans(bans);
+        showToast('ID #'+args[0]+' разбанен','success');
+        return true;
+    }
+    if(cmd==='/blockchat'){
+        localStorage.setItem(LS_CHAT_BLOCKED,'true');
+        updateChatBlockState();
+        showToast('Чат закрыт для всех кроме админов','success');
+        return true;
+    }
+    if(cmd==='/unblockchat'){
+        localStorage.removeItem(LS_CHAT_BLOCKED);
+        updateChatBlockState();
+        showToast('Чат открыт','success');
+        return true;
+    }
+    if(cmd==='/removemessage'){
+        if(!args[0]||!args[1])return showToast('Использование: /removemessage id N','error');
+        const n=parseInt(args[1]);
+        try{
+            const r=await fetch(GOOGLE_SCRIPT_URL+'?action=getMessages');
+            const msgs=await r.json();
+            const userMsgs=msgs.filter(m=>m.userId===args[0]);
+            if(userMsgs.length<n)return showToast('Сообщений меньше чем '+n,'error');
+            const target=userMsgs[userMsgs.length-n];
+            const overrides=getMsgOverrides();
+            overrides[target.time+'_'+target.user]=true;
+            saveMsgOverrides(overrides);
+            showToast('Сообщение удалено','success');
+            loadChatMessages();
+        }catch(e){showToast('Ошибка','error')}
+        return true;
+    }
+    if(cmd==='/delava'){
+        if(!args[0])return showToast('Использование: /delava id','error');
+        const found=findUserByID(args[0]);
+        if(!found)return showToast('ID не найден','error');
+        users[found.key].avatar=null;
+        saveUsers(users);
+        showToast('Аватарка #'+args[0]+' удалена','success');
+        return true;
+    }
+    if(cmd==='/resetpass'){
+        if(!args[0])return showToast('Использование: /resetpass новыйпароль','error');
+        localStorage.setItem(LS_ADMIN_PASS,args[0]);
+        showToast('Пароль админа изменён','success');
+        return true;
+    }
+    return false;
+}
+
+/* ========== ИНИЦИАЛИЗАЦИЯ ========== */
 window.addEventListener('DOMContentLoaded',()=>{
     const pc=document.getElementById('authParticles');
     if(pc){
@@ -763,8 +981,7 @@ window.addEventListener('DOMContentLoaded',()=>{
             const p=document.createElement('div');
             p.className='auth-particle';
             const size=Math.random()*8+2;
-            p.style.width=size+'px';
-            p.style.height=size+'px';
+            p.style.width=size+'px';p.style.height=size+'px';
             p.style.left=Math.random()*100+'%';
             p.style.background=colors[Math.floor(Math.random()*colors.length)];
             p.style.animationDuration=(Math.random()*10+8)+'s';
@@ -781,7 +998,6 @@ window.addEventListener('DOMContentLoaded',()=>{
     }
     document.getElementById('authScreen').classList.remove('hidden');
 });
-
 document.addEventListener('click',(e)=>{
     if(e.target.classList.contains('modal-overlay'))e.target.classList.remove('active');
 });

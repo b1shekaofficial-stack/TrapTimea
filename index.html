@@ -183,10 +183,52 @@ body{font-family:'Inter',sans-serif;background:#0e0e14;color:#eaeef2;line-height
 .slot-media{display:inline-block;padding:.25rem .7rem;border-radius:20px;background:linear-gradient(135deg,#ff8dc7,#ff7eb3);color:#2a0f1e;font-weight:700;font-size:.78rem}
 .slot-mod{display:inline-block;padding:.25rem .7rem;border-radius:20px;background:linear-gradient(135deg,#8fb8ff,#6e9fff);color:#0f1a2a;font-weight:700;font-size:.78rem}
 .admin-badge{display:inline-block;font-size:.65rem;padding:1px 5px;border-radius:4px;background:linear-gradient(135deg,#10b981,#34d399);color:#fff;font-weight:700;margin-left:4px;vertical-align:middle}
-.user-id{font-size:.68rem;color:#5a6478;font-weight:600;margin-left:6px;font-family:'Courier New',monospace;letter-spacing:.05em}
 .chat-input-area.blocked .chat-input{opacity:.5;pointer-events:none}
 .chat-input-area.blocked .chat-send-btn{opacity:.5;pointer-events:none}
 .chat-blocked-notice{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:#f87171;font-weight:700;font-size:.9rem;pointer-events:none;z-index:5}
+.quiz-header{background:linear-gradient(135deg,rgba(139,92,246,.15),rgba(110,159,255,.1));border:1px solid #2d3340;border-radius:14px;padding:1.2rem 1.5rem;margin-bottom:1.5rem}
+.quiz-header .title{font-size:1.05rem;font-weight:700;color:#eaeef2;margin-bottom:.4rem}
+.quiz-header .desc{font-size:.85rem;color:#9aa4b5;line-height:1.6}
+.quiz-header .progress{margin-top:.8rem;height:6px;background:#0e1219;border-radius:10px;overflow:hidden}
+.quiz-header .progress-bar{height:100%;background:linear-gradient(90deg,#8b5cf6,#6e9fff);border-radius:10px;transition:width .3s ease;width:0%}
+.quiz-header .progress-text{font-size:.78rem;color:#8a94a8;margin-top:.4rem;display:flex;justify-content:space-between}
+.quiz-question{background:#1a1f29;border:1px solid #272e3a;border-radius:14px;padding:1.3rem 1.5rem;margin-bottom:1rem}
+.quiz-question .q-text{font-size:.95rem;font-weight:600;color:#eaeef2;margin-bottom:1rem;line-height:1.5}
+.quiz-question .q-text .q-num{display:inline-block;background:linear-gradient(135deg,#8b5cf6,#6e9fff);color:#fff;font-size:.75rem;font-weight:700;padding:2px 8px;border-radius:6px;margin-right:.5rem;vertical-align:middle}
+.quiz-answers{display:flex;flex-direction:column;gap:.5rem}
+.quiz-answer{display:flex;align-items:flex-start;gap:.7rem;padding:.8rem 1rem;background:#0e1219;border:2px solid #272e3a;border-radius:10px;cursor:pointer;transition:all .2s;font-size:.88rem;color:#cbd5e1;line-height:1.5}
+.quiz-answer:hover{border-color:#8b5cf6;background:#121826}
+.quiz-answer.selected{border-color:#8b5cf6;background:rgba(139,92,246,.1);color:#eaeef2}
+.quiz-answer.correct{border-color:#10b981;background:rgba(16,185,129,.1);color:#34d399}
+.quiz-answer.wrong{border-color:#f87171;background:rgba(248,113,113,.1);color:#f87171}
+.quiz-answer .radio{width:20px;height:20px;border:2px solid #3a4454;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;margin-top:1px}
+.quiz-answer.selected .radio{border-color:#8b5cf6;background:#8b5cf6}
+.quiz-answer.selected .radio::after{content:"";width:8px;height:8px;background:#fff;border-radius:50%}
+.quiz-answer.correct .radio{border-color:#10b981;background:#10b981}
+.quiz-answer.wrong .radio{border-color:#f87171;background:#f87171}
+.quiz-footer{display:flex;justify-content:space-between;gap:.8rem;margin-top:1.5rem;flex-wrap:wrap}
+.quiz-btn{padding:.85rem 1.6rem;border-radius:40px;border:none;font-family:'Inter',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:.5rem}
+.quiz-btn.primary{background:linear-gradient(135deg,#8b5cf6,#6e9fff);color:#fff;box-shadow:0 6px 18px rgba(139,92,246,.4)}
+.quiz-btn.primary:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(139,92,246,.55)}
+.quiz-btn.secondary{background:#1f2531;color:#cbd5e1;border:1px solid #2d3442}
+.quiz-btn.secondary:hover{border-color:#8b5cf6;color:#fff}
+.quiz-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.quiz-result{text-align:center;padding:2rem 1rem}
+.quiz-result .score{font-size:3.5rem;font-weight:800;background:linear-gradient(135deg,#8b5cf6,#6e9fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.5rem}
+.quiz-result .label{font-size:1rem;color:#9aa4b5;margin-bottom:2rem}
+.quiz-result .badge{display:inline-block;padding:.7rem 1.5rem;border-radius:40px;font-size:.9rem;font-weight:700;margin-bottom:1.5rem}
+.quiz-result .badge.pass{background:rgba(16,185,129,.15);color:#34d399;border:2px solid #10b981}
+.quiz-result .badge.fail{background:rgba(248,113,113,.15);color:#f87171;border:2px solid #f87171}
+.quiz-categories{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.8rem;margin-bottom:1.5rem}
+.quiz-category{background:#1a1f29;border:2px solid #272e3a;border-radius:14px;padding:1.2rem;cursor:pointer;transition:all .2s;text-align:center}
+.quiz-category:hover{border-color:#8b5cf6;transform:translateY(-2px);background:rgba(139,92,246,.05)}
+.quiz-category .ico{font-size:2rem;margin-bottom:.5rem;display:block}
+.quiz-category .name{font-size:.95rem;font-weight:700;color:#eaeef2;margin-bottom:.3rem}
+.quiz-category .count{font-size:.78rem;color:#8a94a8}
+.quiz-category .status{font-size:.72rem;margin-top:.5rem;padding:2px 8px;border-radius:10px;display:inline-block;font-weight:700;text-transform:uppercase}
+.quiz-category .status.passed{background:rgba(16,185,129,.15);color:#34d399}
+.quiz-category .status.not-passed{background:rgba(248,113,113,.15);color:#f87171}
+.quiz-category .status.no-attempts{background:#2d3442;color:#8a94a8}
 @media(max-width:900px){.forum-layout,.chat-layout{grid-template-columns:1fr}.chat-sidebar{position:static}}
 @media(max-width:700px){.navbar{padding:.7rem 1rem;flex-wrap:wrap}.nav-tabs{order:3;width:100%;justify-content:center;margin-top:.5rem}.nav-tab{padding:.5rem 1rem;font-size:.82rem}.report-row{grid-template-columns:1fr}.report-types-row{grid-template-columns:1fr}}
 </style>
@@ -266,6 +308,7 @@ body{font-family:'Inter',sans-serif;background:#0e0e14;color:#eaeef2;line-height
                     <button class="forum-tab" data-fview="about" onclick="switchForumView('about')"><i class="fas fa-info-circle"></i><span>О сервере</span></button>
                     <button class="forum-tab" data-fview="staff" onclick="switchForumView('staff')"><i class="fas fa-users-gear"></i><span>Состав</span></button>
                     <button class="forum-tab" data-fview="lecture" onclick="switchForumView('lecture')"><i class="fas fa-graduation-cap"></i><span>Запрос на лекцию</span></button>
+                    <button class="forum-tab" data-fview="test" onclick="switchForumView('test')"><i class="fas fa-clipboard-check"></i><span>Проверка</span></button>
                     <button class="forum-tab" data-fview="report" onclick="switchForumView('report')"><i class="fas fa-file-signature"></i><span>Рапорт</span></button>
                 </aside>
                 <main class="forum-content" id="forumContent"></main>
@@ -293,7 +336,7 @@ body{font-family:'Inter',sans-serif;background:#0e0e14;color:#eaeef2;line-height
     </div>
 </div>
 
-<!-- ================= MODAL: PROFILE ================= -->
+<!-- MODAL: PROFILE -->
 <div class="modal-overlay" id="profileModal">
     <div class="modal-box">
         <button class="modal-close" onclick="closeProfile()">✕</button>
@@ -309,7 +352,7 @@ body{font-family:'Inter',sans-serif;background:#0e0e14;color:#eaeef2;line-height
     </div>
 </div>
 
-<!-- ================= MODAL: REPORT ================= -->
+<!-- MODAL: REPORT -->
 <div class="modal-overlay" id="reportModal">
     <div class="modal-box modal-box-large">
         <button class="modal-close" onclick="closeReport()">✕</button>
@@ -342,7 +385,7 @@ body{font-family:'Inter',sans-serif;background:#0e0e14;color:#eaeef2;line-height
     </div>
 </div>
 
-<!-- ================= MODAL: LECTURE ================= -->
+<!-- MODAL: LECTURE -->
 <div class="modal-overlay" id="lectureModal">
     <div class="modal-box">
         <button class="modal-close" onclick="closeLecture()">✕</button>
@@ -368,7 +411,7 @@ body{font-family:'Inter',sans-serif;background:#0e0e14;color:#eaeef2;line-height
     </div>
 </div>
 
-<!-- ================= MODAL: ADMIN ACTIVATION ================= -->
+<!-- MODAL: ADMIN ACTIVATION -->
 <div class="modal-overlay" id="adminModal">
     <div class="modal-box" style="max-width:380px">
         <button class="modal-close" onclick="closeAdminModal()">✕</button>
@@ -379,7 +422,7 @@ body{font-family:'Inter',sans-serif;background:#0e0e14;color:#eaeef2;line-height
     </div>
 </div>
 
-<!-- ================= MODAL: ADMIN PANEL ================= -->
+<!-- MODAL: ADMIN PANEL -->
 <div class="modal-overlay" id="adminPanelModal">
     <div class="modal-box" style="max-width:420px">
         <button class="modal-close" onclick="closeAdminPanel()">✕</button>
@@ -392,14 +435,23 @@ body{font-family:'Inter',sans-serif;background:#0e0e14;color:#eaeef2;line-height
         <div style="margin-top:1.5rem;padding:1rem;background:#1a1f29;border-radius:10px;border-left:4px solid #10b981">
             <div style="font-size:.78rem;color:#8a94a8;line-height:1.7">
                 <strong style="color:#10b981">Команды в чате:</strong><br>
-                /banchat &lt;id&gt; &lt;время&gt;<br>
-                /unbanchat &lt;id&gt;<br>
+                /banchat Ник 1h<br>
+                /unbanchat Ник<br>
                 /blockchat / /unblockchat<br>
-                /removemessage &lt;id&gt; &lt;N&gt;<br>
-                /delava &lt;id&gt;<br>
-                /resetpass &lt;пароль&gt;
+                /removemessage Ник N<br>
+                /delava Ник<br>
+                /resetpass пароль
             </div>
         </div>
+    </div>
+</div>
+
+<!-- MODAL: TEST -->
+<div class="modal-overlay" id="testModal">
+    <div class="modal-box modal-box-large" style="max-width:700px">
+        <button class="modal-close" onclick="closeTest()">✕</button>
+        <h2 id="testTitle"><i class="fas fa-clipboard-check"></i> Проверка знаний</h2>
+        <div id="testContent"></div>
     </div>
 </div>
 
@@ -417,6 +469,7 @@ const LS_ADMIN_PASS='traptime_admin_pass';
 const LS_CHAT_BLOCKED='traptime_chat_blocked';
 const LS_BANS='traptime_bans';
 const LS_MSG_OVERRIDES='traptime_msg_overrides';
+const LS_TEST_RESULTS='traptime_test_results';
 const DEFAULT_ADMIN_PASS='traptimebustik';
 
 function getUsers(){try{return JSON.parse(localStorage.getItem(LS_USERS))||{}}catch(e){return{}}}
@@ -437,24 +490,6 @@ function showToast(msg,type){
     setTimeout(()=>t.remove(),3400);
 }
 
-/* ========== ID ПОЛЬЗОВАТЕЛЯ ========== */
-function generateAndSaveID(user){
-    const users=getUsers();
-    const key=user.username.toLowerCase();
-    if(users[key]&&users[key].id){user.id=users[key].id;return users[key].id}
-    const allIDs=Object.values(users).map(u=>u.id).filter(Boolean);
-    let newID;
-    do{newID=String(Math.floor(Math.random()*900)+100)}while(allIDs.includes(newID));
-    if(!users[key])users[key]={};
-    users[key].id=newID;
-    saveUsers(users);
-    user.id=newID;
-    return newID;
-}
-
-function getUserID(){return currentUser?currentUser.id||generateAndSaveID(currentUser):null}
-
-/* ========== АВТОРИЗАЦИЯ ========== */
 function switchAuthTab(tab){
     document.getElementById('tabLogin').classList.toggle('active',tab==='login');
     document.getElementById('tabRegister').classList.toggle('active',tab==='register');
@@ -537,7 +572,7 @@ function switchView(view){
     if(view==='chat'){loadChatMessages();loadOnline()}
 }
 
-/* ========== ПРОФИЛЬ ========== */
+/* ПРОФИЛЬ */
 function openProfile(){
     if(!currentUser)return;
     document.getElementById('profileUsername').value=currentUser.username;
@@ -603,11 +638,11 @@ function saveProfile(){
     closeProfile();
 }
 
-/* ========== ФОРУМ ========== */
+/* ФОРУМ */
 const FORUM_CONTENT={
-    schedule:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:1.5rem"><h3 style="margin-bottom:1rem;color:#eaeef2"><i class="fas fa-clock" style="color:#b48aff"></i> Расписание рассмотрения</h3><div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;min-width:720px;font-size:.9rem"><thead><tr style="background:#1f2531"><th style="padding:.85rem .6rem;border:1px solid #2a3140;text-align:left;color:#cbd5e1;font-size:.82rem;text-transform:uppercase;padding-left:1rem">День недели</th><th style="padding:.85rem .6rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">10:00</th><th style="padding:.85rem .6rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">13:00</th><th style="padding:.85rem .6rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">15:30</th><th style="padding:.85rem .6rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">16:30</th><th style="padding:.85rem .6rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">20:00</th></tr></thead><tbody><tr><td style="padding:.85rem .6rem;border:1px solid #232a36;font-weight:600;background:#191e29;color:#eaeef2;text-align:left;padding-left:1rem">Понедельник</td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td></tr><tr><td style="padding:.85rem .6rem;border:1px solid #232a36;font-weight:600;background:#191e29;color:#eaeef2;text-align:left;padding-left:1rem">Вторник</td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td></tr><tr><td style="padding:.85rem .6rem;border:1px solid #232a36;font-weight:600;background:#191e29;color:#eaeef2;text-align:left;padding-left:1rem">Среда</td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td></tr><tr><td style="padding:.85rem .6rem;border:1px solid #232a36;font-weight:600;background:#191e29;color:#eaeef2;text-align:left;padding-left:1rem">Четверг</td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td></tr><tr><td style="padding:.85rem .6rem;border:1px solid #232a36;font-weight:600;background:#191e29;color:#eaeef2;text-align:left;padding-left:1rem">Пятница</td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td></tr><tr><td style="padding:.85rem .6rem;border:1px solid #232a36;font-weight:600;background:#191e29;color:#eaeef2;text-align:left;padding-left:1rem">Суббота</td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td></tr><tr><td style="padding:.85rem .6rem;border:1px solid #232a36;font-weight:600;background:#191e29;color:#eaeef2;text-align:left;padding-left:1rem">Воскресенье</td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td></tr></tbody></table></div><div style="display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:1rem;justify-content:center;font-size:.85rem;color:#9aa4b5"><div style="display:flex;align-items:center;gap:.5rem"><span style="width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,#ff8dc7,#ff7eb3)"></span> MEDIA — рассмотрение медиа-ролей</div><div style="display:flex;align-items:center;gap:.5rem"><span style="width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,#8fb8ff,#6e9fff)"></span> MOD — рассмотрение модерации</div></div></div>',
-    rules:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:.5rem;color:#eaeef2;display:flex;align-items:center;gap:.7rem;padding-bottom:1rem;border-bottom:2px solid #2d3340"><i class="fas fa-scroll" style="color:#b48aff"></i> ПРАВИЛА СЕРВЕРА</h2><div style="font-size:.9rem;color:#9aa4b5;padding:.9rem 1.2rem;background:#1c212b;border-left:4px solid #b48aff;border-radius:8px;margin:1.2rem 0 1.8rem;font-style:italic"><strong>Важно:</strong> Незнание правил не освобождает от ответственности. Заходя на сервер, вы соглашаетесь с ними.</div><div style="margin-bottom:2rem"><h3 style="font-size:1.15rem;font-weight:700;color:#eaeef2;margin-bottom:.7rem">🎮 1. ИГРОВОЙ СЕРВЕР</h3><div style="font-size:.95rem;font-weight:700;color:#4ade80;margin-bottom:.5rem">✅ Разрешено:</div><ul style="list-style:none;display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem"><li style="font-size:.88rem;color:#b1bbcf;padding:.4rem .7rem;border-radius:6px;background:#1a1f29">Гриферство, рейды, кражи, ловушки</li><li style="font-size:.88rem;color:#b1bbcf;padding:.4rem .7rem;border-radius:6px;background:#1a1f29">PvP в любой точке мира</li><li style="font-size:.88rem;color:#b1bbcf;padding:.4rem .7rem;border-radius:6px;background:#1a1f29">Кланы, союзы, войны</li><li style="font-size:.88rem;color:#b1bbcf;padding:.4rem .7rem;border-radius:6px;background:#1a1f29">Приват территорий</li></ul><div style="font-size:.95rem;font-weight:700;color:#f87171;margin-bottom:.5rem">❌ Запрещено:</div><ul style="list-style:none;display:flex;flex-direction:column;gap:.4rem"><li style="font-size:.88rem;color:#b1bbcf;padding:.4rem .7rem;border-radius:6px;background:#1a1f29">Читы (KillAura, Fly, X-Ray, Nuker)</li><li style="font-size:.88rem;color:#b1bbcf;padding:.4rem .7rem;border-radius:6px;background:#1a1f29">Дюпы и баги</li><li style="font-size:.88rem;color:#b1bbcf;padding:.4rem .7rem;border-radius:6px;background:#1a1f29">Лаг-машины — строго запрещены</li><li style="font-size:.88rem;color:#b1bbcf;padding:.4rem .7rem;border-radius:6px;background:#1a1f29">Оскорбления, DDoS, доксинг</li></ul></div><div style="font-weight:700;color:#fbbf24;margin:1rem 0 .5rem"><i class="fas fa-gavel"></i> ⚖️ Наказания:</div><table style="width:100%;border-collapse:collapse;font-size:.85rem;border-radius:10px;overflow:hidden"><thead><tr><th style="background:#1f2531;color:#cbd5e1;font-weight:700;padding:.7rem 1rem;text-align:left;font-size:.78rem">Нарушение</th><th style="background:#1f2531;color:#cbd5e1;font-weight:700;padding:.7rem 1rem;text-align:left;font-size:.78rem">Наказание</th></tr></thead><tbody><tr><td style="padding:.6rem 1rem;border-bottom:1px solid #232a36;color:#eaeef2">Читы (1-й раз)</td><td style="padding:.6rem 1rem;border-bottom:1px solid #232a36;color:#fbbf24;font-weight:600">Бан 14 дней</td></tr><tr style="background:#13171f"><td style="padding:.6rem 1rem;border-bottom:1px solid #232a36;color:#eaeef2">Читы (повторно)</td><td style="padding:.6rem 1rem;border-bottom:1px solid #232a36;color:#fbbf24;font-weight:600">Бан навсегда</td></tr><tr><td style="padding:.6rem 1rem;border-bottom:1px solid #232a36;color:#eaeef2">Дюп / баг</td><td style="padding:.6rem 1rem;border-bottom:1px solid #232a36;color:#fbbf24;font-weight:600">Бан 30 дней + вайп</td></tr><tr style="background:#13171f"><td style="padding:.6rem 1rem;border-bottom:1px solid #232a36;color:#eaeef2">Лаг-машины</td><td style="padding:.6rem 1rem;border-bottom:1px solid #232a36;color:#fbbf24;font-weight:600">Бан 7 дней</td></tr><tr><td style="padding:.6rem 1rem;color:#eaeef2">DDoS / доксинг</td><td style="padding:.6rem 1rem;color:#fbbf24;font-weight:600">Бан навсегда</td></tr></tbody></table></div>',
-    about:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><div style="text-align:center;padding:2rem 1rem 2.5rem;background:linear-gradient(135deg,rgba(139,92,246,.15),rgba(110,159,255,.1));border-radius:1rem;margin-bottom:2rem;border:1px solid #2d3340"><h2 style="font-size:2rem;font-weight:700;background:linear-gradient(135deg,#b48aff,#6e9fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.6rem">ГРИФ СЕРВЕР · TrapTime</h2><p style="color:#9aa4b5;font-size:.95rem;max-width:600px;margin:0 auto">Мир без правил с приватом территорий. Строй, грабь, защищай своё.</p></div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem"><div style="background:#1a1f29;border:1px solid #272e3a;border-radius:14px;padding:1.2rem;text-align:center"><i class="fas fa-users" style="font-size:1.6rem;color:#b48aff;margin-bottom:.5rem;display:block"></i><div style="font-size:1.4rem;font-weight:700;color:#eaeef2">1 200+</div><div style="font-size:.78rem;color:#9aa4b5;text-transform:uppercase">Игроков</div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-radius:14px;padding:1.2rem;text-align:center"><i class="fas fa-server" style="font-size:1.6rem;color:#b48aff;margin-bottom:.5rem;display:block"></i><div style="font-size:1.4rem;font-weight:700;color:#eaeef2">24/7</div><div style="font-size:.78rem;color:#9aa4b5;text-transform:uppercase">Онлайн</div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-radius:14px;padding:1.2rem;text-align:center"><i class="fas fa-lock" style="font-size:1.6rem;color:#b48aff;margin-bottom:.5rem;display:block"></i><div style="font-size:1.4rem;font-weight:700;color:#eaeef2">Приват</div><div style="font-size:.78rem;color:#9aa4b5;text-transform:uppercase">Защита</div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-radius:14px;padding:1.2rem;text-align:center"><i class="fas fa-shield-hal" style="font-size:1.6rem;color:#b48aff;margin-bottom:.5rem;display:block"></i><div style="font-size:1.4rem;font-weight:700;color:#eaeef2">7+</div><div style="font-size:.78rem;color:#9aa4b5;text-transform:uppercase">Ролей</div></div></div><h3 style="font-size:1.1rem;font-weight:700;color:#eaeef2;margin-bottom:.7rem">🎮 Что такое ГРИФ СЕРВЕР?</h3><p style="color:#b1bbcf;font-size:.9rem;margin-bottom:.7rem;line-height:1.7"><strong style="color:#eaeef2">ГРИФ СЕРВЕР</strong> — Minecraft-сервер в жанре grief, где разрешено гриферство, рейды, кражи и PvP везде. Нет сезонов и ролевых команд — только ты, твоя база и твой приват.</p></div>',
+    schedule:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:1.5rem"><h3 style="margin-bottom:1rem;color:#eaeef2"><i class="fas fa-clock" style="color:#b48aff"></i> Расписание рассмотрения</h3><div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;min-width:720px;font-size:.9rem"><thead><tr style="background:#1f2531"><th style="padding:.85rem .6rem;border:1px solid #2a3140;text-align:left;color:#cbd5e1;font-size:.82rem;text-transform:uppercase;padding-left:1rem">День недели</th><th style="padding:.85rem .6rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">10:00</th><th style="padding:.85rem .6rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">13:00</th><th style="padding:.85rem .6rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">15:30</th><th style="padding:.85rem .6rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">16:30</th><th style="padding:.85rem .6rem;border:1px solid #2a3140;color:#cbd5e1;font-size:.82rem;text-transform:uppercase">20:00</th></tr></thead><tbody><tr><td style="padding:.85rem .6rem;border:1px solid #232a36;font-weight:600;background:#191e29;color:#eaeef2;text-align:left;padding-left:1rem">Понедельник</td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td></tr><tr><td style="padding:.85rem .6rem;border:1px solid #232a36;font-weight:600;background:#191e29;color:#eaeef2;text-align:left;padding-left:1rem">Вторник</td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td></tr><tr><td style="padding:.85rem .6rem;border:1px solid #232a36;font-weight:600;background:#191e29;color:#eaeef2;text-align:left;padding-left:1rem">Среда</td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td></tr><tr><td style="padding:.85rem .6rem;border:1px solid #232a36;font-weight:600;background:#191e29;color:#eaeef2;text-align:left;padding-left:1rem">Четверг</td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td></tr><tr><td style="padding:.85rem .6rem;border:1px solid #232a36;font-weight:600;background:#191e29;color:#eaeef2;text-align:left;padding-left:1rem">Пятница</td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td></tr><tr><td style="padding:.85rem .6rem;border:1px solid #232a36;font-weight:600;background:#191e29;color:#eaeef2;text-align:left;padding-left:1rem">Суббота</td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center"><span class="slot-media">MEDIA</span></td></tr><tr><td style="padding:.85rem .6rem;border:1px solid #232a36;font-weight:600;background:#191e29;color:#eaeef2;text-align:left;padding-left:1rem">Воскресенье</td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-mod">MOD</span></td><td style="padding:.85rem .6rem;border:1px solid #232a36;text-align:center;background:#13171f"><span class="slot-media">MEDIA</span></td></tr></tbody></table></div></div>',
+    rules:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:.5rem;color:#eaeef2;display:flex;align-items:center;gap:.7rem;padding-bottom:1rem;border-bottom:2px solid #2d3340"><i class="fas fa-scroll" style="color:#b48aff"></i> ПРАВИЛА СЕРВЕРА</h2><div style="font-size:.9rem;color:#9aa4b5;padding:.9rem 1.2rem;background:#1c212b;border-left:4px solid #b48aff;border-radius:8px;margin:1.2rem 0 1.8rem;font-style:italic">Незнание правил не освобождает от ответственности. Заходя на сервер, вы соглашаетесь с ними.</div><div style="margin-bottom:2rem"><h3 style="font-size:1.15rem;font-weight:700;color:#eaeef2;margin-bottom:.7rem">🎮 1. ИГРОВОЙ СЕРВЕР</h3><div style="font-size:.95rem;font-weight:700;color:#4ade80;margin-bottom:.5rem">✅ Разрешено:</div><ul style="list-style:none;display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem"><li style="font-size:.88rem;color:#b1bbcf;padding:.4rem .7rem;border-radius:6px;background:#1a1f29">Гриферство, рейды, кражи, ловушки</li><li style="font-size:.88rem;color:#b1bbcf;padding:.4rem .7rem;border-radius:6px;background:#1a1f29">PvP в любой точке мира</li><li style="font-size:.88rem;color:#b1bbcf;padding:.4rem .7rem;border-radius:6px;background:#1a1f29">Кланы, союзы, войны</li><li style="font-size:.88rem;color:#b1bbcf;padding:.4rem .7rem;border-radius:6px;background:#1a1f29">Приват территорий</li></ul><div style="font-size:.95rem;font-weight:700;color:#f87171;margin-bottom:.5rem">❌ Запрещено:</div><ul style="list-style:none;display:flex;flex-direction:column;gap:.4rem"><li style="font-size:.88rem;color:#b1bbcf;padding:.4rem .7rem;border-radius:6px;background:#1a1f29">Читы (KillAura, Fly, X-Ray, Nuker)</li><li style="font-size:.88rem;color:#b1bbcf;padding:.4rem .7rem;border-radius:6px;background:#1a1f29">Дюпы и баги</li><li style="font-size:.88rem;color:#b1bbcf;padding:.4rem .7rem;border-radius:6px;background:#1a1f29">Лаг-машины — строго запрещены</li><li style="font-size:.88rem;color:#b1bbcf;padding:.4rem .7rem;border-radius:6px;background:#1a1f29">Оскорбления, DDoS, доксинг</li></ul></div><div style="font-weight:700;color:#fbbf24;margin:1rem 0 .5rem"><i class="fas fa-gavel"></i> ⚖️ Наказания:</div><table style="width:100%;border-collapse:collapse;font-size:.85rem;border-radius:10px;overflow:hidden"><thead><tr><th style="background:#1f2531;color:#cbd5e1;font-weight:700;padding:.7rem 1rem;text-align:left;font-size:.78rem">Нарушение</th><th style="background:#1f2531;color:#cbd5e1;font-weight:700;padding:.7rem 1rem;text-align:left;font-size:.78rem">Наказание</th></tr></thead><tbody><tr><td style="padding:.6rem 1rem;border-bottom:1px solid #232a36;color:#eaeef2">Читы (1-й раз)</td><td style="padding:.6rem 1rem;border-bottom:1px solid #232a36;color:#fbbf24;font-weight:600">Бан 14 дней</td></tr><tr style="background:#13171f"><td style="padding:.6rem 1rem;border-bottom:1px solid #232a36;color:#eaeef2">Читы (повторно)</td><td style="padding:.6rem 1rem;border-bottom:1px solid #232a36;color:#fbbf24;font-weight:600">Бан навсегда</td></tr><tr><td style="padding:.6rem 1rem;border-bottom:1px solid #232a36;color:#eaeef2">Дюп / баг</td><td style="padding:.6rem 1rem;border-bottom:1px solid #232a36;color:#fbbf24;font-weight:600">Бан 30 дней + вайп</td></tr><tr style="background:#13171f"><td style="padding:.6rem 1rem;border-bottom:1px solid #232a36;color:#eaeef2">Лаг-машины</td><td style="padding:.6rem 1rem;border-bottom:1px solid #232a36;color:#fbbf24;font-weight:600">Бан 7 дней</td></tr><tr><td style="padding:.6rem 1rem;color:#eaeef2">DDoS / доксинг</td><td style="padding:.6rem 1rem;color:#fbbf24;font-weight:600">Бан навсегда</td></tr></tbody></table></div>',
+    about:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><div style="text-align:center;padding:2rem 1rem 2.5rem;background:linear-gradient(135deg,rgba(139,92,246,.15),rgba(110,159,255,.1));border-radius:1rem;margin-bottom:2rem;border:1px solid #2d3340"><h2 style="font-size:2rem;font-weight:700;background:linear-gradient(135deg,#b48aff,#6e9fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.6rem">ГРИФ СЕРВЕР · TrapTime</h2><p style="color:#9aa4b5;font-size:.95rem;max-width:600px;margin:0 auto">Мир без правил с приватом территорий. Строй, грабь, защищай своё.</p></div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem"><div style="background:#1a1f29;border:1px solid #272e3a;border-radius:14px;padding:1.2rem;text-align:center"><i class="fas fa-users" style="font-size:1.6rem;color:#b48aff;margin-bottom:.5rem;display:block"></i><div style="font-size:1.4rem;font-weight:700;color:#eaeef2">1 200+</div><div style="font-size:.78rem;color:#9aa4b5;text-transform:uppercase">Игроков</div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-radius:14px;padding:1.2rem;text-align:center"><i class="fas fa-server" style="font-size:1.6rem;color:#b48aff;margin-bottom:.5rem;display:block"></i><div style="font-size:1.4rem;font-weight:700;color:#eaeef2">24/7</div><div style="font-size:.78rem;color:#9aa4b5;text-transform:uppercase">Онлайн</div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-radius:14px;padding:1.2rem;text-align:center"><i class="fas fa-lock" style="font-size:1.6rem;color:#b48aff;margin-bottom:.5rem;display:block"></i><div style="font-size:1.4rem;font-weight:700;color:#eaeef2">Приват</div><div style="font-size:.78rem;color:#9aa4b5;text-transform:uppercase">Защита</div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-radius:14px;padding:1.2rem;text-align:center"><i class="fas fa-shield-hal" style="font-size:1.6rem;color:#b48aff;margin-bottom:.5rem;display:block"></i><div style="font-size:1.4rem;font-weight:700;color:#eaeef2">7+</div><div style="font-size:.78rem;color:#9aa4b5;text-transform:uppercase">Ролей</div></div></div><h3 style="font-size:1.1rem;font-weight:700;color:#eaeef2;margin-bottom:.7rem">🎮 Что такое ГРИФ СЕРВЕР?</h3><p style="color:#b1bbcf;font-size:.9rem;margin-bottom:.7rem;line-height:1.7">ГРИФ СЕРВЕР — Minecraft-сервер в жанре grief, где разрешено гриферство, рейды, кражи и PvP везде. Нет сезонов и ролевых команд — только ты, твоя база и твой приват.</p></div>',
     staff:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1.5rem;color:#eaeef2"><i class="fas fa-users-gear" style="color:#b48aff"></i> Состав команды</h2><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #f5b400;border-radius:14px;padding:1.2rem;margin-bottom:1rem"><div style="font-weight:700;color:#f5b400;margin-bottom:.7rem">👑 Руководство</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">👑 B1shechka</span><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">👑 Boba2020</span><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">👑 rip_RNdracon</span></div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #a855f7;border-radius:14px;padding:1.2rem;margin-bottom:1rem"><div style="font-weight:700;color:#c084fc;margin-bottom:.7rem">🎓 Учебное руководство</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">🎓 B1shechka</span><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">🎓 Maks_Delovoy</span></div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #6e9fff;border-radius:14px;padding:1.2rem;margin-bottom:1rem"><div style="font-weight:700;color:#6e9fff;margin-bottom:.7rem">⭐ Старший хелпер</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">⭐ Maks_Delovoy</span></div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #34d399;border-radius:14px;padding:1.2rem;margin-bottom:1rem"><div style="font-weight:700;color:#34d399;margin-bottom:.7rem">🛡️ Хелперы</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">🛡️ WospinPlay</span></div></div><div style="background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #ff7eb3;border-radius:14px;padding:1.2rem"><div style="font-weight:700;color:#ff8dc7;margin-bottom:.7rem">🎬 Медиа</div><div style="display:flex;flex-wrap:wrap;gap:.6rem"><span style="padding:.5rem 1rem;background:#232a3a;border:1px solid #2d3442;border-radius:40px;font-weight:600;color:#eaeef2">🎬 Vaxmi555</span></div></div></div>',
     lecture:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1rem;color:#eaeef2"><i class="fas fa-graduation-cap" style="color:#a855f7"></i> Запрос на лекцию</h2><p style="color:#b1bbcf;margin-bottom:1.5rem">Заполни форму, чтобы запросить лекцию по правилам.</p><button class="modal-save-btn" onclick="openLecture()" style="max-width:250px"><i class="fas fa-paper-plane"></i> Открыть форму</button></div>',
     report:'<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1rem;color:#eaeef2"><i class="fas fa-file-signature" style="color:#b48aff"></i> Рапорт</h2><p style="color:#b1bbcf;margin-bottom:1.5rem">Подай рапорт на повышение, становление или увольнение.</p><button class="modal-save-btn" onclick="openReport()" style="max-width:250px"><i class="fas fa-paper-plane"></i> Открыть форму</button></div>'
@@ -618,7 +653,7 @@ function switchForumView(view){
     document.getElementById('forumContent').innerHTML=FORUM_CONTENT[view]||'';
 }
 
-/* ========== ЧАТ ========== */
+/* ЧАТ */
 let chatInterval=null;
 let lastMsgCount=0;
 
@@ -631,10 +666,7 @@ async function loadChatMessages(){
     }catch(e){console.error(e)}
 }
 
-function getMsgOverrides(){
-    try{return JSON.parse(localStorage.getItem(LS_MSG_OVERRIDES))||{}}
-    catch(e){return{}}
-}
+function getMsgOverrides(){try{return JSON.parse(localStorage.getItem(LS_MSG_OVERRIDES))||{}}catch(e){return{}}}
 function saveMsgOverrides(o){localStorage.setItem(LS_MSG_OVERRIDES,JSON.stringify(o))}
 
 function renderMessages(msgs){
@@ -653,7 +685,6 @@ function renderMessages(msgs){
 }
 
 function getAdminNickname(){return localStorage.getItem('traptime_admin_nick')||'Admin'}
-
 function escapeHtml(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML}
 function formatTime(iso){try{const d=new Date(iso);return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}catch(e){return''}}
 
@@ -663,12 +694,10 @@ async function sendChatMessage(){
     const text=input.value.trim();
     if(!text)return;
 
-    // Проверка на команду (только для админа)
     if(text.startsWith('/')&&isAdmin()){
         if(await handleChatCommand(text)){input.value='';return}
     }
 
-    // Проверка бана по нику
     if(isBanned(currentUser.username)){
         const bans=getBans();
         const until=bans[currentUser.username]?.until;
@@ -676,10 +705,7 @@ async function sendChatMessage(){
         return showToast('Вы забанены в чате ещё на '+mins+' мин.','error');
     }
 
-    // Проверка блокировки чата
-    if(isChatBlocked()&&!isAdmin()){
-        return showToast('Чат закрыт администрацией','error');
-    }
+    if(isChatBlocked()&&!isAdmin())return showToast('Чат закрыт администрацией','error');
 
     input.value='';
     const data={user:currentUser.username,rank:currentUser.rank||'player',avatar:currentUser.avatar||'',color:currentUser.color||'av-1',text:text};
@@ -689,13 +715,11 @@ async function sendChatMessage(){
     }catch(e){showToast('Ошибка отправки','error')}
 }
 
-/* Эмодзи */
 const EMOJIS=['😀','😂','🥰','😎','🤔','😴','🤯','🥳','😭','😡','👍','👎','❤️','🔥','✨','💯','🎉','🎮','🏆','⚡','💎','👑','🌸','🎬','🛡️','⚔️','📜','📢','💬','🤝','🙏','😅','🤣','😍','🤩','😇','🥺','😤','✌️','👋','🫡'];
 function toggleEmojiPicker(){
     const p=document.getElementById('emojiPicker');if(!p)return;
     if(p.style.display==='grid'){p.style.display='none';return}
-    p.style.display='grid';
-    p.style.position='absolute';p.style.bottom='70px';p.style.left='20px';
+    p.style.display='grid';p.style.position='absolute';p.style.bottom='70px';p.style.left='20px';
     p.style.background='#161a22';p.style.border='1px solid #272e3a';p.style.borderRadius='16px';
     p.style.padding='10px';p.style.gridTemplateColumns='repeat(8,1fr)';p.style.gap='2px';
     p.style.boxShadow='0 10px 30px rgba(0,0,0,.6)';p.style.zIndex='10';p.style.maxWidth='320px';
@@ -706,7 +730,6 @@ function toggleEmojiPicker(){
 }
 function insertEmoji(e){const i=document.getElementById('chatInput');i.value+=e;i.focus()}
 
-/* Онлайн */
 async function loadOnline(){
     try{
         const r=await fetch(GOOGLE_SCRIPT_URL+'?action=getOnline');
@@ -735,7 +758,7 @@ async function sendHeartbeat(){
     try{await fetch(GOOGLE_SCRIPT_URL+'?action=heartbeat&data='+encodeURIComponent(JSON.stringify(data)),{mode:'no-cors'})}catch(e){}
 }
 
-/* ========== РАПОРТ ========== */
+/* РАПОРТ */
 let reportType='promote';
 function openReport(){
     if(!currentUser)return showToast('Войди в аккаунт','error');
@@ -759,7 +782,6 @@ function setReportType(t){
     document.getElementById('rFieldLeaveTime').classList.toggle('hidden',t!=='leave');
     document.getElementById('rFieldLeaveReason').classList.toggle('hidden',t!=='leave');
 }
-
 async function submitReport(e){
     e.preventDefault();
     const btn=document.getElementById('reportSubmitBtn');
@@ -803,7 +825,7 @@ async function submitReport(e){
     btn.disabled=false;btn.innerHTML='<i class="fas fa-paper-plane"></i> Отправить рапорт';
 }
 
-/* ========== ЛЕКЦИЯ ========== */
+/* ЛЕКЦИЯ */
 function openLecture(){
     if(!currentUser)return showToast('Войди в аккаунт','error');
     document.getElementById('lectureModal').classList.add('active');
@@ -833,7 +855,7 @@ async function submitLecture(e){
     btn.disabled=false;btn.innerHTML='<i class="fas fa-paper-plane"></i> Отправить запрос';
 }
 
-/* ========== АДМИН-СИСТЕМА ========== */
+/* АДМИН */
 document.addEventListener('keydown',function(e){
     if(e.code==='ShiftRight'&&!e.repeat){
         e.preventDefault();
@@ -849,8 +871,7 @@ function tryActivateAdmin(){
     if(code===getAdminPass()){
         localStorage.setItem(LS_ADMIN,'true');
         localStorage.setItem('traptime_admin_nick',currentUser?currentUser.username:'Admin');
-        input.value='';
-        closeAdminModal();
+        input.value='';closeAdminModal();
         document.getElementById('adminPanelModal').classList.add('active');
         showToast('Админ-права активированы 🛡️','success');
     }else{
@@ -862,17 +883,14 @@ function closeAdminModal(){document.getElementById('adminModal').classList.remov
 function closeAdminPanel(){document.getElementById('adminPanelModal').classList.remove('active')}
 function deactivateAdmin(){localStorage.removeItem(LS_ADMIN);closeAdminPanel();showToast('Админ-права сняты','info')}
 
-/* Баны */
 function getBans(){try{return JSON.parse(localStorage.getItem(LS_BANS))||{}}catch(e){return{}}}
 function saveBans(b){localStorage.setItem(LS_BANS,JSON.stringify(b))}
-function isBanned(id){const bans=getBans();if(!bans[id])return false;if(Date.now()>bans[id].until){delete bans[id];saveBans(bans);return false}return true}
+function isBanned(nick){const bans=getBans();const k=nick.toLowerCase();if(!bans[k])return false;if(Date.now()>bans[k].until){delete bans[k];saveBans(bans);return false}return true}
 function parseTime(s){const m=s.match(/^(\d+)([smhd])$/);if(!m)return null;const n=parseInt(m[1]);const u=m[2];return n*{s:1000,m:60000,h:3600000,d:86400000}[u]}
 
-/* Блокировка чата */
 function isChatBlocked(){return localStorage.getItem(LS_CHAT_BLOCKED)==='true'}
 function updateChatBlockState(){
-    const area=document.getElementById('chatInputArea');
-    if(!area)return;
+    const area=document.getElementById('chatInputArea');if(!area)return;
     if(isChatBlocked()&&!isAdmin()){
         area.classList.add('blocked');
         if(!area.querySelector('.chat-blocked-notice')){
@@ -884,93 +902,274 @@ function updateChatBlockState(){
     }
 }
 
-/* ОБРАБОТКА КОМАНД */
 async function handleChatCommand(text){
     const parts=text.trim().split(/\s+/);
     const cmd=parts[0].toLowerCase();
     const args=parts.slice(1);
     const users=getUsers();
-    const findUserByNick=(nick)=>{
+    const findUser=(nick)=>{
+        if(!nick)return null;
         for(const k in users){if(users[k].username.toLowerCase()===nick.toLowerCase())return{key:k,user:users[k]}}
         return null;
     };
 
     if(cmd==='/banchat'){
         if(!args[0]||!args[1])return showToast('Использование: /banchat Ник время','error');
-        const found=findUserByNick(args[0]);
+        const found=findUser(args[0]);
         if(!found)return showToast('Игрок не найден','error');
         const ms=parseTime(args[1]);
         if(!ms)return showToast('Формат: 1h, 30m, 1d, 30s','error');
         const bans=getBans();
-        bans[found.user.username]={
-            until:Date.now()+ms,
-            nick:found.user.username
-        };
+        bans[found.user.username.toLowerCase()]={until:Date.now()+ms,nick:found.user.username};
         saveBans(bans);
-        showToast(found.user.username+' забанен в чате на '+args[1],'success');
+        showToast(found.user.username+' забанен на '+args[1],'success');
         return true;
     }
     if(cmd==='/unbanchat'){
         if(!args[0])return showToast('Использование: /unbanchat Ник','error');
-        const found=findUserByNick(args[0]);
+        const found=findUser(args[0]);
         if(!found)return showToast('Игрок не найден','error');
         const bans=getBans();
-        if(!bans[found.user.username])return showToast('Этот игрок не забанен','error');
-        delete bans[found.user.username];
-        saveBans(bans);
+        if(!bans[found.user.username.toLowerCase()])return showToast('Не забанен','error');
+        delete bans[found.user.username.toLowerCase()];saveBans(bans);
         showToast(found.user.username+' разбанен','success');
         return true;
     }
     if(cmd==='/blockchat'){
-        localStorage.setItem(LS_CHAT_BLOCKED,'true');
-        updateChatBlockState();
-        showToast('Чат закрыт для всех кроме админов','success');
-        return true;
+        localStorage.setItem(LS_CHAT_BLOCKED,'true');updateChatBlockState();
+        showToast('Чат закрыт для всех','success');return true;
     }
     if(cmd==='/unblockchat'){
-        localStorage.removeItem(LS_CHAT_BLOCKED);
-        updateChatBlockState();
-        showToast('Чат открыт','success');
-        return true;
+        localStorage.removeItem(LS_CHAT_BLOCKED);updateChatBlockState();
+        showToast('Чат открыт','success');return true;
     }
     if(cmd==='/removemessage'){
         if(!args[0]||!args[1])return showToast('Использование: /removemessage Ник N','error');
-        const found=findUserByNick(args[0]);
-        if(!found)return showToast('Игрок не найден','error');
         const n=parseInt(args[1]);
         try{
             const r=await fetch(GOOGLE_SCRIPT_URL+'?action=getMessages');
             const msgs=await r.json();
-            const userMsgs=msgs.filter(m=>m.user.toLowerCase()===args[0].toLowerCase());
-            if(userMsgs.length<n)return showToast('У игрока меньше '+n+' сообщений','error');
+            const userMsgs=msgs.filter(m=>(m.user||'').toLowerCase()===args[0].toLowerCase());
+            if(userMsgs.length<n)return showToast('Меньше '+n+' сообщений','error');
             const target=userMsgs[userMsgs.length-n];
             const overrides=getMsgOverrides();
-            overrides[target.time+'_'+target.user]=true;
-            saveMsgOverrides(overrides);
-            showToast('Сообщение удалено','success');
-            loadChatMessages();
+            overrides[target.time+'_'+target.user]=true;saveMsgOverrides(overrides);
+            showToast('Сообщение удалено','success');loadChatMessages();
         }catch(e){showToast('Ошибка','error')}
         return true;
     }
     if(cmd==='/delava'){
         if(!args[0])return showToast('Использование: /delava Ник','error');
-        const found=findUserByNick(args[0]);
+        const found=findUser(args[0]);
         if(!found)return showToast('Игрок не найден','error');
-        users[found.key].avatar=null;
-        saveUsers(users);
+        users[found.key].avatar=null;saveUsers(users);
         showToast('Аватарка '+found.user.username+' удалена','success');
         return true;
     }
     if(cmd==='/resetpass'){
         if(!args[0])return showToast('Использование: /resetpass новыйпароль','error');
         localStorage.setItem(LS_ADMIN_PASS,args[0]);
-        showToast('Пароль админа изменён','success');
-        return true;
+        showToast('Пароль админа изменён','success');return true;
     }
     return false;
 }
 
-/* ========== ИНИЦИАЛИЗАЦИЯ ========== */
+/* ТЕСТЫ */
+const QUIZ_DATA = {
+    cat1: {
+        title: 'Пункт 1. Правила игрового сервера',
+        icon: '🎮',
+        questions: [
+            {q:'Что из перечисленного РАЗРЕШЕНО на гриф-сервере?', a:['Гриферство, рейды, кражи и ловушки','Использование X-Ray для поиска руды','Лаг-машины для нагрузки сервера','Скам за реальные деньги'], correct:0},
+            {q:'Какое наказание за читы ПЕРВЫЙ раз?', a:['Мут 24 часа','Бан 7 дней','Бан 14 дней','Предупреждение'], correct:2},
+            {q:'Какое наказание за читы ПОВТОРНО?', a:['Бан 30 дней','Бан навсегда','Мут 7 дней','Бан 14 дней'], correct:1},
+            {q:'Что грозит за использование дюпа или бага?', a:['Мут 3 часа','Бан 7 дней','Бан 30 дней + вайп инвентаря','Только предупреждение'], correct:2},
+            {q:'Где разрешено PvP?', a:['Только на спавне','В любой точке мира, кроме спавна и безопасных зон','Только в специальных аренах','Нигде'], correct:1},
+            {q:'Какое наказание за лаг-машины?', a:['Бан 7 дней','Мут 1 час','Кик из игры','Бан 14 дней'], correct:0},
+            {q:'Что запрещено делать с багами привата?', a:['Использовать для кражи чужих вещей','Использовать для защиты своей базы','Показывать друзьям','Тестировать на своей территории'], correct:0},
+            {q:'Разрешено ли гриферство на этом сервере?', a:['Да, это гриф-сервер','Нет, это наказуемо','Разрешено только ночью','Разрешено только с разрешения админа'], correct:0},
+            {q:'Что запрещено по отношению к другим игрокам?', a:['Оскорбления по признаку расы, религии, национальности, пола','Торговля','PvP','Объединение в кланы'], correct:0},
+            {q:'Какое наказание за угрозы жизни, DDoS или доксинг?', a:['Мут 1 час','Мгновенный бан без разбора','Предупреждение','Бан 7 дней'], correct:1},
+            {q:'Разрешена ли реклама других серверов?', a:['Да, без ограничений','Только с разрешения администрации','Разрешена в ЛС','Только в ночное время'], correct:1},
+            {q:'Что произойдёт за скам при продаже доната?', a:['Возврат денег и предупреждение','Ничего','Наказание (бан/мут по правилам)','Разрешается обман'], correct:2}
+        ]
+    },
+    cat2: {
+        title: 'Пункт 2. Правила чата в Discord',
+        icon: '💬',
+        questions: [
+            {q:'Что РАЗРЕШЕНО в Discord-чате?', a:['Общение на любые темы в соответствующих каналах','Спам и флуд','NSFW-контент','Реклама других серверов'], correct:0},
+            {q:'Какое наказание за спам или флуд?', a:['Мут 1-6 часов','Бан 7 дней','Кик из сервера','Ничего'], correct:0},
+            {q:'Что грозит за оскорбления участников или администрации?', a:['Мут 12-48 часов','Предупреждение','Бан навсегда','Мут 1 час'], correct:0},
+            {q:'Разрешён ли NSFW-контент в Discord?', a:['Да, в специальных каналах','Нет, за это бан 7 дней','Только для админов','Разрешён везде'], correct:1},
+            {q:'Какое наказание за рекламу чужих серверов/читов?', a:['Бан 30 дней','Мут 1 час','Предупреждение','Кик'], correct:0},
+            {q:'Что будет за обход наказания через твинка?', a:['Бан навсегда','Мут 12 часов','Ничего','Предупреждение'], correct:0},
+            {q:'Что запрещено публиковать без согласия?', a:['Личные данные других людей','Игровые скриншоты','Мемы','Своё мнение'], correct:0},
+            {q:'Разрешены ли политические и религиозные провокации?', a:['Да, всегда','Нет, это запрещено','Разрешены только админам','Разрешены по выходным'], correct:1},
+            {q:'Какое наказание за доксинг?', a:['Бан навсегда','Мут 24 часа','Предупреждение','Бан 7 дней'], correct:0},
+            {q:'Что нельзя делать в чате Discord?', a:['Помогать новичкам','Обсуждать кланы','Попрошайничать «дайте донат»','Шутить в рамках приличия'], correct:2},
+            {q:'Разрешены ли спойлеры без пометки?', a:['Да, если не про ивенты','Нет, если это касается ивентов — запрещено','Разрешены всегда','Разрешены только модераторам'], correct:1},
+            {q:'Что делать, если увидел нарушение правил?', a:['Самому наказать нарушителя','Написать в поддержку/тикет','Игнорировать','Начать срач в чате'], correct:1}
+        ]
+    },
+    cat3: {
+        title: 'Пункт 3. Правила голосовых каналов',
+        icon: '🔊',
+        questions: [
+            {q:'Что РАЗРЕШЕНО в голосовых каналах?', a:['Общение, обсуждение игры, мемы','Крики и ор в микрофон','Реклама других серверов','NSFW-стримы'], correct:0},
+            {q:'Какое наказание за шум или крик в войсе?', a:['Мут 30 мин в войсе','Бан навсегда','Кик из Discord','Ничего'], correct:0},
+            {q:'Разрешён ли Soundpad без разрешения участников?', a:['Да, всегда','Нет, за это кик из канала','Разрешён только админам','Разрешён по выходным'], correct:1},
+            {q:'Что грозит за перебивание или хамство в войсе?', a:['Мут 1-3 часа','Предупреждение','Бан 7 дней','Ничего'], correct:0},
+            {q:'Можно ли заходить в чужой канал и мешать общению?', a:['Да','Нет, за это кик + предупреждение','Можно, если ты админ','Можно ночью'], correct:1},
+            {q:'Что категорически запрещено в голосовых?', a:['Музыка в спец. каналах','Стрим NSFW-контента через демонстрацию экрана','AFK в канале #afk','Обсуждение игры'], correct:1},
+            {q:'Какое наказание за стрим NSFW?', a:['Бан навсегда','Мут 30 мин','Кик из канала','Предупреждение'], correct:0},
+            {q:'Что делать с фоновым шумом (ремонт, музыка, собаки)?', a:['Оставить как есть','Выключить микрофон','Попросить всех выйти','Ничего'], correct:1},
+            {q:'Разрешена ли реклама в голосовых каналах?', a:['Да','Нет, запрещена','Только в ЛС','Только для VIP'], correct:1},
+            {q:'Что грозит за нарушение «Мешать другим»?', a:['Кик + предупреждение','Бан навсегда','Мут 7 дней','Ничего'], correct:0},
+            {q:'Где разрешено AFK?', a:['В любом канале','В канале #afk','Только в личке','В канале администрации'], correct:1},
+            {q:'Разрешена ли музыка в голосовых?', a:['Да, везде','Только в специально отведённых каналах','Запрещена полностью','Только ночью'], correct:1}
+        ]
+    },
+    cat4: {
+        title: 'Пункт 4. Администрация и общие положения',
+        icon: '🛡️',
+        questions: [
+            {q:'Обязана ли администрация объяснять причину наказания?', a:['Да, всегда','Нет, но может по запросу','Только в ЛС','Только владельцу'], correct:1},
+            {q:'Разрешено ли администрации использовать права для личной выгоды?', a:['Да, если не поймают','Нет, это запрещено','Только с разрешения владельца','Разрешено админам'], correct:1},
+            {q:'Можно ли снять наказание за реальные деньги?', a:['Да, за донат','Нет, это запрещено','Только через тикет','Только для VIP'], correct:1},
+            {q:'Как обжаловать наказание?', a:['В ЛС админу','Через тикет в Discord (#тикеты)','В общем чате','Никак'], correct:1},
+            {q:'Куда жаловаться на администратора?', a:['В общий чат','В ЛС владельцу сервера','В голосовой канал','В тикет'], correct:1},
+            {q:'Может ли администрация изменять правила без уведомления?', a:['Нет','Да, вправе','Только с голосования','Только раз в год'], correct:1},
+            {q:'Освобождает ли незнание правил от наказания?', a:['Да','Нет, не освобождает','Только новичков','Только первый раз'], correct:1},
+            {q:'Окончательны ли решения администрации?', a:['Нет, можно спорить','Да, кроме обжалования через тикет','Зависит от ситуации','Нет, всегда можно оспорить'], correct:1},
+            {q:'Как часто могут происходить вайпы?', a:['Раз в месяц (по решению админов)','Никогда','Каждый день','Раз в неделю'], correct:0},
+            {q:'Возвращается ли донат при бане?', a:['Да, всегда','Нет, не возвращается','Только половина','По решению админа'], correct:1},
+            {q:'Что считается нарушением со стороны администрации?', a:['Использование прав для личной выгоды','Наказание нарушителей','Проверка логов','Ответы на тикеты'], correct:0},
+            {q:'Что будет, если ты не согласен с решением администрации?', a:['Обжалование через тикет','Срач в чате','Игнор','Месть в игре'], correct:0}
+        ]
+    }
+};
+
+function getTestResults(){try{return JSON.parse(localStorage.getItem(LS_TEST_RESULTS))||{}}catch(e){return{}}}
+function saveTestResults(r){localStorage.setItem(LS_TEST_RESULTS,JSON.stringify(r))}
+
+function openTest(){
+    document.getElementById('testModal').classList.add('active');
+    renderTestCategories();
+}
+function closeTest(){document.getElementById('testModal').classList.remove('active')}
+
+function renderTestCategories(){
+    const results=getTestResults();
+    const keys=Object.keys(QUIZ_DATA);
+    let html='<div class="quiz-header"><div class="title">📋 Проверка знаний правил</div><div class="desc">Выбери раздел, чтобы пройти тест. В каждом разделе 12 вопросов. Для сдачи нужно набрать 80% (10 из 12).</div></div>';
+    html+='<div class="quiz-categories">';
+    keys.forEach(key=>{
+        const cat=QUIZ_DATA[key];
+        const res=results[key];
+        let statusClass='no-attempts',statusText='Не пройден';
+        if(res){
+            if(res.passed){statusClass='passed';statusText='✓ Пройден ('+res.score+'/'+res.total+')'}
+            else{statusClass='not-passed';statusText='✗ Провален ('+res.score+'/'+res.total+')'}
+        }
+        html+='<div class="quiz-category" onclick="startQuiz(\''+key+'\')"><span class="ico">'+cat.icon+'</span><div class="name">'+cat.title+'</div><div class="count">'+cat.questions.length+' вопросов</div><span class="status '+statusClass+'">'+statusText+'</span></div>';
+    });
+    html+='</div>';
+    document.getElementById('testTitle').innerHTML='<i class="fas fa-clipboard-check"></i> Проверка знаний';
+    document.getElementById('testContent').innerHTML=html;
+}
+
+let currentQuiz=null;
+let selectedAnswerIndex=null;
+
+function startQuiz(key){
+    const cat=QUIZ_DATA[key];
+    const questions=cat.questions.map(q=>{
+        const answers=q.a.map((a,i)=>({text:a,correct:i===q.correct}));
+        for(let i=answers.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[answers[i],answers[j]]=[answers[j],answers[i]]}
+        return {q:q.q,answers:answers};
+    }).sort(()=>Math.random()-0.5);
+    currentQuiz={key:key,cat:cat,questions:questions,current:0,correct:0,total:questions.length,answered:false};
+    selectedAnswerIndex=null;
+    renderQuizQuestion();
+}
+
+function renderQuizQuestion(){
+    if(!currentQuiz)return;
+    const cq=currentQuiz;
+    if(cq.current>=cq.total){renderQuizResult();return}
+    const q=cq.questions[cq.current];
+    const percent=Math.round((cq.current/cq.total)*100);
+    let html='<div class="quiz-header"><div class="title">'+cq.cat.icon+' '+cq.cat.title+'</div><div class="progress"><div class="progress-bar" style="width:'+percent+'%"></div></div><div class="progress-text"><span>Вопрос '+(cq.current+1)+' из '+cq.total+'</span><span>Правильно: '+cq.correct+'</span></div></div>';
+    html+='<div class="quiz-question"><div class="q-text"><span class="q-num">'+(cq.current+1)+'</span>'+q.q+'</div><div class="quiz-answers" id="quizAnswers">';
+    q.answers.forEach((a,i)=>{
+        html+='<div class="quiz-answer" onclick="selectAnswer(this,'+i+')" data-index="'+i+'"><div class="radio"></div><div>'+a.text+'</div></div>';
+    });
+    html+='</div></div>';
+    html+='<div class="quiz-footer"><button class="quiz-btn secondary" onclick="renderTestCategories()"><i class="fas fa-list"></i> К разделам</button><button class="quiz-btn primary" id="quizNextBtn" onclick="nextQuestion()" disabled>Ответить <i class="fas fa-arrow-right"></i></button></div>';
+    document.getElementById('testTitle').innerHTML='<i class="fas fa-clipboard-check"></i> Тест';
+    document.getElementById('testContent').innerHTML=html;
+    cq.answered=false;
+    selectedAnswerIndex=null;
+}
+
+function selectAnswer(el,index){
+    if(!currentQuiz||currentQuiz.answered)return;
+    document.querySelectorAll('#quizAnswers .quiz-answer').forEach(a=>a.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedAnswerIndex=index;
+    document.getElementById('quizNextBtn').disabled=false;
+}
+
+function nextQuestion(){
+    if(!currentQuiz)return;
+    if(!currentQuiz.answered){
+        if(selectedAnswerIndex===null)return;
+        const q=currentQuiz.questions[currentQuiz.current];
+        const correct=q.answers[selectedAnswerIndex].correct;
+        const answers=document.querySelectorAll('#quizAnswers .quiz-answer');
+        answers.forEach((el,i)=>{
+            el.style.pointerEvents='none';
+            if(q.answers[i].correct)el.classList.add('correct');
+            if(i===selectedAnswerIndex&&!correct)el.classList.add('wrong');
+        });
+        if(correct)currentQuiz.correct++;
+        currentQuiz.answered=true;
+        const btn=document.getElementById('quizNextBtn');
+        btn.innerHTML='Далее <i class="fas fa-arrow-right"></i>';
+        btn.disabled=false;
+    }else{
+        currentQuiz.current++;
+        selectedAnswerIndex=null;
+        renderQuizQuestion();
+    }
+}
+
+function renderQuizResult(){
+    const cq=currentQuiz;
+    const percent=Math.round((cq.correct/cq.total)*100);
+    const passed=percent>=80;
+    const results=getTestResults();
+    const prev=results[cq.key];
+    if(!prev||cq.correct>prev.score){
+        results[cq.key]={score:cq.correct,total:cq.total,percent:percent,passed:passed,date:Date.now()};
+        saveTestResults(results);
+    }
+    let html='<div class="quiz-result">';
+    html+='<div class="score">'+cq.correct+'/'+cq.total+'</div>';
+    html+='<div class="label">Правильных ответов ('+percent+'%)</div>';
+    html+='<div class="badge '+(passed?'pass':'fail')+'">'+(passed?'✓ ТЕСТ ПРОЙДЕН':'✗ ТЕСТ НЕ ПРОЙДЕН')+'</div>';
+    html+='<div style="color:#9aa4b5;font-size:.88rem;margin-bottom:2rem;line-height:1.6">'+(passed?'Поздравляем! Ты успешно сдал раздел «'+cq.cat.title+'».':'Нужно набрать минимум 80% (10 из 12). Попробуй ещё раз!')+'</div>';
+    html+='<div class="quiz-footer" style="justify-content:center"><button class="quiz-btn secondary" onclick="renderTestCategories()"><i class="fas fa-list"></i> К разделам</button><button class="quiz-btn primary" onclick="startQuiz(\''+cq.key+'\')"><i class="fas fa-redo"></i> Пройти снова</button></div>';
+    html+='</div>';
+    document.getElementById('testContent').innerHTML=html;
+    currentQuiz=null;
+    selectedAnswerIndex=null;
+}
+
+FORUM_CONTENT.test='<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1rem;color:#eaeef2"><i class="fas fa-clipboard-check" style="color:#b48aff"></i> Проверка знаний</h2><p style="color:#b1bbcf;margin-bottom:1.5rem;line-height:1.7">Пройди тест на знание правил сервера. Выбери один из 4 разделов — в каждом по 12 вопросов. Для сдачи нужно набрать 80%.</p><button class="modal-save-btn" onclick="openTest()" style="max-width:250px"><i class="fas fa-play"></i> Начать проверку</button></div>';
+
+/* ИНИЦИАЛИЗАЦИЯ */
 window.addEventListener('DOMContentLoaded',()=>{
     const pc=document.getElementById('authParticles');
     if(pc){
@@ -996,9 +1195,9 @@ window.addEventListener('DOMContentLoaded',()=>{
     }
     document.getElementById('authScreen').classList.remove('hidden');
 });
+
 document.addEventListener('click',(e)=>{
     if(e.target.classList.contains('modal-overlay'))e.target.classList.remove('active');
-});
-</script>
+});</script>
 </body>
 </html>

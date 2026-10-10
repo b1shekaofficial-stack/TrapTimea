@@ -133,7 +133,7 @@ body{font-family:'Inter',sans-serif;background:#0e0e14;color:#eaeef2;line-height
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);z-index:3000;justify-content:center;align-items:center;padding:20px;overflow-y:auto}
 .modal-overlay.active{display:flex}
 .modal-box{background:#161a22;border:1px solid #272e3a;border-radius:20px;padding:30px;width:100%;max-width:480px;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.8);animation:modalIn .3s ease}
-.modal-box-large{max-width:600px}
+.modal-box-large{max-width:700px}
 @keyframes modalIn{0%{transform:scale(.95) translateY(20px);opacity:0}100%{transform:scale(1) translateY(0);opacity:1}}
 .modal-close{position:absolute;top:15px;right:15px;background:#1e1e1e;border:none;color:#8a94a8;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s}
 .modal-close:hover{background:#e74c3c;color:#fff}
@@ -229,6 +229,32 @@ body{font-family:'Inter',sans-serif;background:#0e0e14;color:#eaeef2;line-height
 .quiz-category .status.passed{background:rgba(16,185,129,.15);color:#34d399}
 .quiz-category .status.not-passed{background:rgba(248,113,113,.15);color:#f87171}
 .quiz-category .status.no-attempts{background:#2d3442;color:#8a94a8}
+.quiz-category .status.blocked{background:rgba(251,191,36,.15);color:#fbbf24}
+.quiz-timer{position:sticky;top:0;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#1a0f00;font-weight:800;font-size:1.1rem;text-align:center;padding:.7rem;border-radius:12px;margin-bottom:1rem;box-shadow:0 6px 20px rgba(251,191,36,.4);z-index:10}
+.quiz-timer.warning{background:linear-gradient(135deg,#f87171,#ef4444);color:#fff;animation:timerPulse 1s ease infinite}
+@keyframes timerPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+.code-input-group{text-align:center;padding:1rem 0}
+.code-input-group input{width:100%;padding:16px;border-radius:12px;border:2px solid #272e3a;background:#0e1219;color:#fff;font-size:20px;font-family:'Courier New',monospace;text-align:center;letter-spacing:.2em;text-transform:uppercase;font-weight:700;transition:border-color .2s}
+.code-input-group input:focus{outline:none;border-color:#8b5cf6;box-shadow:0 0 0 4px rgba(139,92,246,.15)}
+.code-info{background:#1a1f29;border:1px solid #272e3a;border-left:4px solid #b48aff;border-radius:10px;padding:.9rem 1.2rem;margin-bottom:1.5rem;font-size:.85rem;color:#9aa4b5;line-height:1.6}
+.admin-tests-list{display:flex;flex-direction:column;gap:.8rem;max-height:60vh;overflow-y:auto}
+.admin-test-item{background:#1a1f29;border:1px solid #272e3a;border-radius:12px;padding:1rem 1.2rem;cursor:pointer;transition:all .2s}
+.admin-test-item:hover{border-color:#8b5cf6;background:#1f2531}
+.admin-test-item .head{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin-bottom:.5rem}
+.admin-test-item .nick{font-weight:700;color:#eaeef2;font-size:1rem}
+.admin-test-item .discord{font-size:.85rem;color:#b48aff}
+.admin-test-item .cat-badge{font-size:.72rem;padding:.15rem .6rem;border-radius:20px;background:linear-gradient(135deg,#8b5cf6,#6e9fff);color:#fff;font-weight:700;text-transform:uppercase}
+.admin-test-item .score{font-size:.85rem;font-weight:700;margin-left:auto}
+.admin-test-item .score.pass{color:#34d399}
+.admin-test-item .score.fail{color:#f87171}
+.admin-test-item .meta{font-size:.75rem;color:#5a6478;display:flex;gap:1rem;flex-wrap:wrap}
+.admin-test-item .answers-detail{margin-top:.8rem;padding-top:.8rem;border-top:1px solid #272e3a;display:none;flex-direction:column;gap:.4rem}
+.admin-test-item.expanded .answers-detail{display:flex}
+.admin-test-item .ans{display:flex;align-items:flex-start;gap:.5rem;font-size:.8rem;padding:.4rem .6rem;border-radius:6px;background:#0e1219;line-height:1.5}
+.admin-test-item .ans .icon-ok{color:#34d399;flex-shrink:0;margin-top:.15rem}
+.admin-test-item .ans .icon-no{color:#f87171;flex-shrink:0;margin-top:.15rem}
+.admin-tests-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;padding-bottom:.7rem;border-bottom:1px solid #272e3a;flex-wrap:wrap;gap:.5rem}
+.admin-tests-header .count{font-size:.85rem;color:#8a94a8}
 @media(max-width:900px){.forum-layout,.chat-layout{grid-template-columns:1fr}.chat-sidebar{position:static}}
 @media(max-width:700px){.navbar{padding:.7rem 1rem;flex-wrap:wrap}.nav-tabs{order:3;width:100%;justify-content:center;margin-top:.5rem}.nav-tab{padding:.5rem 1rem;font-size:.82rem}.report-row{grid-template-columns:1fr}.report-types-row{grid-template-columns:1fr}}
 </style>
@@ -424,11 +450,12 @@ body{font-family:'Inter',sans-serif;background:#0e0e14;color:#eaeef2;line-height
 
 <!-- MODAL: ADMIN PANEL -->
 <div class="modal-overlay" id="adminPanelModal">
-    <div class="modal-box" style="max-width:420px">
+    <div class="modal-box" style="max-width:520px">
         <button class="modal-close" onclick="closeAdminPanel()">✕</button>
         <h2 style="justify-content:center"><i class="fas fa-shield-hal" style="color:#10b981"></i> Админ-панель</h2>
         <p style="text-align:center;color:#8a94a8;font-size:.85rem;margin-bottom:1.5rem">Вы вошли как администратор</p>
         <div style="display:flex;flex-direction:column;gap:10px">
+            <button class="modal-save-btn" onclick="openAdminTests()" style="background:linear-gradient(135deg,#a855f7,#8b5cf6)"><i class="fas fa-clipboard-list"></i> Проверки (тесты)</button>
             <button class="modal-save-btn" onclick="closeAdminPanel()" style="background:linear-gradient(135deg,#10b981,#34d399)"><i class="fas fa-check"></i> Продолжить</button>
             <button class="modal-logout-btn" onclick="deactivateAdmin()"><i class="fas fa-right-from-bracket"></i> Выйти из админа</button>
         </div>
@@ -446,6 +473,45 @@ body{font-family:'Inter',sans-serif;background:#0e0e14;color:#eaeef2;line-height
     </div>
 </div>
 
+<!-- MODAL: ADMIN TESTS -->
+<div class="modal-overlay" id="adminTestsModal">
+    <div class="modal-box modal-box-large" style="max-width:800px">
+        <button class="modal-close" onclick="closeAdminTests()">✕</button>
+        <h2><i class="fas fa-clipboard-list" style="color:#a855f7"></i> Результаты проверок</h2>
+        <div class="admin-tests-header">
+            <span class="count" id="adminTestsCount">Загрузка...</span>
+            <button class="quiz-btn secondary" onclick="loadAdminTests()" style="padding:.6rem 1.2rem;font-size:.85rem"><i class="fas fa-sync"></i> Обновить</button>
+        </div>
+        <div class="admin-tests-list" id="adminTestsList"><div style="text-align:center;color:#5a6478;padding:2rem">Загрузка...</div></div>
+    </div>
+</div>
+
+<!-- MODAL: CODE INPUT (перед началом теста) -->
+<div class="modal-overlay" id="codeModal">
+    <div class="modal-box" style="max-width:400px">
+        <button class="modal-close" onclick="closeCodeModal()">✕</button>
+        <h2 style="justify-content:center"><i class="fas fa-key" style="color:#fbbf24"></i> Код доступа</h2>
+        <div class="code-info">Введи код доступа, который ты получил от администрации. Код действует <strong>только 1 раз</strong>.</div>
+        <div class="code-input-group">
+            <input type="text" id="codeInput" placeholder="TT-XXXX-XXXX" maxlength="12" onkeydown="if(event.key==='Enter')verifyCode()" style="text-transform:uppercase">
+        </div>
+        <button class="modal-save-btn" onclick="verifyCode()"><i class="fas fa-check"></i> Начать тест</button>
+    </div>
+</div>
+
+<!-- MODAL: TEST DATA (после сдачи) -->
+<div class="modal-overlay" id="testDataModal">
+    <div class="modal-box" style="max-width:440px">
+        <h2 style="justify-content:center"><i class="fas fa-user-check" style="color:#10b981"></i> Тест пройден!</h2>
+        <p style="text-align:center;color:#9aa4b5;font-size:.9rem;margin-bottom:1.5rem;line-height:1.6">Введи свой игровой ник и Discord, чтобы администрация знала кто сдал.</p>
+        <form id="testDataForm" onsubmit="submitTestData(event)">
+            <div class="form-group"><label><i class="fas fa-gamepad" style="color:#b48aff"></i> Никнейм в игре</label><input type="text" id="tdNick" placeholder="Steve123" required></div>
+            <div class="form-group"><label><i class="fab fa-discord" style="color:#b48aff"></i> Discord юз</label><input type="text" id="tdDiscord" placeholder="@username" required></div>
+            <button type="submit" class="modal-save-btn" id="tdSubmitBtn"><i class="fas fa-paper-plane"></i> Отправить</button>
+        </form>
+    </div>
+</div>
+
 <!-- MODAL: TEST -->
 <div class="modal-overlay" id="testModal">
     <div class="modal-box modal-box-large" style="max-width:700px">
@@ -458,10 +524,11 @@ body{font-family:'Inter',sans-serif;background:#0e0e14;color:#eaeef2;line-height
 <div class="toast-container" id="toastContainer"></div>
 
 <script>
-const GOOGLE_SCRIPT_URL='https://script.google.com/macros/s/AKfycbx9x974QRvJ8ibSnW_MEjNOT_h31nOEtPGqSVkz9O_xTb2za7i-h6DzpIpQp0xRg37i/exec';
+const GOOGLE_SCRIPT_URL='https://script.google.com/macros/s/AKfycbyR-Fv5y1e0YWPrbMSLAKcOlwagtNLwNzYk_6cK9Ym2Jq4OoSO6cvobRGpFJ3GfhTo/exec';
 const REPORT_WEBHOOK='https://discord.com/api/webhooks/1556993048309923941/G62oMDQK8BWNlwF9obxqqzzqSkOGdKb2ngq93Xg6YExKPzPqkTrL0iwm89s_ynnht3E1';
 const LECTURE_WEBHOOK='https://discord.com/api/webhooks/1557358230961786951/c_nezeXcrmoK3fKgZxDIdSn0o6W4nnXyQtMR7oESdao16hWAnv1uSeC8N6j8GSNNZkC7';
 const DEVELOPER_ID='1554060822416855120';
+
 const LS_USERS='traptime_users';
 const LS_SESSION='traptime_session';
 const LS_ADMIN='traptime_admin';
@@ -469,8 +536,18 @@ const LS_ADMIN_PASS='traptime_admin_pass';
 const LS_CHAT_BLOCKED='traptime_chat_blocked';
 const LS_BANS='traptime_bans';
 const LS_MSG_OVERRIDES='traptime_msg_overrides';
-const LS_TEST_RESULTS='traptime_test_results';
+const LS_USED_CODES='traptime_used_codes';
+const LS_ATTEMPTS='traptime_attempts';
+const LS_LOCKOUT='traptime_lockout';
+
 const DEFAULT_ADMIN_PASS='traptimebustik';
+
+const ACCESS_CODES=[
+    'TT-9K4M-X7P2','TT-3R8N-B5Q9','TT-6W2H-D4L7','TT-1F9J-A3C8','TT-7T5V-E2M6',
+    'TT-4B8G-K1N3','TT-2P6L-R9W5','TT-8D3S-Y4H7','TT-5N1J-M6B2','TT-9C7F-Z3K8',
+    'TT-2H5T-V8Q4','TT-6M9P-L1D7','TT-3J4B-W7N2','TT-8R2S-K5F9','TT-1V6D-X9H3',
+    'TT-7L3C-M2P8','TT-4W8N-B6J5','TT-9S1T-A7K4','TT-5F2H-D8Q6','TT-2B7Y-M9R3'
+];
 
 function getUsers(){try{return JSON.parse(localStorage.getItem(LS_USERS))||{}}catch(e){return{}}}
 function saveUsers(u){localStorage.setItem(LS_USERS,JSON.stringify(u))}
@@ -693,20 +770,14 @@ async function sendChatMessage(){
     const input=document.getElementById('chatInput');
     const text=input.value.trim();
     if(!text)return;
-
-    if(text.startsWith('/')&&isAdmin()){
-        if(await handleChatCommand(text)){input.value='';return}
-    }
-
+    if(text.startsWith('/')&&isAdmin()){if(await handleChatCommand(text)){input.value='';return}}
     if(isBanned(currentUser.username)){
         const bans=getBans();
-        const until=bans[currentUser.username]?.until;
+        const until=bans[currentUser.username.toLowerCase()]?.until;
         const mins=Math.ceil((until-Date.now())/60000);
         return showToast('Вы забанены в чате ещё на '+mins+' мин.','error');
     }
-
     if(isChatBlocked()&&!isAdmin())return showToast('Чат закрыт администрацией','error');
-
     input.value='';
     const data={user:currentUser.username,rank:currentUser.rank||'player',avatar:currentUser.avatar||'',color:currentUser.color||'av-1',text:text};
     try{
@@ -768,8 +839,7 @@ function openReport(){
 }
 function closeReport(){document.getElementById('reportModal').classList.remove('active')}
 function goToReport(role){
-    openReport();
-    setReportType('promote');
+    openReport();setReportType('promote');
     setTimeout(()=>{const el=document.getElementById('rTo');if(el)el.value=role},100);
 }
 function setReportType(t){
@@ -874,10 +944,7 @@ function tryActivateAdmin(){
         input.value='';closeAdminModal();
         document.getElementById('adminPanelModal').classList.add('active');
         showToast('Админ-права активированы 🛡️','success');
-    }else{
-        showToast('Неверный код','error');
-        input.value='';input.focus();
-    }
+    }else{showToast('Неверный код','error');input.value='';input.focus()}
 }
 function closeAdminModal(){document.getElementById('adminModal').classList.remove('active');document.getElementById('adminCodeInput').value=''}
 function closeAdminPanel(){document.getElementById('adminPanelModal').classList.remove('active')}
@@ -885,7 +952,7 @@ function deactivateAdmin(){localStorage.removeItem(LS_ADMIN);closeAdminPanel();s
 
 function getBans(){try{return JSON.parse(localStorage.getItem(LS_BANS))||{}}catch(e){return{}}}
 function saveBans(b){localStorage.setItem(LS_BANS,JSON.stringify(b))}
-function isBanned(nick){const bans=getBans();const k=nick.toLowerCase();if(!bans[k])return false;if(Date.now()>bans[k].until){delete bans[k];saveBans(bans);return false}return true}
+function isBanned(nick){const bans=getBans();const k=(nick||'').toLowerCase();if(!bans[k])return false;if(Date.now()>bans[k].until){delete bans[k];saveBans(bans);return false}return true}
 function parseTime(s){const m=s.match(/^(\d+)([smhd])$/);if(!m)return null;const n=parseInt(m[1]);const u=m[2];return n*{s:1000,m:60000,h:3600000,d:86400000}[u]}
 
 function isChatBlocked(){return localStorage.getItem(LS_CHAT_BLOCKED)==='true'}
@@ -907,11 +974,7 @@ async function handleChatCommand(text){
     const cmd=parts[0].toLowerCase();
     const args=parts.slice(1);
     const users=getUsers();
-    const findUser=(nick)=>{
-        if(!nick)return null;
-        for(const k in users){if(users[k].username.toLowerCase()===nick.toLowerCase())return{key:k,user:users[k]}}
-        return null;
-    };
+    const findUser=(nick)=>{if(!nick)return null;for(const k in users){if(users[k].username.toLowerCase()===nick.toLowerCase())return{key:k,user:users[k]}}return null};
 
     if(cmd==='/banchat'){
         if(!args[0]||!args[1])return showToast('Использование: /banchat Ник время','error');
@@ -935,14 +998,8 @@ async function handleChatCommand(text){
         showToast(found.user.username+' разбанен','success');
         return true;
     }
-    if(cmd==='/blockchat'){
-        localStorage.setItem(LS_CHAT_BLOCKED,'true');updateChatBlockState();
-        showToast('Чат закрыт для всех','success');return true;
-    }
-    if(cmd==='/unblockchat'){
-        localStorage.removeItem(LS_CHAT_BLOCKED);updateChatBlockState();
-        showToast('Чат открыт','success');return true;
-    }
+    if(cmd==='/blockchat'){localStorage.setItem(LS_CHAT_BLOCKED,'true');updateChatBlockState();showToast('Чат закрыт','success');return true}
+    if(cmd==='/unblockchat'){localStorage.removeItem(LS_CHAT_BLOCKED);updateChatBlockState();showToast('Чат открыт','success');return true}
     if(cmd==='/removemessage'){
         if(!args[0]||!args[1])return showToast('Использование: /removemessage Ник N','error');
         const n=parseInt(args[1]);
@@ -974,113 +1031,195 @@ async function handleChatCommand(text){
     return false;
 }
 
-/* ТЕСТЫ */
+/* ТЕСТЫ: ДАННЫЕ ВОПРОСОВ */
 const QUIZ_DATA = {
-    cat1: {
-        title: 'Пункт 1. Правила игрового сервера',
-        icon: '🎮',
-        questions: [
-            {q:'Что из перечисленного РАЗРЕШЕНО на гриф-сервере?', a:['Гриферство, рейды, кражи и ловушки','Использование X-Ray для поиска руды','Лаг-машины для нагрузки сервера','Скам за реальные деньги'], correct:0},
-            {q:'Какое наказание за читы ПЕРВЫЙ раз?', a:['Мут 24 часа','Бан 7 дней','Бан 14 дней','Предупреждение'], correct:2},
-            {q:'Какое наказание за читы ПОВТОРНО?', a:['Бан 30 дней','Бан навсегда','Мут 7 дней','Бан 14 дней'], correct:1},
-            {q:'Что грозит за использование дюпа или бага?', a:['Мут 3 часа','Бан 7 дней','Бан 30 дней + вайп инвентаря','Только предупреждение'], correct:2},
-            {q:'Где разрешено PvP?', a:['Только на спавне','В любой точке мира, кроме спавна и безопасных зон','Только в специальных аренах','Нигде'], correct:1},
-            {q:'Какое наказание за лаг-машины?', a:['Бан 7 дней','Мут 1 час','Кик из игры','Бан 14 дней'], correct:0},
-            {q:'Что запрещено делать с багами привата?', a:['Использовать для кражи чужих вещей','Использовать для защиты своей базы','Показывать друзьям','Тестировать на своей территории'], correct:0},
-            {q:'Разрешено ли гриферство на этом сервере?', a:['Да, это гриф-сервер','Нет, это наказуемо','Разрешено только ночью','Разрешено только с разрешения админа'], correct:0},
-            {q:'Что запрещено по отношению к другим игрокам?', a:['Оскорбления по признаку расы, религии, национальности, пола','Торговля','PvP','Объединение в кланы'], correct:0},
-            {q:'Какое наказание за угрозы жизни, DDoS или доксинг?', a:['Мут 1 час','Мгновенный бан без разбора','Предупреждение','Бан 7 дней'], correct:1},
-            {q:'Разрешена ли реклама других серверов?', a:['Да, без ограничений','Только с разрешения администрации','Разрешена в ЛС','Только в ночное время'], correct:1},
-            {q:'Что произойдёт за скам при продаже доната?', a:['Возврат денег и предупреждение','Ничего','Наказание (бан/мут по правилам)','Разрешается обман'], correct:2}
-        ]
-    },
-    cat2: {
-        title: 'Пункт 2. Правила чата в Discord',
-        icon: '💬',
-        questions: [
-            {q:'Что РАЗРЕШЕНО в Discord-чате?', a:['Общение на любые темы в соответствующих каналах','Спам и флуд','NSFW-контент','Реклама других серверов'], correct:0},
-            {q:'Какое наказание за спам или флуд?', a:['Мут 1-6 часов','Бан 7 дней','Кик из сервера','Ничего'], correct:0},
-            {q:'Что грозит за оскорбления участников или администрации?', a:['Мут 12-48 часов','Предупреждение','Бан навсегда','Мут 1 час'], correct:0},
-            {q:'Разрешён ли NSFW-контент в Discord?', a:['Да, в специальных каналах','Нет, за это бан 7 дней','Только для админов','Разрешён везде'], correct:1},
-            {q:'Какое наказание за рекламу чужих серверов/читов?', a:['Бан 30 дней','Мут 1 час','Предупреждение','Кик'], correct:0},
-            {q:'Что будет за обход наказания через твинка?', a:['Бан навсегда','Мут 12 часов','Ничего','Предупреждение'], correct:0},
-            {q:'Что запрещено публиковать без согласия?', a:['Личные данные других людей','Игровые скриншоты','Мемы','Своё мнение'], correct:0},
-            {q:'Разрешены ли политические и религиозные провокации?', a:['Да, всегда','Нет, это запрещено','Разрешены только админам','Разрешены по выходным'], correct:1},
-            {q:'Какое наказание за доксинг?', a:['Бан навсегда','Мут 24 часа','Предупреждение','Бан 7 дней'], correct:0},
-            {q:'Что нельзя делать в чате Discord?', a:['Помогать новичкам','Обсуждать кланы','Попрошайничать «дайте донат»','Шутить в рамках приличия'], correct:2},
-            {q:'Разрешены ли спойлеры без пометки?', a:['Да, если не про ивенты','Нет, если это касается ивентов — запрещено','Разрешены всегда','Разрешены только модераторам'], correct:1},
-            {q:'Что делать, если увидел нарушение правил?', a:['Самому наказать нарушителя','Написать в поддержку/тикет','Игнорировать','Начать срач в чате'], correct:1}
-        ]
-    },
-    cat3: {
-        title: 'Пункт 3. Правила голосовых каналов',
-        icon: '🔊',
-        questions: [
-            {q:'Что РАЗРЕШЕНО в голосовых каналах?', a:['Общение, обсуждение игры, мемы','Крики и ор в микрофон','Реклама других серверов','NSFW-стримы'], correct:0},
-            {q:'Какое наказание за шум или крик в войсе?', a:['Мут 30 мин в войсе','Бан навсегда','Кик из Discord','Ничего'], correct:0},
-            {q:'Разрешён ли Soundpad без разрешения участников?', a:['Да, всегда','Нет, за это кик из канала','Разрешён только админам','Разрешён по выходным'], correct:1},
-            {q:'Что грозит за перебивание или хамство в войсе?', a:['Мут 1-3 часа','Предупреждение','Бан 7 дней','Ничего'], correct:0},
-            {q:'Можно ли заходить в чужой канал и мешать общению?', a:['Да','Нет, за это кик + предупреждение','Можно, если ты админ','Можно ночью'], correct:1},
-            {q:'Что категорически запрещено в голосовых?', a:['Музыка в спец. каналах','Стрим NSFW-контента через демонстрацию экрана','AFK в канале #afk','Обсуждение игры'], correct:1},
-            {q:'Какое наказание за стрим NSFW?', a:['Бан навсегда','Мут 30 мин','Кик из канала','Предупреждение'], correct:0},
-            {q:'Что делать с фоновым шумом (ремонт, музыка, собаки)?', a:['Оставить как есть','Выключить микрофон','Попросить всех выйти','Ничего'], correct:1},
-            {q:'Разрешена ли реклама в голосовых каналах?', a:['Да','Нет, запрещена','Только в ЛС','Только для VIP'], correct:1},
-            {q:'Что грозит за нарушение «Мешать другим»?', a:['Кик + предупреждение','Бан навсегда','Мут 7 дней','Ничего'], correct:0},
-            {q:'Где разрешено AFK?', a:['В любом канале','В канале #afk','Только в личке','В канале администрации'], correct:1},
-            {q:'Разрешена ли музыка в голосовых?', a:['Да, везде','Только в специально отведённых каналах','Запрещена полностью','Только ночью'], correct:1}
-        ]
-    },
-    cat4: {
-        title: 'Пункт 4. Администрация и общие положения',
-        icon: '🛡️',
-        questions: [
-            {q:'Обязана ли администрация объяснять причину наказания?', a:['Да, всегда','Нет, но может по запросу','Только в ЛС','Только владельцу'], correct:1},
-            {q:'Разрешено ли администрации использовать права для личной выгоды?', a:['Да, если не поймают','Нет, это запрещено','Только с разрешения владельца','Разрешено админам'], correct:1},
-            {q:'Можно ли снять наказание за реальные деньги?', a:['Да, за донат','Нет, это запрещено','Только через тикет','Только для VIP'], correct:1},
-            {q:'Как обжаловать наказание?', a:['В ЛС админу','Через тикет в Discord (#тикеты)','В общем чате','Никак'], correct:1},
-            {q:'Куда жаловаться на администратора?', a:['В общий чат','В ЛС владельцу сервера','В голосовой канал','В тикет'], correct:1},
-            {q:'Может ли администрация изменять правила без уведомления?', a:['Нет','Да, вправе','Только с голосования','Только раз в год'], correct:1},
-            {q:'Освобождает ли незнание правил от наказания?', a:['Да','Нет, не освобождает','Только новичков','Только первый раз'], correct:1},
-            {q:'Окончательны ли решения администрации?', a:['Нет, можно спорить','Да, кроме обжалования через тикет','Зависит от ситуации','Нет, всегда можно оспорить'], correct:1},
-            {q:'Как часто могут происходить вайпы?', a:['Раз в месяц (по решению админов)','Никогда','Каждый день','Раз в неделю'], correct:0},
-            {q:'Возвращается ли донат при бане?', a:['Да, всегда','Нет, не возвращается','Только половина','По решению админа'], correct:1},
-            {q:'Что считается нарушением со стороны администрации?', a:['Использование прав для личной выгоды','Наказание нарушителей','Проверка логов','Ответы на тикеты'], correct:0},
-            {q:'Что будет, если ты не согласен с решением администрации?', a:['Обжалование через тикет','Срач в чате','Игнор','Месть в игре'], correct:0}
-        ]
-    }
+    cat1: {title:'Пункт 1. Правила игрового сервера',icon:'🎮',questions:[
+        {q:'Что из перечисленного РАЗРЕШЕНО на гриф-сервере?',a:['Гриферство, рейды, кражи и ловушки','Использование X-Ray для поиска руды','Лаг-машины для нагрузки сервера','Скам за реальные деньги'],correct:0},
+        {q:'Какое наказание за читы ПЕРВЫЙ раз?',a:['Мут 24 часа','Бан 7 дней','Бан 14 дней','Предупреждение'],correct:2},
+        {q:'Какое наказание за читы ПОВТОРНО?',a:['Бан 30 дней','Бан навсегда','Мут 7 дней','Бан 14 дней'],correct:1},
+        {q:'Что грозит за использование дюпа или бага?',a:['Мут 3 часа','Бан 7 дней','Бан 30 дней + вайп инвентаря','Только предупреждение'],correct:2},
+        {q:'Где разрешено PvP?',a:['Только на спавне','В любой точке мира, кроме спавна и безопасных зон','Только в специальных аренах','Нигде'],correct:1},
+        {q:'Какое наказание за лаг-машины?',a:['Бан 7 дней','Мут 1 час','Кик из игры','Бан 14 дней'],correct:0},
+        {q:'Что запрещено делать с багами привата?',a:['Использовать для кражи чужих вещей','Использовать для защиты своей базы','Показывать друзьям','Тестировать на своей территории'],correct:0},
+        {q:'Разрешено ли гриферство на этом сервере?',a:['Да, это гриф-сервер','Нет, это наказуемо','Разрешено только ночью','Разрешено только с разрешения админа'],correct:0},
+        {q:'Что запрещено по отношению к другим игрокам?',a:['Оскорбления по признаку расы, религии, национальности, пола','Торговля','PvP','Объединение в кланы'],correct:0},
+        {q:'Какое наказание за угрозы жизни, DDoS или доксинг?',a:['Мут 1 час','Мгновенный бан без разбора','Предупреждение','Бан 7 дней'],correct:1},
+        {q:'Разрешена ли реклама других серверов?',a:['Да, без ограничений','Только с разрешения администрации','Разрешена в ЛС','Только в ночное время'],correct:1},
+        {q:'Что произойдёт за скам при продаже доната?',a:['Возврат денег и предупреждение','Ничего','Наказание (бан/мут по правилам)','Разрешается обман'],correct:2}
+    ]},
+    cat2: {title:'Пункт 2. Правила чата в Discord',icon:'💬',questions:[
+        {q:'Что РАЗРЕШЕНО в Discord-чате?',a:['Общение на любые темы в соответствующих каналах','Спам и флуд','NSFW-контент','Реклама других серверов'],correct:0},
+        {q:'Какое наказание за спам или флуд?',a:['Мут 1-6 часов','Бан 7 дней','Кик из сервера','Ничего'],correct:0},
+        {q:'Что грозит за оскорбления участников или администрации?',a:['Мут 12-48 часов','Предупреждение','Бан навсегда','Мут 1 час'],correct:0},
+        {q:'Разрешён ли NSFW-контент в Discord?',a:['Да, в специальных каналах','Нет, за это бан 7 дней','Только для админов','Разрешён везде'],correct:1},
+        {q:'Какое наказание за рекламу чужих серверов/читов?',a:['Бан 30 дней','Мут 1 час','Предупреждение','Кик'],correct:0},
+        {q:'Что будет за обход наказания через твинка?',a:['Бан навсегда','Мут 12 часов','Ничего','Предупреждение'],correct:0},
+        {q:'Что запрещено публиковать без согласия?',a:['Личные данные других людей','Игровые скриншоты','Мемы','Своё мнение'],correct:0},
+        {q:'Разрешены ли политические и религиозные провокации?',a:['Да, всегда','Нет, это запрещено','Разрешены только админам','Разрешены по выходным'],correct:1},
+        {q:'Какое наказание за доксинг?',a:['Бан навсегда','Мут 24 часа','Предупреждение','Бан 7 дней'],correct:0},
+        {q:'Что нельзя делать в чате Discord?',a:['Помогать новичкам','Обсуждать кланы','Попрошайничать «дайте донат»','Шутить в рамках приличия'],correct:2},
+        {q:'Разрешены ли спойлеры без пометки?',a:['Да, если не про ивенты','Нет, если это касается ивентов — запрещено','Разрешены всегда','Разрешены только модераторам'],correct:1},
+        {q:'Что делать, если увидел нарушение правил?',a:['Самому наказать нарушителя','Написать в поддержку/тикет','Игнорировать','Начать срач в чате'],correct:1}
+    ]},
+    cat3: {title:'Пункт 3. Правила голосовых каналов',icon:'🔊',questions:[
+        {q:'Что РАЗРЕШЕНО в голосовых каналах?',a:['Общение, обсуждение игры, мемы','Крики и ор в микрофон','Реклама других серверов','NSFW-стримы'],correct:0},
+        {q:'Какое наказание за шум или крик в войсе?',a:['Мут 30 мин в войсе','Бан навсегда','Кик из Discord','Ничего'],correct:0},
+        {q:'Разрешён ли Soundpad без разрешения участников?',a:['Да, всегда','Нет, за это кик из канала','Разрешён только админам','Разрешён по выходным'],correct:1},
+        {q:'Что грозит за перебивание или хамство в войсе?',a:['Мут 1-3 часа','Предупреждение','Бан 7 дней','Ничего'],correct:0},
+        {q:'Можно ли заходить в чужой канал и мешать общению?',a:['Да','Нет, за это кик + предупреждение','Можно, если ты админ','Можно ночью'],correct:1},
+        {q:'Что категорически запрещено в голосовых?',a:['Музыка в спец. каналах','Стрим NSFW-контента через демонстрацию экрана','AFK в канале #afk','Обсуждение игры'],correct:1},
+        {q:'Какое наказание за стрим NSFW?',a:['Бан навсегда','Мут 30 мин','Кик из канала','Предупреждение'],correct:0},
+        {q:'Что делать с фоновым шумом (ремонт, музыка, собаки)?',a:['Оставить как есть','Выключить микрофон','Попросить всех выйти','Ничего'],correct:1},
+        {q:'Разрешена ли реклама в голосовых каналах?',a:['Да','Нет, запрещена','Только в ЛС','Только для VIP'],correct:1},
+        {q:'Что грозит за нарушение «Мешать другим»?',a:['Кик + предупреждение','Бан навсегда','Мут 7 дней','Ничего'],correct:0},
+        {q:'Где разрешено AFK?',a:['В любом канале','В канале #afk','Только в личке','В канале администрации'],correct:1},
+        {q:'Разрешена ли музыка в голосовых?',a:['Да, везде','Только в специально отведённых каналах','Запрещена полностью','Только ночью'],correct:1}
+    ]},
+    cat4: {title:'Пункт 4. Администрация и общие положения',icon:'🛡️',questions:[
+        {q:'Обязана ли администрация объяснять причину наказания?',a:['Да, всегда','Нет, но может по запросу','Только в ЛС','Только владельцу'],correct:1},
+        {q:'Разрешено ли администрации использовать права для личной выгоды?',a:['Да, если не поймают','Нет, это запрещено','Только с разрешения владельца','Разрешено админам'],correct:1},
+        {q:'Можно ли снять наказание за реальные деньги?',a:['Да, за донат','Нет, это запрещено','Только через тикет','Только для VIP'],correct:1},
+        {q:'Как обжаловать наказание?',a:['В ЛС админу','Через тикет в Discord (#тикеты)','В общем чате','Никак'],correct:1},
+        {q:'Куда жаловаться на администратора?',a:['В общий чат','В ЛС владельцу сервера','В голосовой канал','В тикет'],correct:1},
+        {q:'Может ли администрация изменять правила без уведомления?',a:['Нет','Да, вправе','Только с голосования','Только раз в год'],correct:1},
+        {q:'Освобождает ли незнание правил от наказания?',a:['Да','Нет, не освобождает','Только новичков','Только первый раз'],correct:1},
+        {q:'Окончательны ли решения администрации?',a:['Нет, можно спорить','Да, кроме обжалования через тикет','Зависит от ситуации','Нет, всегда можно оспорить'],correct:1},
+        {q:'Как часто могут происходить вайпы?',a:['Раз в месяц (по решению админов)','Никогда','Каждый день','Раз в неделю'],correct:0},
+        {q:'Возвращается ли донат при бане?',a:['Да, всегда','Нет, не возвращается','Только половина','По решению админа'],correct:1},
+        {q:'Что считается нарушением со стороны администрации?',a:['Использование прав для личной выгоды','Наказание нарушителей','Проверка логов','Ответы на тикеты'],correct:0},
+        {q:'Что будет, если ты не согласен с решением администрации?',a:['Обжалование через тикет','Срач в чате','Игнор','Месть в игре'],correct:0}
+    ]}
 };
 
-function getTestResults(){try{return JSON.parse(localStorage.getItem(LS_TEST_RESULTS))||{}}catch(e){return{}}}
-function saveTestResults(r){localStorage.setItem(LS_TEST_RESULTS,JSON.stringify(r))}
+/* ТЕСТЫ: КОДЫ */
+function getUsedCodes(){try{return JSON.parse(localStorage.getItem(LS_USED_CODES))||[]}catch(e){return[]}}
+function saveUsedCodes(c){localStorage.setItem(LS_USED_CODES,JSON.stringify(c))}
 
+/* ТЕСТЫ: ПОПЫТКИ (2 неудачи → 24ч) */
+function getAttempts(){try{return JSON.parse(localStorage.getItem(LS_ATTEMPTS))||{}}catch(e){return{}}}
+function saveAttempts(a){localStorage.setItem(LS_ATTEMPTS,JSON.stringify(a))}
+function getLockout(){try{return JSON.parse(localStorage.getItem(LS_LOCKOUT))||{}}catch(e){return{}}}
+function saveLockout(l){localStorage.setItem(LS_LOCKOUT,JSON.stringify(l))}
+function isLockedOut(key){
+    const l=getLockout();
+    if(!l[key])return false;
+    if(Date.now()>=l[key]){delete l[key];saveLockout(l);return false}
+    return true;
+}
+function getLockoutRemaining(key){
+    const l=getLockout();
+    if(!l[key])return 0;
+    return Math.max(0,l[key]-Date.now());
+}
+function registerFail(key){
+    const a=getAttempts();
+    a[key]=(a[key]||0)+1;
+    saveAttempts(a);
+    if(a[key]>=2){
+        const l=getLockout();
+        l[key]=Date.now()+24*60*60*1000;
+        saveLockout(l);
+        a[key]=0;
+        saveAttempts(a);
+        return true;
+    }
+    return false;
+}
+function resetFails(key){
+    const a=getAttempts();
+    a[key]=0;saveAttempts(a);
+    const l=getLockout();
+    delete l[key];saveLockout(l);
+}
+
+/* ТЕСТЫ: UI */
 function openTest(){
+    if(!currentUser)return showToast('Войди в аккаунт','error');
     document.getElementById('testModal').classList.add('active');
     renderTestCategories();
 }
-function closeTest(){document.getElementById('testModal').classList.remove('active')}
+function closeTest(){
+    if(currentQuizTimer){clearInterval(currentQuizTimer);currentQuizTimer=null}
+    document.getElementById('testModal').classList.remove('active');
+}
 
 function renderTestCategories(){
     const results=getTestResults();
     const keys=Object.keys(QUIZ_DATA);
-    let html='<div class="quiz-header"><div class="title">📋 Проверка знаний правил</div><div class="desc">Выбери раздел, чтобы пройти тест. В каждом разделе 12 вопросов. Для сдачи нужно набрать 80% (10 из 12).</div></div>';
+    let html='<div class="quiz-header"><div class="title">📋 Проверка знаний правил</div><div class="desc">Выбери раздел, чтобы пройти тест. Время на каждый раздел — 8 минут. Для сдачи нужно набрать 80% (10 из 12). После 2 неудач — блокировка на 24 часа.</div></div>';
     html+='<div class="quiz-categories">';
     keys.forEach(key=>{
         const cat=QUIZ_DATA[key];
         const res=results[key];
+        const lockKey=currentUser.username.toLowerCase()+'_'+key;
+        const locked=isLockedOut(lockKey);
         let statusClass='no-attempts',statusText='Не пройден';
-        if(res){
+        if(locked){
+            statusClass='blocked';
+            const rem=getLockoutRemaining(lockKey);
+            const hrs=Math.floor(rem/3600000),mins=Math.floor((rem%3600000)/60000);
+            statusText='🔒 '+hrs+'ч '+mins+'м';
+        }else if(res){
             if(res.passed){statusClass='passed';statusText='✓ Пройден ('+res.score+'/'+res.total+')'}
             else{statusClass='not-passed';statusText='✗ Провален ('+res.score+'/'+res.total+')'}
         }
-        html+='<div class="quiz-category" onclick="startQuiz(\''+key+'\')"><span class="ico">'+cat.icon+'</span><div class="name">'+cat.title+'</div><div class="count">'+cat.questions.length+' вопросов</div><span class="status '+statusClass+'">'+statusText+'</span></div>';
+        html+='<div class="quiz-category" onclick="tryStartQuiz(\''+key+'\')"><span class="ico">'+cat.icon+'</span><div class="name">'+cat.title+'</div><div class="count">'+cat.questions.length+' вопросов · 8 мин</div><span class="status '+statusClass+'">'+statusText+'</span></div>';
     });
     html+='</div>';
     document.getElementById('testTitle').innerHTML='<i class="fas fa-clipboard-check"></i> Проверка знаний';
     document.getElementById('testContent').innerHTML=html;
 }
 
+let pendingQuizKey=null;
+
+function tryStartQuiz(key){
+    if(!currentUser)return showToast('Войди в аккаунт','error');
+    const lockKey=currentUser.username.toLowerCase()+'_'+key;
+    if(isLockedOut(lockKey)){
+        const rem=getLockoutRemaining(lockKey);
+        const hrs=Math.floor(rem/3600000),mins=Math.floor((rem%3600000)/60000);
+        return showToast('Заблокировано на '+hrs+'ч '+mins+'м','error');
+    }
+    const usedCodes=getUsedCodes();
+    if(usedCodes.includes(currentUser.username.toLowerCase())){
+        // Уже использовал код — может проходить все разделы
+        startQuiz(key);
+        return;
+    }
+    pendingQuizKey=key;
+    document.getElementById('codeModal').classList.add('active');
+    setTimeout(()=>document.getElementById('codeInput').focus(),100);
+    document.getElementById('codeInput').value='';
+}
+
+function closeCodeModal(){
+    document.getElementById('codeModal').classList.remove('active');
+    pendingQuizKey=null;
+}
+
+function verifyCode(){
+    const input=document.getElementById('codeInput');
+    const code=input.value.trim().toUpperCase();
+    if(!code){showToast('Введи код','error');return}
+    if(!ACCESS_CODES.includes(code)){showToast('Неверный код','error');return}
+    const usedCodes=getUsedCodes();
+    if(usedCodes.includes(code)){showToast('Этот код уже использован','error');return}
+    // Активируем код для этого пользователя
+    usedCodes.push(code);
+    usedCodes.push(currentUser.username.toLowerCase());
+    saveUsedCodes(usedCodes);
+    closeCodeModal();
+    showToast('Код принят! Удачи на тесте 🎯','success');
+    setTimeout(()=>{
+        if(pendingQuizKey){const k=pendingQuizKey;pendingQuizKey=null;startQuiz(k)}
+    },500);
+}
+
 let currentQuiz=null;
 let selectedAnswerIndex=null;
+let currentQuizTimer=null;
+let quizTimeLeft=0;
+let quizAnswersLog=[];
 
 function startQuiz(key){
     const cat=QUIZ_DATA[key];
@@ -1089,9 +1228,31 @@ function startQuiz(key){
         for(let i=answers.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[answers[i],answers[j]]=[answers[j],answers[i]]}
         return {q:q.q,answers:answers};
     }).sort(()=>Math.random()-0.5);
-    currentQuiz={key:key,cat:cat,questions:questions,current:0,correct:0,total:questions.length,answered:false};
+    currentQuiz={key:key,cat:cat,questions:questions,current:0,correct:0,total:questions.length,answered:false,timedOut:false};
     selectedAnswerIndex=null;
+    quizAnswersLog=[];
+    quizTimeLeft=8*60;
+    if(currentQuizTimer)clearInterval(currentQuizTimer);
+    currentQuizTimer=setInterval(()=>{
+        quizTimeLeft--;
+        updateQuizTimer();
+        if(quizTimeLeft<=0){
+            clearInterval(currentQuizTimer);currentQuizTimer=null;
+            currentQuiz.timedOut=true;
+            renderQuizResult();
+        }
+    },1000);
     renderQuizQuestion();
+}
+
+function updateQuizTimer(){
+    const el=document.getElementById('quizTimerEl');
+    if(!el)return;
+    const m=Math.floor(quizTimeLeft/60);
+    const s=quizTimeLeft%60;
+    el.textContent='⏱ '+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+    if(quizTimeLeft<=60)el.classList.add('warning');
+    else el.classList.remove('warning');
 }
 
 function renderQuizQuestion(){
@@ -1100,13 +1261,15 @@ function renderQuizQuestion(){
     if(cq.current>=cq.total){renderQuizResult();return}
     const q=cq.questions[cq.current];
     const percent=Math.round((cq.current/cq.total)*100);
-    let html='<div class="quiz-header"><div class="title">'+cq.cat.icon+' '+cq.cat.title+'</div><div class="progress"><div class="progress-bar" style="width:'+percent+'%"></div></div><div class="progress-text"><span>Вопрос '+(cq.current+1)+' из '+cq.total+'</span><span>Правильно: '+cq.correct+'</span></div></div>';
+    const m=Math.floor(quizTimeLeft/60),s=quizTimeLeft%60;
+    let html='<div class="quiz-timer'+(quizTimeLeft<=60?' warning':'')+'" id="quizTimerEl">⏱ '+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')+'</div>';
+    html+='<div class="quiz-header"><div class="title">'+cq.cat.icon+' '+cq.cat.title+'</div><div class="progress"><div class="progress-bar" style="width:'+percent+'%"></div></div><div class="progress-text"><span>Вопрос '+(cq.current+1)+' из '+cq.total+'</span><span>Правильно: '+cq.correct+'</span></div></div>';
     html+='<div class="quiz-question"><div class="q-text"><span class="q-num">'+(cq.current+1)+'</span>'+q.q+'</div><div class="quiz-answers" id="quizAnswers">';
     q.answers.forEach((a,i)=>{
         html+='<div class="quiz-answer" onclick="selectAnswer(this,'+i+')" data-index="'+i+'"><div class="radio"></div><div>'+a.text+'</div></div>';
     });
     html+='</div></div>';
-    html+='<div class="quiz-footer"><button class="quiz-btn secondary" onclick="renderTestCategories()"><i class="fas fa-list"></i> К разделам</button><button class="quiz-btn primary" id="quizNextBtn" onclick="nextQuestion()" disabled>Ответить <i class="fas fa-arrow-right"></i></button></div>';
+    html+='<div class="quiz-footer"><button class="quiz-btn secondary" onclick="abortQuiz()"><i class="fas fa-times"></i> Прервать</button><button class="quiz-btn primary" id="quizNextBtn" onclick="nextQuestion()" disabled>Ответить <i class="fas fa-arrow-right"></i></button></div>';
     document.getElementById('testTitle').innerHTML='<i class="fas fa-clipboard-check"></i> Тест';
     document.getElementById('testContent').innerHTML=html;
     cq.answered=false;
@@ -1134,6 +1297,12 @@ function nextQuestion(){
             if(i===selectedAnswerIndex&&!correct)el.classList.add('wrong');
         });
         if(correct)currentQuiz.correct++;
+        quizAnswersLog.push({
+            q:q.q,
+            selected:q.answers[selectedAnswerIndex].text,
+            correct:q.answers.find(a=>a.correct).text,
+            isCorrect:correct
+        });
         currentQuiz.answered=true;
         const btn=document.getElementById('quizNextBtn');
         btn.innerHTML='Далее <i class="fas fa-arrow-right"></i>';
@@ -1145,10 +1314,26 @@ function nextQuestion(){
     }
 }
 
+function abortQuiz(){
+    if(!confirm('Прервать тест? Прогресс не сохранится.'))return;
+    if(currentQuizTimer){clearInterval(currentQuizTimer);currentQuizTimer=null}
+    currentQuiz=null;
+    renderTestCategories();
+}
+
 function renderQuizResult(){
+    if(currentQuizTimer){clearInterval(currentQuizTimer);currentQuizTimer=null}
     const cq=currentQuiz;
+    if(!cq)return;
     const percent=Math.round((cq.correct/cq.total)*100);
-    const passed=percent>=80;
+    const passed=percent>=80&&!cq.timedOut;
+    const lockKey=currentUser.username.toLowerCase()+'_'+cq.key;
+    if(!passed){
+        const locked=registerFail(lockKey);
+        if(locked)setTimeout(()=>showToast('2 неудачи — блокировка на 24 часа','error'),500);
+    }else{
+        resetFails(lockKey);
+    }
     const results=getTestResults();
     const prev=results[cq.key];
     if(!prev||cq.correct>prev.score){
@@ -1157,17 +1342,98 @@ function renderQuizResult(){
     }
     let html='<div class="quiz-result">';
     html+='<div class="score">'+cq.correct+'/'+cq.total+'</div>';
-    html+='<div class="label">Правильных ответов ('+percent+'%)</div>';
+    html+='<div class="label">Правильных ответов ('+percent+'%)'+(cq.timedOut?' · ⏱ Время вышло':'')+'</div>';
     html+='<div class="badge '+(passed?'pass':'fail')+'">'+(passed?'✓ ТЕСТ ПРОЙДЕН':'✗ ТЕСТ НЕ ПРОЙДЕН')+'</div>';
     html+='<div style="color:#9aa4b5;font-size:.88rem;margin-bottom:2rem;line-height:1.6">'+(passed?'Поздравляем! Ты успешно сдал раздел «'+cq.cat.title+'».':'Нужно набрать минимум 80% (10 из 12). Попробуй ещё раз!')+'</div>';
-    html+='<div class="quiz-footer" style="justify-content:center"><button class="quiz-btn secondary" onclick="renderTestCategories()"><i class="fas fa-list"></i> К разделам</button><button class="quiz-btn primary" onclick="startQuiz(\''+cq.key+'\')"><i class="fas fa-redo"></i> Пройти снова</button></div>';
+    if(passed){
+        html+='<button class="quiz-btn primary" onclick="closeTest();openTestDataModal(\''+cq.key+'\')" style="padding:1rem 2rem"><i class="fas fa-user-check"></i> Отправить данные админам</button>';
+    }else{
+        html+='<div class="quiz-footer" style="justify-content:center"><button class="quiz-btn secondary" onclick="renderTestCategories()"><i class="fas fa-list"></i> К разделам</button>'+(isLockedOut(lockKey)?'':'<button class="quiz-btn primary" onclick="startQuiz(\''+cq.key+'\')"><i class="fas fa-redo"></i> Пройти снова</button>')+'</div>';
+    }
     html+='</div>';
     document.getElementById('testContent').innerHTML=html;
+    window._lastQuizResult={key:cq.key,score:cq.correct,total:cq.total,passed:passed,answers:quizAnswersLog};
     currentQuiz=null;
     selectedAnswerIndex=null;
 }
 
-FORUM_CONTENT.test='<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1rem;color:#eaeef2"><i class="fas fa-clipboard-check" style="color:#b48aff"></i> Проверка знаний</h2><p style="color:#b1bbcf;margin-bottom:1.5rem;line-height:1.7">Пройди тест на знание правил сервера. Выбери один из 4 разделов — в каждом по 12 вопросов. Для сдачи нужно набрать 80%.</p><button class="modal-save-btn" onclick="openTest()" style="max-width:250px"><i class="fas fa-play"></i> Начать проверку</button></div>';
+/* ОТПРАВКА ДАННЫХ ПОСЛЕ СДАЧИ */
+function openTestDataModal(quizKey){
+    document.getElementById('testDataModal').classList.add('active');
+    if(currentUser){
+        document.getElementById('tdNick').value=currentUser.username;
+        document.getElementById('tdDiscord').value='@'+currentUser.username;
+    }
+    window._testDataQuizKey=quizKey;
+}
+
+async function submitTestData(e){
+    e.preventDefault();
+    const btn=document.getElementById('tdSubmitBtn');
+    btn.disabled=true;btn.innerHTML='⏳ Отправка...';
+    const nick=document.getElementById('tdNick').value.trim();
+    const discord=document.getElementById('tdDiscord').value.trim();
+    if(!nick||!discord){showToast('Заполни все поля','error');btn.disabled=false;btn.innerHTML='<i class="fas fa-paper-plane"></i> Отправить';return}
+    const quizKey=window._testDataQuizKey;
+    const result=window._lastQuizResult;
+    if(!result){showToast('Ошибка: нет данных теста','error');btn.disabled=false;btn.innerHTML='<i class="fas fa-paper-plane"></i> Отправить';return}
+    const answersStr=result.answers.map(a=>(a.isCorrect?'✓ ':'✗ ')+a.q+' | Ответ: '+a.selected+(a.isCorrect?'':' | Верно: '+a.correct)).join('\n');
+    const data={
+        nick:nick,
+        discord:discord,
+        category:QUIZ_DATA[quizKey].title,
+        score:result.score,
+        total:result.total,
+        passed:result.passed,
+        answers:answersStr
+    };
+    try{
+        await fetch(GOOGLE_SCRIPT_URL+'?action=saveTest&data='+encodeURIComponent(JSON.stringify(data)),{mode:'no-cors'});
+        showToast('Данные отправлены администрации!','success');
+        document.getElementById('testDataModal').classList.remove('active');
+        document.getElementById('testDataForm').reset();
+    }catch(e){
+        showToast('Ошибка отправки','error');
+    }
+    btn.disabled=false;btn.innerHTML='<i class="fas fa-paper-plane"></i> Отправить';
+}
+
+/* АДМИН-РАЗДЕЛ "ПРОВЕРКИ" */
+function openAdminTests(){
+    closeAdminPanel();
+    document.getElementById('adminTestsModal').classList.add('active');
+    loadAdminTests();
+}
+function closeAdminTests(){
+    document.getElementById('adminTestsModal').classList.remove('active');
+}
+async function loadAdminTests(){
+    const list=document.getElementById('adminTestsList');
+    const cnt=document.getElementById('adminTestsCount');
+    list.innerHTML='<div style="text-align:center;color:#5a6478;padding:2rem">Загрузка...</div>';
+    try{
+        const r=await fetch(GOOGLE_SCRIPT_URL+'?action=getTests');
+        const tests=await r.json();
+        const passed=tests.filter(t=>t.passed===true||t.passed==='true'||t.passed===1);
+        if(cnt)cnt.textContent='Прошли: '+passed.length+' из '+tests.length;
+        if(!passed.length){list.innerHTML='<div style="text-align:center;color:#5a6478;padding:2rem">Пока никто не прошёл проверку</div>';return}
+        list.innerHTML=passed.map((t,i)=>{
+            const date=new Date(t.time).toLocaleString('ru-RU');
+            const answers=t.answers?t.answers.split('\n'):[];
+            const answersHtml=answers.map(line=>{
+                const isCorrect=line.startsWith('✓');
+                return '<div class="ans"><i class="fas '+(isCorrect?'fa-check-circle icon-ok':'fa-times-circle icon-no')+'"></i><span>'+escapeHtml(line.substring(2))+'</span></div>';
+            }).join('');
+            return '<div class="admin-test-item" onclick="this.classList.toggle(\'expanded\')"><div class="head"><span class="nick">'+escapeHtml(t.nick)+'</span><span class="discord">'+escapeHtml(t.discord)+'</span><span class="cat-badge">'+escapeHtml((t.category||'').replace('Пункт ','П'))+'</span><span class="score pass">'+t.score+'/'+t.total+'</span></div><div class="meta"><span>🕐 '+date+'</span></div><div class="answers-detail">'+answersHtml+'</div></div>';
+        }).join('');
+    }catch(e){
+        console.error(e);
+        list.innerHTML='<div style="text-align:center;color:#f87171;padding:2rem">Ошибка загрузки</div>';
+    }
+}
+
+/* FORUM_CONTENT: TEST */
+FORUM_CONTENT.test='<div style="background:#161a22;border:1px solid #272e3a;border-radius:1.25rem;padding:2rem"><h2 style="margin-bottom:1rem;color:#eaeef2"><i class="fas fa-clipboard-check" style="color:#b48aff"></i> Проверка знаний</h2><p style="color:#b1bbcf;margin-bottom:1rem;line-height:1.7">Пройди тест на знание правил сервера. В каждом разделе 12 вопросов, время — <strong style="color:#fbbf24">8 минут</strong>. Для сдачи нужно набрать <strong style="color:#34d399">80%</strong> (10 из 12).</p><div style="background:#1a1f29;border-left:4px solid #fbbf24;border-radius:10px;padding:.9rem 1.2rem;margin-bottom:1.5rem;font-size:.85rem;color:#b1bbcf;line-height:1.6"><strong style="color:#fbbf24">⚠️ Важно:</strong> для старта нужен <strong>код доступа</strong> (получить у администрации). После <strong>2 неудач</strong> — блокировка на <strong>24 часа</strong>.</div><button class="modal-save-btn" onclick="openTest()" style="max-width:280px"><i class="fas fa-play"></i> Начать проверку</button></div>';
 
 /* ИНИЦИАЛИЗАЦИЯ */
 window.addEventListener('DOMContentLoaded',()=>{
@@ -1198,6 +1464,7 @@ window.addEventListener('DOMContentLoaded',()=>{
 
 document.addEventListener('click',(e)=>{
     if(e.target.classList.contains('modal-overlay'))e.target.classList.remove('active');
-});</script>
+});
+</script>
 </body>
 </html>
